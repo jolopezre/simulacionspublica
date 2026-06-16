@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "id": "historia-natural-enfermedad",
+    "title": {
+      "es": "Historia Natural y Niveles de Prevención: Tuberculosis en El Agustino",
+      "en": "Natural History and Prevention Levels: Tuberculosis in El Agustino"
+    },
+    "stage": "diagnostico",
+    "course": "Salud Pública — UCSUR · Semana 6",
+    "competencies": [
+      "Describe las fases de la historia natural de la enfermedad (período prepatogénico y patogénico) aplicadas a una enfermedad transmisible",
+      "Clasifica las intervenciones preventivas según los niveles de Leavell y Clark (primaria, secundaria, terciaria)",
+      "Relaciona la vigilancia epidemiológica con la detección precoz en el nivel de prevención secundaria",
+      "Aplica el concepto de cadena epidemiológica para identificar los eslabones de intervención en una enfermedad transmisible"
+    ],
+    "duration_min": 22,
+    "access": "public",
+    "language_default": "es",
+    "max_score": 50,
+    "credits": {
+      "es": "Adaptado del sílabo de Salud Pública UCSUR (Semana 6) y del marco CAN-Sim (Companion Guide, 2022). Caso ficticio ambientado en Lima Metropolitana.",
+      "en": "Adapted from the UCSUR Public Health syllabus (Week 6) and the CAN-Sim framework. Fictional case set in Metropolitan Lima."
+    }
+  },
+  "dashboard_data": {
+    "tables": [
+      {
+        "title": {"es": "Indicadores de TBC — Centro de Salud El Agustino 2025", "en": "TB indicators — El Agustino Health Center 2025"},
+        "columns": [
+          {"es": "Indicador", "en": "Indicator"},
+          {"es": "Valor local", "en": "Local value"},
+          {"es": "Meta MINSA", "en": "MINSA target"}
+        ],
+        "rows": [
+          ["Tasa de incidencia TBC (x 100,000 hab)", "198", "< 100"],
+          ["Tasa de éxito del tratamiento (%)", "72%", "≥ 85%"],
+          ["% contactos estudiados de caso índice", "58%", "≥ 90%"],
+          ["Demora diagnóstica promedio (días)", "47 días", "< 30 días"],
+          ["% casos con TBC-MDR", "9%", "< 5%"]
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "title": {"es": "Distribución de casos TBC por período (historia natural) — El Agustino", "en": "TB case distribution by period (natural history) — El Agustino"},
+        "data": [
+          {"label": {"es": "Período latente (ILTB)", "en": "Latent period (LTBI)"}, "value": 52},
+          {"label": {"es": "TBC pulmonar activa", "en": "Active pulmonary TB"}, "value": 31},
+          {"label": {"es": "TBC extrapulmonar", "en": "Extrapulmonary TB"}, "value": 10},
+          {"label": {"es": "TBC-MDR", "en": "MDR-TB"}, "value": 7}
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "title": {"es": "Norma Técnica de Salud N°214-MINSA: Atención de TBC en el Perú", "en": "MINSA Technical Health Standard N°214: TB Care in Peru"},
+        "summary": {"es": "Establece el esquema de tratamiento (DOTS/TAES), los criterios de diagnóstico, el estudio de contactos y el flujo de notificación para tuberculosis en todos los niveles de atención. El Perú tiene la segunda mayor carga de TBC en Sudamérica.", "en": "Establishes the treatment scheme (DOTS/TAES), diagnostic criteria, contact tracing, and notification flow for tuberculosis at all levels of care. Peru has the second highest TB burden in South America."},
+        "link": "https://www.dge.gob.pe"
+      },
+      {
+        "title": {"es": "Clasificación de Leavell y Clark — Niveles de prevención", "en": "Leavell and Clark Classification — Prevention levels"},
+        "summary": {"es": "Primaria (período prepatogénico): fomento de la salud + protección específica. Secundaria (período patogénico temprano): diagnóstico precoz + tratamiento oportuno. Terciaria (período patogénico tardío): limitación del daño + rehabilitación.", "en": "Primary (pre-pathogenic period): health promotion + specific protection. Secondary (early pathogenic period): early diagnosis + timely treatment. Tertiary (late pathogenic period): damage limitation + rehabilitation."},
+        "link": "https://can-sim.ca/phn/"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Eres un/a estudiante de medicina en rotación en el Centro de Salud El Agustino. El médico te presenta el caso de don Marcos, 42 años, trabajador de construcción civil, que lleva 3 meses con tos productiva, sudoración nocturna y pérdida de 8 kg. La baciloscopia seriada resulta positiva para [[TBC|Tuberculosis: enfermedad infecciosa causada por Mycobacterium tuberculosis. Transmisión aérea por gotículas de Flügge. Período de incubación: 4-12 semanas. El Perú notifica ~30,000 casos/año, con mayor concentración en Lima Metropolitana.]] pulmonar activa. Comparte cuarto con su esposa y 2 hijos menores.",
+        "en": "You are a medical student on rotation at El Agustino Health Center. The physician presents the case of Don Marcos, 42 years old, a construction worker, who has had 3 months of productive cough, night sweats, and 8 kg weight loss. Serial sputum smear microscopy is positive for active pulmonary [[TB|Tuberculosis: infectious disease caused by Mycobacterium tuberculosis. Airborne transmission via Flügge droplets. Incubation period: 4-12 weeks. Peru reports ~30,000 cases/year, concentrated in Metropolitan Lima.]] He shares a room with his wife and 2 young children."
+      },
+      "prompt": {
+        "es": "Según la historia natural de la enfermedad, ¿en qué período y fase se encuentra don Marcos al momento del diagnóstico?",
+        "en": "According to the natural history of disease, at what period and phase is Don Marcos at the time of diagnosis?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Período patogénico, fase clínica (síntomas manifiestos: tos 3 meses, pérdida de peso, sudoración nocturna).", "en": "Pathogenic period, clinical phase (manifest symptoms: 3-month cough, weight loss, night sweats)."},
+          "correct": true,
+          "feedback": {"es": "Correcto. Don Marcos se encuentra en el período patogénico, fase clínica. Ya superó el período prepatogénico (exposición sin enfermedad) y el horizonte clínico. Los 3 meses de síntomas indican una demora diagnóstica de 47 días (reflejada en los indicadores del expediente), que es mayor a la meta de 30 días del MINSA.", "en": "Correct. Don Marcos is in the pathogenic period, clinical phase. He has already passed the pre-pathogenic period (exposure without disease) and the clinical horizon. The 3 months of symptoms indicate a diagnostic delay of 47 days (reflected in the case file indicators), exceeding MINSA's 30-day target."},
+          "next": "n2",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {"es": "Período prepatogénico, porque aún no ha iniciado tratamiento.", "en": "Pre-pathogenic period, because he has not yet started treatment."},
+          "correct": false,
+          "feedback": {"es": "El período prepatogénico corresponde a la fase antes de que el agente interactúe con el huésped (antes de la infección). Don Marcos ya tiene enfermedad activa con síntomas clínicos, lo que lo ubica claramente en el período patogénico.", "en": "The pre-pathogenic period corresponds to the phase before the agent interacts with the host (before infection). Don Marcos already has active disease with clinical symptoms, clearly placing him in the pathogenic period."},
+          "next": "n1b",
+          "points": -3
+        },
+        {
+          "id": "c",
+          "text": {"es": "Período patogénico, fase de latencia (infección latente por TBC).", "en": "Pathogenic period, latent phase (latent TB infection)."},
+          "correct": false,
+          "feedback": {"es": "La fase de latencia (ILTB) corresponde a cuando el Mycobacterium está presente pero sin síntomas activos. Don Marcos tiene síntomas manifiestos (tos, fiebre, pérdida de peso) y baciloscopia positiva, lo que lo sitúa en la fase clínica, no latente.", "en": "The latent phase (LTBI) corresponds to when Mycobacterium is present but without active symptoms. Don Marcos has manifest symptoms (cough, fever, weight loss) and positive smear, placing him in the clinical phase, not latent."},
+          "next": "n1b",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n1b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El médico clarifica: la historia natural tiene dos períodos. El prepatogénico incluye el nivel del huésped, agente y ambiente (tríada epidemiológica). El patogénico comienza con la infección y progresa a través del horizonte clínico hasta la fase clínica. Don Marcos cruzó ese horizonte hace al menos 3 meses.",
+        "en": "The physician clarifies: natural history has two periods. Pre-pathogenic includes the host, agent, and environment (epidemiological triad). The pathogenic period begins with infection and progresses through the clinical horizon to the clinical phase. Don Marcos crossed that horizon at least 3 months ago."
+      },
+      "prompt": {
+        "es": "¿Qué nivel de prevención de Leavell y Clark se aplica AHORA para don Marcos?",
+        "en": "What level of Leavell and Clark prevention applies NOW for Don Marcos?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Prevención secundaria: diagnóstico precoz y tratamiento oportuno (inicio del esquema DOTS/TAES).", "en": "Secondary prevention: early diagnosis and timely treatment (initiating the DOTS/TAES scheme)."},
+          "correct": true,
+          "feedback": {"es": "Correcto. En la fase clínica, la prevención secundaria busca detectar precozmente y tratar oportunamente para evitar complicaciones y cortar la cadena de transmisión. El esquema DOTS (Directly Observed Treatment, Short-course) es la intervención estándar.", "en": "Correct. In the clinical phase, secondary prevention aims to detect early and treat timely to prevent complications and break the transmission chain. The DOTS scheme (Directly Observed Treatment, Short-course) is the standard intervention."},
+          "next": "n2",
+          "points": 10
+        },
+        {
+          "id": "b",
+          "text": {"es": "Prevención primaria: vacunación BCG y mejora de condiciones de ventilación de la vivienda.", "en": "Primary prevention: BCG vaccination and improving housing ventilation conditions."},
+          "correct": false,
+          "feedback": {"es": "La prevención primaria (BCG, ventilación) actúa en el período prepatogénico para evitar la infección. Don Marcos ya tiene enfermedad activa, por lo que la intervención ahora es secundaria (tratar) y también terciaria si hubiera secuelas.", "en": "Primary prevention (BCG, ventilation) acts in the pre-pathogenic period to prevent infection. Don Marcos already has active disease, so the intervention now is secondary (treatment) and also tertiary if there are sequelae."},
+          "next": "n2",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo registra a don Marcos en el programa de TBC e inicia el DOTS/TAES. Ahora debe decidir qué hacer con los contactos del caso índice: su esposa (35 años) e hijos (8 y 12 años) que comparten la misma habitación. Los datos del expediente muestran que solo se estudia al 58% de contactos (meta: 90%).",
+        "en": "The team registers Don Marcos in the TB program and initiates DOTS/TAES. Now they must decide what to do with the index case's contacts: his wife (35) and children (8 and 12) who share the same room. Case file data shows only 58% of contacts are studied (target: 90%)."
+      },
+      "prompt": {
+        "es": "El estudio de contactos es una intervención de prevención _____ porque busca detectar casos secundarios antes de que desarrollen enfermedad clínica.",
+        "en": "Contact tracing is a _____ prevention intervention because it seeks to detect secondary cases before they develop clinical disease."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Secundaria (detección precoz de contactos infectados con ILTB o TBC activa incipiente).", "en": "Secondary (early detection of contacts infected with LTBI or incipient active TB)."},
+          "correct": true,
+          "feedback": {"es": "Correcto. Identificar a contactos en fase latente (ILTB) para tratamiento preventivo, o detectar TBC activa incipiente, es prevención secundaria. El 58% de cobertura en el expediente explica en parte la alta tasa de incidencia (198/100,000) del distrito.", "en": "Correct. Identifying contacts in the latent phase (LTBI) for preventive treatment, or detecting incipient active TB, is secondary prevention. The 58% coverage in the case file partly explains the high incidence rate (198/100,000) in the district."},
+          "next": "n3",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {"es": "Primaria (proteger a los contactos de la exposición al bacilo).", "en": "Primary (protecting contacts from exposure to the bacillus)."},
+          "correct": false,
+          "feedback": {"es": "La prevención primaria evita la exposición o la infección (ej. mejorar ventilación ANTES de que alguien se exponga). Los contactos de don Marcos ya se expusieron, por lo que el objetivo ahora es detectar si desarrollaron infección o enfermedad, lo cual es prevención secundaria.", "en": "Primary prevention avoids exposure or infection (e.g., improving ventilation BEFORE someone is exposed). Don Marcos's contacts have already been exposed, so the goal now is to detect whether they developed infection or disease, which is secondary prevention."},
+          "next": "n3",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "open_reflection",
+      "prompt": {
+        "es": "Los datos del expediente muestran que la demora diagnóstica promedio es de 47 días (meta: < 30 días) y que solo se estudian el 58% de contactos (meta: 90%). Usando la historia natural de la enfermedad y los niveles de prevención, explica en 4-6 líneas: ¿cómo impactan estas brechas en la cadena de transmisión de TBC en El Agustino? ¿Qué intervención propones para cerrar cada brecha?",
+        "en": "Case file data shows average diagnostic delay is 47 days (target: < 30 days) and only 58% of contacts are studied (target: 90%). Using natural history of disease and prevention levels, explain in 4-6 lines: how do these gaps impact the TB transmission chain in El Agustino? What intervention do you propose to close each gap?"
+      },
+      "guidance": {
+        "es": "Piensa: ¿qué ocurre durante esos 47 días de demora en términos de transmisión? ¿Cuántos contactos quedan sin estudio? ¿Qué estrategias de búsqueda activa de casos o acceso al diagnóstico existen en el primer nivel?",
+        "en": "Think: what happens during those 47 days of delay in terms of transmission? How many contacts remain unstudied? What active case-finding or diagnostic access strategies exist at the first level?"
+      },
+      "next": "end_a",
+      "points": 14
+    },
+    {
+      "id": "end_a",
+      "type": "ending",
+      "label": {"es": "Final — Historia natural y niveles de prevención aplicados", "en": "Ending — Natural history and prevention levels applied"},
+      "summary": {
+        "es": "Has aplicado la historia natural de la enfermedad para clasificar el caso de TBC, identificado el nivel de prevención correspondiente (secundaria), analizado el estudio de contactos como herramienta de detección precoz, y propuesto intervenciones para cerrar las brechas de calidad identificadas en los indicadores. Este es el pensamiento epidemiológico que sustenta la práctica en Salud Pública.",
+        "en": "You have applied the natural history of disease to classify the TB case, identified the corresponding prevention level (secondary), analyzed contact tracing as an early detection tool, and proposed interventions to close the quality gaps identified in the indicators. This is the epidemiological thinking that underpins Public Health practice."
+      }
+    }
+  ],
+  "rubric_ref": "rubric.json",
+  "debrief_ref": "debrief.json"
+}

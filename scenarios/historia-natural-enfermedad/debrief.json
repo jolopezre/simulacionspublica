@@ -1,0 +1,48 @@
+{
+  "defusing": {
+    "title": {
+      "es": "Defusing (Descarga emocional)",
+      "en": "Defusing"
+    },
+    "es": [
+      "¿Cómo te sentiste al analizar el caso de don Marcos con 3 meses de síntomas sin diagnóstico?",
+      "¿Qué aspectos de la historia natural de la TBC te resultaron más complejos?"
+    ],
+    "en": [
+      "Cómo te sentiste al analizar el caso de don Marcos con 3 meses de síntomas sin diagnóstico?",
+      "Qué aspectos de la historia natural de la TBC te resultaron más complejos?"
+    ]
+  },
+  "discovery": {
+    "title": {
+      "es": "Discovery (Descubrimiento)",
+      "en": "Discovery"
+    },
+    "es": [
+      "¿En qué período y fase de la historia natural se encontraba don Marcos?",
+      "¿Por qué el estudio de contactos es prevención secundaria y no primaria?",
+      "¿Cómo impacta la demora diagnóstica de 47 días en la cadena de transmisión?",
+      "¿Qué nivel de prevención aplicas cuando vacunas con BCG a un recién nacido?"
+    ],
+    "en": [
+      "¿En qué período y fase de la historia natural se encontraba don Marcos?",
+      "¿Por qué el estudio de contactos es prevención secundaria y no primaria?",
+      "¿Cómo impacta la demora diagnóstica de 47 días en la cadena de transmisión?",
+      "¿Qué nivel de prevención aplicas cuando vacunas con BCG a un recién nacido?"
+    ]
+  },
+  "deepening": {
+    "title": {
+      "es": "Deepening (Profundización)",
+      "en": "Deepening"
+    },
+    "es": [
+      "¿Cómo podrías reducir la demora diagnóstica de TBC en un centro de salud de primer nivel?",
+      "¿Cómo aplicarías la clasificación de Leavell y Clark en el diseño de una campaña de prevención para otra enfermedad transmisible?"
+    ],
+    "en": [
+      "¿Cómo podrías reducir la demora diagnóstica de TBC en un centro de salud de primer nivel?",
+      "¿Cómo aplicarías la clasificación de Leavell y Clark en el diseño de una campaña de prevención para otra enfermedad transmisible?"
+    ]
+  }
+}

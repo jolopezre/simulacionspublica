@@ -1,0 +1,92 @@
+{
+  "title": {
+    "es": "Rúbrica de Autoevaluación — Diagnóstico Comunitario (Las Palmeras, VMT)",
+    "en": "Self-Assessment Rubric — Community Diagnosis (Las Palmeras, VMT)"
+  },
+  "scale": {
+    "es": "Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica",
+    "en": "Likert scale: 6 = Fully competent · 1 = Needs significant practice"
+  },
+  "outcomes": [
+    {
+      "id": "ro1",
+      "outcome": {
+        "es": "Identifica una herramienta/marco apropiado para el diagnóstico comunitario con enfoque de seguridad alimentaria.",
+        "en": "Identifies an appropriate tool/framework for community diagnosis with a food-security focus."
+      },
+      "indicators": {
+        "es": "Identifica un marco basado en evidencia · Considera accesibilidad, pertinencia y practicidad · Aplica en múltiples contextos · Usa un enfoque de salud poblacional",
+        "en": "Identifies an evidence-based framework · Considers accessibility, relevance, practicality · Applies across settings · Uses a population-health lens"
+      },
+      "levels": {
+        "competente": {"es": "Identifica de forma independiente un marco apropiado para el diagnóstico de seguridad alimentaria.", "en": "Independently identifies an appropriate framework for the food-security diagnosis."},
+        "intermedio": {"es": "Con apoyo mínimo identifica un marco apropiado.", "en": "With minimal support, identifies an appropriate framework."},
+        "novato": {"es": "Con orientación identifica un marco apropiado.", "en": "With prompting, identifies an appropriate framework."}
+      }
+    },
+    {
+      "id": "ro2",
+      "outcome": {
+        "es": "Recopila información de fuentes secundarias para identificar tendencias epidemiológicas y determinantes de la salud.",
+        "en": "Gathers information from secondary sources to identify epidemiological trends and health determinants."
+      },
+      "indicators": {
+        "es": "Identifica fuentes estadísticas relevantes (INEI/ENDES) · Identifica reportes locales · Reconoce tendencias epidemiológicas · Integra determinantes de la salud",
+        "en": "Identifies relevant statistical sources (INEI/ENDES) · Identifies local reports · Recognizes epidemiological trends · Integrates health determinants"
+      },
+      "levels": {
+        "competente": {"es": "Identifica de forma independiente fuentes secundarias relevantes para la seguridad alimentaria.", "en": "Independently identifies relevant secondary sources for food security."},
+        "intermedio": {"es": "Con apoyo mínimo identifica fuentes secundarias relevantes.", "en": "With minimal support, identifies relevant secondary sources."},
+        "novato": {"es": "Con orientación identifica fuentes secundarias relevantes.", "en": "With prompting, identifies relevant secondary sources."}
+      }
+    },
+    {
+      "id": "ro3",
+      "outcome": {
+        "es": "Recopila información de fuentes primarias para identificar perspectivas comunitarias.",
+        "en": "Gathers information from primary sources to identify community perspectives."
+      },
+      "indicators": {
+        "es": "Identifica métodos de recolección primaria · Identifica informantes clave y actores comunitarios · Integra determinantes de la salud y enfoque poblacional",
+        "en": "Identifies primary data-collection methods · Identifies key informants and community actors · Integrates health determinants and population-health lens"
+      },
+      "levels": {
+        "competente": {"es": "Identifica de forma independiente información primaria relevante para conocer la perspectiva comunitaria.", "en": "Independently identifies relevant primary information for community perspectives."},
+        "intermedio": {"es": "Con apoyo mínimo identifica información primaria relevante.", "en": "With minimal support, identifies relevant primary information."},
+        "novato": {"es": "Con orientación identifica información primaria relevante.", "en": "With prompting, identifies relevant primary information."}
+      }
+    },
+    {
+      "id": "ro4",
+      "outcome": {
+        "es": "Analiza la información recolectada para identificar fortalezas y necesidades comunitarias relacionadas con la inseguridad alimentaria.",
+        "en": "Analyzes gathered information to identify community strengths and needs related to food insecurity."
+      },
+      "indicators": {
+        "es": "Integra información de fuentes secundarias y primarias · Determina fortalezas comunitarias · Determina necesidades comunitarias · Usa enfoque poblacional",
+        "en": "Integrates secondary and primary information · Determines community strengths · Determines community needs · Uses population-health lens"
+      },
+      "levels": {
+        "competente": {"es": "Analiza de forma independiente la información recolectada de múltiples fuentes relacionadas con la inseguridad alimentaria.", "en": "Independently analyzes information gathered from multiple sources related to food insecurity."},
+        "intermedio": {"es": "Con apoyo mínimo analiza la información recolectada.", "en": "With minimal support, analyzes gathered information."},
+        "novato": {"es": "Con orientación analiza la información recolectada.", "en": "With prompting, analyzes gathered information."}
+      }
+    },
+    {
+      "id": "ro5",
+      "outcome": {
+        "es": "Comunica el proceso y resultados del diagnóstico a actores clave para orientar la priorización en APS.",
+        "en": "Communicates the diagnosis process and results to stakeholders to inform PHC prioritization."
+      },
+      "indicators": {
+        "es": "Identifica socios comunitarios para la priorización · Se articula con estos socios · Reporta la síntesis del diagnóstico · Define prioridades en conjunto · Usa enfoque poblacional",
+        "en": "Identifies community partners for prioritization · Engages with these partners · Reports the diagnosis synthesis · Co-defines priorities · Uses population-health lens"
+      },
+      "levels": {
+        "competente": {"es": "Reporta de forma independiente el diagnóstico comunitario con socios comunitarios para definir prioridades.", "en": "Independently reports the community diagnosis with community partners to set priorities."},
+        "intermedio": {"es": "Con apoyo mínimo reporta el diagnóstico comunitario con socios comunitarios.", "en": "With minimal support, reports the community diagnosis with community partners."},
+        "novato": {"es": "Con orientación reporta el diagnóstico comunitario con socios comunitarios.", "en": "With prompting, reports the community diagnosis with community partners."}
+      }
+    }
+  ]
+}

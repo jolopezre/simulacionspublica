@@ -1,0 +1,406 @@
+{
+  "meta": {
+    "id": "diag-comunitario-vmt",
+    "title": {
+      "es": "Diagnóstico Comunitario: Seguridad Alimentaria en Villa María del Triunfo",
+      "en": "Community Diagnosis: Food Security in Villa María del Triunfo"
+    },
+    "stage": "diagnostico",
+    "course": "Salud Comunitaria y APS — UCSUR",
+    "competencies": [
+      "Identifica una herramienta/marco apropiado para el diagnóstico comunitario con enfoque de seguridad alimentaria",
+      "Recopila información de fuentes secundarias (INEI, ENDES, reportes municipales) para identificar tendencias epidemiológicas y determinantes de la salud",
+      "Recopila información de fuentes primarias (visita comunitaria, entrevistas a informantes clave, mesas de trabajo) para identificar percepciones comunitarias",
+      "Analiza la información recolectada para identificar fortalezas y necesidades comunitarias relacionadas con la inseguridad alimentaria",
+      "Comunica el proceso y resultados del diagnóstico a actores clave para orientar la priorización en APS"
+    ],
+    "duration_min": 25,
+    "access": "public",
+    "language_default": "es",
+    "credits": {
+      "es": "Adaptado del marco CAN-Sim (Developing Public Health Nursing Competencies through Virtual Simulation Games, Companion Guide, 2022) para el curso de Salud Pública / Salud Pública Comunitaria, UCSUR. Caso ficticio ambientado en Lima Metropolitana.",
+      "en": "Adapted from the CAN-Sim framework (Companion Guide, 2022) for the Public Health / PHC course at UCSUR. Fictional case set in Metropolitan Lima."
+    },
+    "max_score": 50
+  },
+  "dashboard_data": {
+    "tables": [
+      {
+        "title": {
+          "es": "Indicadores seleccionados — AAHH Las Palmeras (VMT)",
+          "en": "Selected indicators — Las Palmeras settlement (VMT)"
+        },
+        "columns": [
+          {
+            "es": "Indicador",
+            "en": "Indicator"
+          },
+          {
+            "es": "Valor local",
+            "en": "Local value"
+          },
+          {
+            "es": "Referencia distrital",
+            "en": "District reference"
+          }
+        ],
+        "rows": [
+          [
+            "% hogares con inseguridad alimentaria moderada/severa",
+            "38%",
+            "22%"
+          ],
+          [
+            "Niños 6-35 meses con anemia",
+            "46%",
+            "29%"
+          ],
+          [
+            "Hogares sin acceso a agua potable por red pública",
+            "31%",
+            "12%"
+          ],
+          [
+            "Comedores populares activos",
+            "3",
+            "—"
+          ],
+          [
+            "Programas de alimentación escolar en receso (vacaciones)",
+            "2 de 2",
+            "—"
+          ]
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "title": {
+          "es": "Inseguridad alimentaria por grupo etario (% de hogares)",
+          "en": "Food insecurity by age group (% of households)"
+        },
+        "data": [
+          {
+            "label": {
+              "es": "Niños <5 años",
+              "en": "Children <5"
+            },
+            "value": 46
+          },
+          {
+            "label": {
+              "es": "Niños 5-11 años",
+              "en": "Children 5-11"
+            },
+            "value": 39
+          },
+          {
+            "label": {
+              "es": "Adultos mayores",
+              "en": "Older adults"
+            },
+            "value": 35
+          },
+          {
+            "label": {
+              "es": "Adultos",
+              "en": "Adults"
+            },
+            "value": 28
+          }
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "title": {
+          "es": "Reporte municipal de seguridad alimentaria (VMT, 2025)",
+          "en": "Municipal Food Security Report (VMT, 2025)"
+        },
+        "summary": {
+          "es": "Informe de la Mesa de Concertación de Lucha Contra la Pobreza local que documenta el cierre de comedores escolares durante el receso vacacional y el aumento de consultas por desnutrición infantil en el centro de salud.",
+          "en": "Local anti-poverty roundtable report documenting school dining-hall closures during summer recess and increased child malnutrition visits at the health center."
+        },
+        "link": "https://can-sim.ca/phn/"
+      },
+      {
+        "title": {
+          "es": "Encuesta rápida de hogares (estudiantes UCSUR, 2026)",
+          "en": "Rapid household survey (UCSUR students, 2026)"
+        },
+        "summary": {
+          "es": "Levantamiento tipo 'windshield survey' realizado por estudiantes: observación de comercios de alimentos, huertos urbanos, accesibilidad de transporte y señalización de programas sociales.",
+          "en": "Windshield-survey-style fieldwork by students: food vendors, urban gardens, transport access, and visibility of social programs."
+        },
+        "link": "https://can-sim.ca/virtual-simulation-games-open-source/"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Eres una/un estudiante de medicina en el Centro de Salud Las Palmeras ([[VMT|Villa María del Triunfo es uno de los 43 distritos de Lima Metropolitana. Presenta alta densidad poblacional en AAHH con necesidades básicas insatisfechas.]]). Una periodista entrevista a una madre de familia que denuncia el cierre del comedor escolar durante las vacaciones de verano, dejando sin alimentación complementaria a decenas de niños del AAHH. El equipo de [[Salud Pública Comunitaria|Atención Primaria de Salud: primer nivel de contacto de la población con el sistema de salud. Incluye prevención, promoción, diagnóstico y tratamiento de patologías prevalentes.]] se reúne para decidir cómo proceder.",
+        "en": "You are a medical student at the Las Palmeras Health Center (VMT). A reporter interviews a mother who denounces the closure of the school dining hall during summer break, leaving dozens of children without supplementary nutrition. The [[Community Public Health|Primary Health Care: the first point of contact between people and the health system. Includes prevention, promotion, and management of prevalent conditions.]] team meets to decide how to proceed."
+      },
+      "prompt": {
+        "es": "¿Cuál debería ser el primer paso del equipo de Salud Pública Comunitaria frente a esta situación?",
+        "en": "What should be the Community Public Health team's first step in response to this situation?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {
+            "es": "Realizar un diagnóstico comunitario sistemático usando un marco/herramienta validado.",
+            "en": "Conduct a systematic community diagnosis using a validated framework/tool."
+          },
+          "correct": true,
+          "feedback": {
+            "es": "Correcto. Antes de intervenir, el equipo necesita un diagnóstico estructurado que permita identificar magnitud, distribución y determinantes del problema, evitando soluciones improvisadas.",
+            "en": "Correct. Before intervening, the team needs a structured diagnosis to identify the problem's magnitude, distribution, and determinants, avoiding improvised solutions."
+          },
+          "next": "n2",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {
+            "es": "Coordinar de inmediato la entrega de canastas de alimentos a las familias mencionadas en la entrevista.",
+            "en": "Immediately coordinate food basket distribution to the families mentioned in the interview."
+          },
+          "correct": false,
+          "feedback": {
+            "es": "Esta acción podría brindar alivio inmediato, pero actuar solo sobre lo reportado por un caso individual, sin diagnóstico previo, puede dejar fuera a otras familias afectadas y no aborda las causas estructurales.",
+            "en": "This may provide immediate relief, but acting only on one reported case without prior diagnosis may exclude other affected families and fails to address structural causes."
+          },
+          "next": "n1b",
+          "points": -2
+        },
+        {
+          "id": "c",
+          "text": {
+            "es": "Esperar el informe oficial de la municipalidad antes de tomar cualquier acción.",
+            "en": "Wait for the municipality's official report before taking any action."
+          },
+          "correct": false,
+          "feedback": {
+            "es": "Esperar pasivamente retrasa la respuesta de Salud Pública Comunitaria. El equipo de salud puede iniciar su propio proceso de recolección de información mientras se complementa con fuentes secundarias como el reporte municipal.",
+            "en": "Passively waiting delays the Community Public Health response. The health team can begin its own information-gathering process while incorporating secondary sources such as the municipal report."
+          },
+          "next": "n1b",
+          "points": -2
+        }
+      ]
+    },
+    {
+      "id": "n1b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo reconsidera. La enfermera coordinadora recuerda que, sin un diagnóstico previo, cualquier intervención corre el riesgo de no llegar a quienes más lo necesitan ni de identificar causas que se repitan en otras zonas del AAHH.",
+        "en": "The team reconsiders. The coordinating nurse notes that without a prior diagnosis, any intervention risks missing those most in need and failing to identify causes that may recur in other parts of the settlement."
+      },
+      "prompt": {
+        "es": "Con esta nueva información, ¿qué enfoque adoptará el equipo?",
+        "en": "With this new information, what approach will the team adopt?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {
+            "es": "Iniciar un diagnóstico comunitario con enfoque de seguridad alimentaria, combinando fuentes primarias y secundarias.",
+            "en": "Begin a community diagnosis focused on food security, combining primary and secondary sources."
+          },
+          "correct": true,
+          "feedback": {
+            "es": "Correcto. Esto permite priorizar de forma informada y sienta las bases para las siguientes etapas (promoción y planificación).",
+            "en": "Correct. This enables informed prioritization and sets the foundation for the next stages (promotion and planning)."
+          },
+          "next": "n2",
+          "points": 10
+        },
+        {
+          "id": "b",
+          "text": {
+            "es": "Delegar el problema completo al área de Desarrollo Social de la municipalidad.",
+            "en": "Delegate the entire issue to the municipality's Social Development office."
+          },
+          "correct": false,
+          "feedback": {
+            "es": "La intersectorialidad es valiosa, pero Salud Pública Comunitaria tiene un rol propio en el diagnóstico y monitoreo de determinantes de salud; delegar todo el proceso excluye a la comunidad y al equipo de salud del análisis.",
+            "en": "Intersectoral work is valuable, but Community Public Health has its own role in diagnosing and monitoring health determinants; delegating the whole process excludes the community and the health team from the analysis."
+          },
+          "next": "n2",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo revisa el panel de datos disponible (ver 'Expediente' a la izquierda): indicadores locales de inseguridad alimentaria, anemia infantil, acceso a agua, y dos documentos de referencia (reporte municipal y encuesta rápida de estudiantes).",
+        "en": "The team reviews the available data panel ('File' on the left): local food insecurity indicators, child anemia, water access, and two reference documents (municipal report and rapid student survey)."
+      },
+      "prompt": {
+        "es": "Según los datos del expediente, ¿cuál es la fuente de información PRIMARIA más relevante para comprender la perspectiva comunitaria?",
+        "en": "Based on the case file, which is the most relevant PRIMARY information source for understanding the community's perspective?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {
+            "es": "La encuesta rápida de hogares ('windshield survey') realizada por los propios estudiantes.",
+            "en": "The rapid household ('windshield') survey conducted by the students themselves."
+          },
+          "correct": true,
+          "feedback": {
+            "es": "Correcto. Esta es información primaria recolectada directamente por el equipo, que complementa los datos secundarios (reporte municipal, indicadores) con observación directa del territorio.",
+            "en": "Correct. This is primary information collected directly by the team, complementing secondary data (municipal report, indicators) with direct observation of the area."
+          },
+          "next": "n3",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {
+            "es": "El reporte municipal de seguridad alimentaria.",
+            "en": "The municipal food security report."
+          },
+          "correct": false,
+          "feedback": {
+            "es": "El reporte municipal es una fuente secundaria valiosa (datos ya recolectados y analizados por otros), pero no constituye información primaria recolectada por el equipo de Salud Pública Comunitaria.",
+            "en": "The municipal report is a valuable secondary source (data already collected and analyzed by others), but it is not primary information collected by the Community Public Health team."
+          },
+          "next": "n2b",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n2b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "La docente facilitadora aclara la diferencia: las fuentes secundarias (reportes, bases de datos como INEI/ENDES) ya fueron procesadas por otros; las fuentes primarias se generan directamente con la comunidad (entrevistas, encuestas propias, observación de campo).",
+        "en": "The facilitating instructor clarifies the distinction: secondary sources (reports, databases such as INEI/ENDES) were already processed by others; primary sources are generated directly with the community (interviews, original surveys, field observation)."
+      },
+      "prompt": {
+        "es": "¿Qué actividad debería priorizar el equipo para fortalecer la recolección de información primaria?",
+        "en": "Which activity should the team prioritize to strengthen primary data collection?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {
+            "es": "Coordinar una entrevista con un informante clave (ej. dirigente del comedor popular) y una mesa de trabajo con socios comunitarios.",
+            "en": "Coordinate a key-informant interview (e.g., a soup-kitchen leader) and a working session with community partners."
+          },
+          "correct": true,
+          "feedback": {
+            "es": "Correcto. Las entrevistas a informantes clave y las mesas de trabajo permiten captar perspectivas comunitarias que no aparecen en los datos secundarios.",
+            "en": "Correct. Key-informant interviews and community working sessions capture perspectives that secondary data alone cannot reveal."
+          },
+          "next": "n3",
+          "points": 10
+        },
+        {
+          "id": "b",
+          "text": {
+            "es": "Solicitar más bases de datos estadísticas a otras instituciones.",
+            "en": "Request more statistical databases from other institutions."
+          },
+          "correct": false,
+          "feedback": {
+            "es": "Esto seguiría reforzando las fuentes secundarias. Para completar el diagnóstico, el equipo necesita también el componente primario (perspectivas y observación comunitaria directa).",
+            "en": "This would continue to reinforce secondary sources. To complete the diagnosis, the team also needs the primary component (direct community perspectives and observation)."
+          },
+          "next": "n3",
+          "points": -1
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "open_reflection",
+      "prompt": {
+        "es": "Con base en los datos del expediente (tabla de indicadores y gráfico de inseguridad alimentaria por grupo etario), redacta un breve análisis (4-6 líneas): ¿qué determinantes de la salud podrían explicar las diferencias observadas entre grupos etarios, y qué fortalezas comunitarias identificas (ej. comedores populares activos, huertos urbanos)?",
+        "en": "Based on the case-file data (indicator table and food-insecurity-by-age-group chart), write a short analysis (4-6 lines): which health determinants might explain the differences observed between age groups, and what community strengths do you identify (e.g., active soup kitchens, urban gardens)?"
+      },
+      "guidance": {
+        "es": "Considere: determinantes sociales (ingresos, acceso a agua, vivienda), ciclo de vida (mayor vulnerabilidad en primera infancia y adultos mayores), y activos comunitarios existentes que podrían fortalecerse en la etapa de promoción.",
+        "en": "Consider: social determinants (income, water access, housing), life-cycle vulnerability (higher in early childhood and older adults), and existing community assets that could be strengthened in the promotion stage."
+      },
+      "next": "n4",
+      "points": 12
+    },
+    {
+      "id": "n4",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo debe decidir cómo comunicar los hallazgos del diagnóstico a los actores clave (Mesa de Concertación, dirigentes vecinales, dirección del centro de salud) para iniciar la etapa de priorización.",
+        "en": "The team must decide how to communicate the diagnosis findings to key stakeholders (anti-poverty roundtable, community leaders, health-center management) to begin the prioritization stage."
+      },
+      "prompt": {
+        "es": "¿Cuál es la estrategia de comunicación más coherente con un enfoque de Salud Pública Comunitaria y trabajo en partenariado?",
+        "en": "Which communication strategy best aligns with a Community Public Health approach and partnership-based work?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {
+            "es": "Presentar una síntesis del diagnóstico (datos + voces comunitarias) en una reunión conjunta con la Mesa de Concertación y dirigentes, para definir juntos las prioridades.",
+            "en": "Present a synthesis of the diagnosis (data + community voices) in a joint meeting with the roundtable and leaders, to define priorities together."
+          },
+          "correct": true,
+          "feedback": {
+            "es": "Excelente. Esto cumple con el resultado de aprendizaje de 'reportar el proceso y resultados a los actores clave para informar la priorización y planificación en partenariado con la comunidad', cerrando el ciclo de diagnóstico de forma participativa.",
+            "en": "Excellent. This fulfills the learning outcome of 'reporting the process and results to stakeholders to inform prioritization and planning in partnership with the community,' closing the diagnostic cycle participatively."
+          },
+          "next": "end_a",
+          "points": 14
+        },
+        {
+          "id": "b",
+          "text": {
+            "es": "Enviar un informe técnico únicamente a la dirección del centro de salud, para que decida internamente las próximas acciones.",
+            "en": "Send a technical report only to the health-center management, for them to decide next steps internally."
+          },
+          "correct": false,
+          "feedback": {
+            "es": "Esto excluye a la comunidad y a los socios intersectoriales del proceso de priorización, contradiciendo el enfoque de partenariado que define a la Salud Pública Comunitaria.",
+            "en": "This excludes the community and intersectoral partners from the prioritization process, contradicting the partnership approach that defines Community Public Health."
+          },
+          "next": "end_b",
+          "points": -5
+        }
+      ]
+    },
+    {
+      "id": "end_a",
+      "type": "ending",
+      "label": {
+        "es": "Final A — Diagnóstico participativo completo",
+        "en": "Ending A — Complete participatory diagnosis"
+      },
+      "summary": {
+        "es": "El equipo de Salud Pública Comunitaria completó un ciclo de diagnóstico comunitario sólido: identificó un marco apropiado, integró fuentes primarias y secundarias, analizó determinantes y fortalezas, y comunicó los resultados de forma participativa. Este diagnóstico será la base para la Etapa 2 (Promoción de la salud) del caso 'Las Palmeras'.",
+        "en": "The Community Public Health team completed a solid community-diagnosis cycle: identified an appropriate framework, integrated primary and secondary sources, analyzed determinants and strengths, and communicated results participatively. This diagnosis will be the foundation for Stage 2 (Health Promotion) of the 'Las Palmeras' case."
+      }
+    },
+    {
+      "id": "end_b",
+      "type": "ending",
+      "label": {
+        "es": "Final B — Diagnóstico técnico, sin partenariado",
+        "en": "Ending B — Technical diagnosis without partnership"
+      },
+      "summary": {
+        "es": "El equipo realizó un diagnóstico técnicamente correcto, pero al no comunicar los hallazgos de forma participativa, se pierde la oportunidad de construir consenso comunitario para la priorización. Reflexiona: ¿qué pasos adicionales serían necesarios para retomar el enfoque de partenariado antes de avanzar a la Etapa 2?",
+        "en": "The team produced a technically sound diagnosis, but by not communicating findings participatively, the opportunity to build community consensus for prioritization is lost. Reflect: what additional steps would be needed to re-engage a partnership approach before moving to Stage 2?"
+      }
+    }
+  ],
+  "rubric_ref": "rubric.json",
+  "debrief_ref": "debrief.json"
+}

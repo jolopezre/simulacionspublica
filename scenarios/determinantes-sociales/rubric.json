@@ -1,0 +1,112 @@
+{
+  "title": {
+    "es": "Rúbrica de Autoevaluación — Determinantes Sociales de la Salud: Estrategias Sa",
+    "en": "Self-Assessment Rubric — Social Determinants of Health: Sanitary Strategies"
+  },
+  "scale": {
+    "es": "Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica",
+    "en": "Likert scale: 6 = Fully competent · 1 = Needs significant practice"
+  },
+  "outcomes": [
+    {
+      "id": "ro1",
+      "outcome": {
+        "es": "Identifica los determinantes sociales y económicos de la salud y su relación con las inequidades sanitarias",
+        "en": "Identifies social and economic determinants of health and their relation to health inequities"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro2",
+      "outcome": {
+        "es": "Distingue los niveles de determinantes (estructurales e intermedios) según el modelo de la Comisión OMS",
+        "en": "Distinguishes determinant levels (structural and intermediary) per the WHO Commission model"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro3",
+      "outcome": {
+        "es": "Relaciona las Estrategias Sanitarias Nacionales del MINSA con los determinantes sociales prioritarios en el Perú",
+        "en": "Relates MINSA National Health Strategies to priority social determinants in Peru"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro4",
+      "outcome": {
+        "es": "Propone intervenciones upstream y downstream para abordar determinantes de la salud en una comunidad",
+        "en": "Proposes upstream and downstream interventions to address health determinants in a community"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    }
+  ]
+}

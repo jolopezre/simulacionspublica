@@ -1,0 +1,112 @@
+{
+  "title": {
+    "es": "Rúbrica de Autoevaluación — Cobertura Universal de Salud: Barreras de Acceso e",
+    "en": "Self-Assessment Rubric — Universal Health Coverage: Access Barriers in Vill"
+  },
+  "scale": {
+    "es": "Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica",
+    "en": "Likert scale: 6 = Fully competent · 1 = Needs significant practice"
+  },
+  "outcomes": [
+    {
+      "id": "ro1",
+      "outcome": {
+        "es": "Distingue los conceptos de Acceso Universal de Salud (AUS) y Cobertura Universal de Salud (CUS) y sus dimensiones",
+        "en": "Distinguishes AUS and UHC concepts and their dimensions"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro2",
+      "outcome": {
+        "es": "Identifica las barreras de acceso a los servicios de salud en el contexto peruano",
+        "en": "Identifies access barriers to health services in the Peruvian context"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro3",
+      "outcome": {
+        "es": "Analiza el gasto catastrófico en salud como indicador de protección financiera (ODS 3.8.2)",
+        "en": "Analyzes catastrophic health expenditure as a financial protection indicator (SDG 3.8.2)"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro4",
+      "outcome": {
+        "es": "Propone estrategias coherentes con la Ley 29344 para reducir brechas de acceso",
+        "en": "Proposes strategies consistent with Law 29344 to reduce access gaps"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    }
+  ]
+}

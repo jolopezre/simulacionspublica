@@ -1,0 +1,39 @@
+{
+  "defusing": {
+    "title": {"es": "Defusing (Descarga emocional)", "en": "Defusing"},
+    "es": [
+      "¿Cómo te sentiste durante el proceso de diagnóstico comunitario?",
+      "¿Qué te hubiera gustado conocer o entender mejor antes de iniciar la simulación?"
+    ],
+    "en": [
+      "How did you feel during the community diagnosis process?",
+      "What would you have liked to know or understand better before starting the simulation?"
+    ]
+  },
+  "discovery": {
+    "title": {"es": "Discovery (Descubrimiento)", "en": "Discovery"},
+    "es": [
+      "¿Qué métodos de diagnóstico comunitario observaste durante el proceso?",
+      "¿Qué decisiones clínicas/comunitarias se tomaron y por qué?",
+      "¿Qué conocimientos o habilidades de salud pública necesitaste durante la simulación?",
+      "¿Cómo se relaciona lo que aprendiste con conocimientos previos del curso?"
+    ],
+    "en": [
+      "What community diagnosis methods did you observe during the process?",
+      "What clinical/community decisions were made, and why?",
+      "What public health knowledge or skills did you need during the simulation?",
+      "How does what you learned relate to previous course content?"
+    ]
+  },
+  "deepening": {
+    "title": {"es": "Deepening (Profundización)", "en": "Deepening"},
+    "es": [
+      "¿Qué nuevo conocimiento sobre diagnóstico comunitario obtuviste al participar en esta simulación?",
+      "¿Cómo podrías aplicar estas nuevas prácticas en una situación clínica/comunitaria real durante tu internado o prácticas en APS?"
+    ],
+    "en": [
+      "What new knowledge about community diagnosis did you gain from this simulation?",
+      "How could you apply these new practices in a real clinical/community situation during your PHC clerkship?"
+    ]
+  }
+}

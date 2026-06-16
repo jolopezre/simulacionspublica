@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "id": "determinantes-sociales",
+    "title": {
+      "es": "Determinantes Sociales de la Salud: Estrategias Sanitarias en Ate Vitarte",
+      "en": "Social Determinants of Health: Sanitary Strategies in Ate Vitarte"
+    },
+    "stage": "promocion",
+    "course": "Salud Pública — UCSUR · Semana 4",
+    "competencies": [
+      "Identifica los determinantes sociales y económicos de la salud y su relación con las inequidades sanitarias",
+      "Distingue los niveles de determinantes (estructurales e intermedios) según el modelo de la Comisión OMS",
+      "Relaciona las Estrategias Sanitarias Nacionales del MINSA con los determinantes sociales prioritarios en el Perú",
+      "Propone intervenciones upstream y downstream para abordar determinantes de la salud en una comunidad específica"
+    ],
+    "duration_min": 22,
+    "access": "public",
+    "language_default": "es",
+    "max_score": 50,
+    "credits": {
+      "es": "Adaptado del sílabo de Salud Pública UCSUR (Semana 4) y del marco CAN-Sim (Companion Guide, 2022). Caso ficticio ambientado en Lima Metropolitana.",
+      "en": "Adapted from the UCSUR Public Health syllabus (Week 4) and the CAN-Sim framework. Fictional case set in Metropolitan Lima."
+    }
+  },
+  "dashboard_data": {
+    "tables": [
+      {
+        "title": {"es": "Perfil sociosanitario — AAHH Las Brisas, Ate Vitarte", "en": "Socio-health profile — Las Brisas settlement, Ate Vitarte"},
+        "columns": [
+          {"es": "Determinante", "en": "Determinant"},
+          {"es": "Valor local", "en": "Local value"},
+          {"es": "Impacto en salud", "en": "Health impact"}
+        ],
+        "rows": [
+          ["% hogares sin agua por red (acceso agua)", "44%", "Alto riesgo EDA/diarrea"],
+          ["Desempleo informal (jefes de hogar)", "67%", "Bajo acceso a seguros"],
+          ["% niños con desnutrición crónica <5 años", "21%", "Retraso cognitivo"],
+          ["% viviendas con hacinamiento (>3 pers/cuarto)", "38%", "IRA y TBC"],
+          ["% gestantes con anemia", "46%", "Morbimortalidad materna"]
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "title": {"es": "Principales causas de morbilidad — Centro de Salud Las Brisas 2025 (%)", "en": "Main morbidity causes — Las Brisas Health Center 2025 (%)"},
+        "data": [
+          {"label": {"es": "IRA", "en": "ARI"}, "value": 38},
+          {"label": {"es": "EDA", "en": "AGE"}, "value": 24},
+          {"label": {"es": "Desnutrición", "en": "Malnutrition"}, "value": 18},
+          {"label": {"es": "Anemia", "en": "Anemia"}, "value": 31},
+          {"label": {"es": "Parasitosis", "en": "Parasitosis"}, "value": 22}
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "title": {"es": "Comisión OMS sobre Determinantes Sociales de la Salud (2008)", "en": "WHO Commission on Social Determinants of Health (2008)"},
+        "summary": {"es": "Marco conceptual que distingue determinantes estructurales (posición socioeconómica, educación, empleo, ingreso) de determinantes intermedios (condiciones de vida, trabajo, acceso a servicios). La inequidad social se traduce en inequidad en salud.", "en": "Conceptual framework distinguishing structural determinants (socioeconomic position, education, employment, income) from intermediary determinants (living and working conditions, access to services). Social inequality translates to health inequality."},
+        "link": "https://www.who.int/social_determinants/thecommission/finalreport/en/"
+      },
+      {
+        "title": {"es": "Estrategias Sanitarias Nacionales MINSA — Perú", "en": "MINSA National Health Strategies — Peru"},
+        "summary": {"es": "El MINSA organiza sus intervenciones en Estrategias Sanitarias Nacionales (salud sexual y reproductiva, inmunizaciones, alimentación y nutrición, enfermedades metaxénicas, etc.) que abordan los determinantes prioritarios del perfil epidemiológico peruano.", "en": "MINSA organizes interventions into National Health Strategies (sexual and reproductive health, immunizations, food and nutrition, metaxenic diseases, etc.) addressing the priority determinants of Peru's epidemiological profile."},
+        "link": "https://www.minsa.gob.pe/portalminsa/fm/upload/especiales/esn.asp"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Eres un/a estudiante de medicina en práctica de Salud Pública Comunitaria en Ate Vitarte. Al revisar los datos del expediente del AAHH Las Brisas, observas que el 38% de niños menores de 5 años tienen desnutrición crónica y el 46% de gestantes tienen anemia. El médico a cargo te pregunta sobre las causas estructurales de estos indicadores. El agua potable llega solo al 56% de hogares por red pública; el 67% de jefes de hogar trabaja en empleo [[informal|Empleo informal: trabajo sin contrato, beneficios sociales ni seguridad social. En Perú representa el 75% del empleo total y se asocia con baja productividad, ingresos irregulares y exclusión de seguros de salud.]].",
+        "en": "You are a medical student on a Community Public Health rotation in Ate Vitarte. Reviewing Las Brisas settlement data, you observe that 38% of children under 5 have chronic malnutrition and 46% of pregnant women have anemia. The attending physician asks about the structural causes of these indicators. Drinking water reaches only 56% of households through the public network; 67% of household heads work in [[informal|Informal employment: work without contract, social benefits or social security. In Peru it represents 75% of total employment and is associated with low productivity, irregular income, and exclusion from health insurance.]] employment."
+      },
+      "prompt": {
+        "es": "Según el modelo de la Comisión OMS, ¿cuál de los siguientes corresponde a un determinante ESTRUCTURAL de la desnutrición crónica en este contexto?",
+        "en": "According to the WHO Commission model, which of the following corresponds to a STRUCTURAL determinant of chronic malnutrition in this context?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "El 67% de empleo informal con ingresos insuficientes para una alimentación adecuada.", "en": "67% informal employment with insufficient income for adequate nutrition."},
+          "correct": true,
+          "feedback": {"es": "Correcto. El empleo informal y el nivel de ingresos son determinantes estructurales porque operan en la posición socioeconómica de las personas. Generan las condiciones materiales (poder adquisitivo, acceso a alimentos) que explican la desnutrición a nivel poblacional.", "en": "Correct. Informal employment and income levels are structural determinants because they operate on people's socioeconomic position. They generate the material conditions (purchasing power, food access) that explain malnutrition at the population level."},
+          "next": "n2",
+          "points": 14
+        },
+        {
+          "id": "b",
+          "text": {"es": "La falta de conocimiento de las madres sobre alimentación balanceada.", "en": "Mothers' lack of knowledge about balanced nutrition."},
+          "correct": false,
+          "feedback": {"es": "El nivel de conocimientos es un determinante intermedio o proximal, no estructural. Abordarlo solo (a través de educación nutricional) sin modificar los determinantes estructurales (pobreza, desempleo) tiene impacto limitado y no sostenible.", "en": "Knowledge level is an intermediate or proximal determinant, not structural. Addressing it alone (through nutrition education) without changing structural determinants (poverty, unemployment) has limited and unsustainable impact."},
+          "next": "n1b",
+          "points": -3
+        },
+        {
+          "id": "c",
+          "text": {"es": "La ausencia de controles de CRED en el último mes.", "en": "Absence of growth monitoring check-ups in the last month."},
+          "correct": false,
+          "feedback": {"es": "La falta de controles CRED es una consecuencia (determinante intermedio de acceso a servicios), no la causa estructural de la desnutrición. La causa raíz está en las condiciones socioeconómicas.", "en": "Lack of growth monitoring check-ups is a consequence (intermediate determinant of service access), not the structural cause of malnutrition. The root cause lies in socioeconomic conditions."},
+          "next": "n1b",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n1b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El médico explica la diferencia: los determinantes estructurales (empleo, ingreso, educación, posición social) generan los contextos que producen los determinantes intermedios (condiciones de vivienda, alimentación, acceso a servicios). Intervenir solo en lo intermedio sin tocar lo estructural produce mejoras temporales.",
+        "en": "The physician explains the difference: structural determinants (employment, income, education, social position) generate the contexts that produce intermediary determinants (housing conditions, nutrition, service access). Intervening only at the intermediary level without touching structural causes produces temporary improvements."
+      },
+      "prompt": {
+        "es": "¿Cuál de las siguientes intervenciones es de tipo UPSTREAM (aguas arriba), es decir, actúa sobre los determinantes estructurales?",
+        "en": "Which of the following interventions is UPSTREAM, meaning it acts on structural determinants?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Promover la formalización del empleo y el acceso a programas de apoyo social (Juntos, Pensión 65) para las familias del AAHH.", "en": "Promote employment formalization and access to social support programs for settlement families."},
+          "correct": true,
+          "feedback": {"es": "Correcto. Actuar sobre el empleo, los ingresos y la seguridad social es una intervención upstream que aborda la causa raíz de la desnutrición. La abogacía intersectorial es una competencia clave en Salud Pública.", "en": "Correct. Acting on employment, income, and social security is an upstream intervention that addresses the root cause of malnutrition. Intersectoral advocacy is a key Public Health competency."},
+          "next": "n2",
+          "points": 10
+        },
+        {
+          "id": "b",
+          "text": {"es": "Distribuir multimicronutrientes (Chispitas) a todos los niños menores de 3 años del AAHH.", "en": "Distribute multimicronutrients (Chispitas) to all children under 3 in the settlement."},
+          "correct": false,
+          "feedback": {"es": "La suplementación es una intervención downstream (importante y necesaria para los afectados), pero no modifica los determinantes estructurales. Sin abordar la pobreza y el empleo, los nuevos niños seguirán expuestos al mismo riesgo.", "en": "Supplementation is a downstream intervention (important and necessary for those affected), but does not modify structural determinants. Without addressing poverty and employment, new children will continue to face the same risk."},
+          "next": "n2",
+          "points": -2
+        }
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo identifica que la anemia en gestantes (46%) y la desnutrición crónica (21%) son las prioridades sanitarias del AAHH. El MINSA tiene Estrategias Sanitarias Nacionales específicas para abordar estos problemas en el primer nivel de atención.",
+        "en": "The team identifies that anemia in pregnant women (46%) and chronic malnutrition (21%) are the health priorities for the settlement. MINSA has specific National Health Strategies to address these problems at the first level of care."
+      },
+      "prompt": {
+        "es": "¿Cuál Estrategia Sanitaria Nacional del MINSA es la más directamente aplicable para abordar la anemia gestacional y la desnutrición crónica infantil?",
+        "en": "Which MINSA National Health Strategy is most directly applicable to address gestational anemia and childhood chronic malnutrition?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Estrategia Sanitaria Nacional de Alimentación y Nutrición Saludable, articulada con el Programa Presupuestal 0001 (Articulado Nutricional).", "en": "National Health Strategy for Healthy Nutrition and Food, coordinated with Budget Program 0001 (Nutritional Articulation)."},
+          "correct": true,
+          "feedback": {"es": "Correcto. Esta estrategia incluye suplementación de hierro y ácido fólico para gestantes, multimicronutrientes para niños 6-35 meses, consejería nutricional y vigilancia del crecimiento. Se articula con el presupuesto por resultados (PP 0001).", "en": "Correct. This strategy includes iron and folic acid supplementation for pregnant women, multimicronutrients for children 6-35 months, nutritional counseling, and growth monitoring. It is coordinated with results-based budgeting (BP 0001)."},
+          "next": "n3",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {"es": "Estrategia Sanitaria Nacional de Enfermedades Metaxénicas y Otras Transmitidas por Vectores.", "en": "National Health Strategy for Metaxenic and Other Vector-Borne Diseases."},
+          "correct": false,
+          "feedback": {"es": "Las enfermedades metaxénicas (dengue, malaria) son importantes en el perfil epidemiológico peruano, pero no son la estrategia principal para abordar anemia gestacional y desnutrición crónica en este contexto urbano.", "en": "Metaxenic diseases (dengue, malaria) are important in Peru's epidemiological profile, but are not the main strategy for addressing gestational anemia and chronic malnutrition in this urban context."},
+          "next": "n3",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "open_reflection",
+      "prompt": {
+        "es": "Los datos del expediente muestran que las causas de morbilidad más frecuentes en Las Brisas (IRA 38%, EDA 24%, anemia 31%) están directamente relacionadas con determinantes sociales como el acceso al agua y el hacinamiento. Redacta un análisis breve (5-7 líneas) que vincule al menos DOS determinantes sociales del expediente con los indicadores de morbilidad observados, y proponga una intervención intersectorial.",
+        "en": "Case file data shows the most frequent morbidity causes in Las Brisas (ARI 38%, AGE 24%, anemia 31%) are directly related to social determinants like water access and overcrowding. Write a brief analysis (5-7 lines) linking at least TWO social determinants from the case file to the observed morbidity indicators, and propose an intersectoral intervention."
+      },
+      "guidance": {
+        "es": "Modelo sugerido: 'El X% de hogares sin agua potable genera condiciones para... lo que se refleja en... Una intervención intersectorial con [sectores: municipio, SEDAPAL, MINEDU, MIDIS] podría...'",
+        "en": "Suggested model: 'X% of households without drinking water creates conditions for... which is reflected in... An intersectoral intervention with [sectors: municipality, SEDAPAL, MINEDU, MIDIS] could...'"
+      },
+      "next": "end_a",
+      "points": 14
+    },
+    {
+      "id": "end_a",
+      "type": "ending",
+      "label": {"es": "Final — Análisis de determinantes sociales completado", "en": "Ending — Social determinants analysis completed"},
+      "summary": {
+        "es": "Has aplicado el modelo de determinantes sociales de la OMS para analizar la situación de salud de una comunidad urbana en Lima, diferenciado intervenciones upstream y downstream, identificado la Estrategia Sanitaria Nacional pertinente, y propuesto una intervención intersectorial. Este es el marco analítico central de la Salud Pública moderna.",
+        "en": "You have applied the WHO social determinants model to analyze the health situation of an urban Lima community, distinguished upstream and downstream interventions, identified the relevant National Health Strategy, and proposed an intersectoral intervention. This is the central analytical framework of modern Public Health."
+      }
+    }
+  ],
+  "rubric_ref": "rubric.json",
+  "debrief_ref": "debrief.json"
+}

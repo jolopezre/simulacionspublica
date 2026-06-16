@@ -1,0 +1,233 @@
+{
+  "meta": {
+    "id": "vigilancia-epidemiologica",
+    "title": {
+      "es": "Vigilancia Epidemiológica: Brote de Dengue en San Juan de Lurigancho",
+      "en": "Epidemiological Surveillance: Dengue Outbreak in San Juan de Lurigancho"
+    },
+    "stage": "diagnostico",
+    "course": "Salud Pública — UCSUR · Semana 10",
+    "competencies": [
+      "Define vigilancia en salud pública e identifica sus componentes: recolección, análisis y difusión de información",
+      "Reconoce las enfermedades de notificación obligatoria en el Perú y el proceso de notificación al CDC/MINSA",
+      "Analiza datos epidemiológicos para identificar tendencias, patrones y riesgos en un brote de enfermedad transmisible",
+      "Propone oportunidades de mejora en el proceso de notificación de enfermedades transmisibles sujetas a vigilancia"
+    ],
+    "duration_min": 20,
+    "access": "public",
+    "language_default": "es",
+    "max_score": 50,
+    "credits": {
+      "es": "Adaptado del sílabo de Salud Pública UCSUR (Semana 10) y del marco CAN-Sim (Companion Guide, 2022). Caso ficticio ambientado en Lima Metropolitana.",
+      "en": "Adapted from the UCSUR Public Health syllabus (Week 10) and the CAN-Sim framework (Companion Guide, 2022). Fictional case set in Metropolitan Lima."
+    }
+  },
+  "dashboard_data": {
+    "tables": [
+      {
+        "title": {"es": "Casos de dengue notificados — SJL (semanas 1-8, 2026)", "en": "Notified dengue cases — SJL (weeks 1-8, 2026)"},
+        "columns": [
+          {"es": "Semana epidemiológica", "en": "Epidemiological week"},
+          {"es": "Casos probables", "en": "Probable cases"},
+          {"es": "Casos confirmados", "en": "Confirmed cases"},
+          {"es": "Hospitalizados", "en": "Hospitalized"}
+        ],
+        "rows": [
+          ["SE 1-2", "12", "4", "1"],
+          ["SE 3-4", "31", "18", "3"],
+          ["SE 5-6", "89", "52", "11"],
+          ["SE 7-8", "214", "137", "28"]
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "title": {"es": "Distribución por grupo etario — casos confirmados dengue", "en": "Age group distribution — confirmed dengue cases"},
+        "data": [
+          {"label": {"es": "< 5 años", "en": "< 5 years"}, "value": 18},
+          {"label": {"es": "5-14 años", "en": "5-14 years"}, "value": 32},
+          {"label": {"es": "15-29 años", "en": "15-29 years"}, "value": 41},
+          {"label": {"es": "30-59 años", "en": "30-59 years"}, "value": 28},
+          {"label": {"es": "60+ años", "en": "60+ years"}, "value": 19}
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "title": {"es": "Directiva Sanitaria N°046-MINSA (Notificación obligatoria)", "en": "MINSA Sanitary Directive N°046 (Mandatory notification)"},
+        "summary": {"es": "Establece los procedimientos y plazos para la notificación inmediata y semanal de enfermedades de notificación obligatoria, incluyendo dengue, malaria e influenza.", "en": "Establishes procedures and deadlines for immediate and weekly notification of mandatory notifiable diseases including dengue, malaria, and influenza."},
+        "link": "https://www.minsa.gob.pe"
+      },
+      {
+        "title": {"es": "Sala Situacional CDC-MINSA (Dengue 2026)", "en": "CDC-MINSA Situation Room (Dengue 2026)"},
+        "summary": {"es": "Reporte actualizado de la situación epidemiológica del dengue en el Perú, con datos por región, semana epidemiológica y nivel de alerta.", "en": "Updated epidemiological situation report for dengue in Peru, with data by region, epidemiological week, and alert level."},
+        "link": "https://www.dge.gob.pe"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Eres un/a estudiante de medicina realizando rotación en el Centro de Salud Los Próceres (San Juan de Lurigancho). El médico jefe te informa que en las últimas 2 semanas han atendido 47 pacientes febriles con cefalea y dolores musculares. Tres de ellos requirieron hospitalización. El equipo sospecha un [[brote|Brote: aparición súbita de casos de una enfermedad en una comunidad o región, en un número mayor al esperado para ese período de tiempo y lugar.]] de dengue pero aún no han notificado al CDC-MINSA. Te pide que orientes el proceso.",
+        "en": "You are a medical student on rotation at the Los Próceres Health Center (San Juan de Lurigancho). The head physician informs you that over the past 2 weeks they have seen 47 febrile patients with headache and muscle pain, three of whom required hospitalization. The team suspects a [[outbreak|Outbreak: sudden appearance of cases of a disease in a community or region, in a number greater than expected for that time period and place.]] of dengue but has not yet reported to CDC-MINSA. They ask you to guide the process."
+      },
+      "prompt": {
+        "es": "Según la definición de vigilancia en salud pública, ¿cuál es el primer paso que debe tomar el equipo ante esta situación?",
+        "en": "According to the definition of public health surveillance, what is the first step the team should take in this situation?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Notificar inmediatamente al CDC-MINSA mediante el canal correspondiente, ya que el dengue es enfermedad de notificación obligatoria.", "en": "Immediately notify CDC-MINSA through the appropriate channel, as dengue is a mandatory notifiable disease."},
+          "correct": true,
+          "feedback": {"es": "Correcto. El dengue es enfermedad de notificación inmediata en el Perú. La recolección oportuna y la difusión son pilares de la vigilancia epidemiológica. Retrasar la notificación compromete la respuesta del sistema de salud.", "en": "Correct. Dengue is a disease requiring immediate notification in Peru. Timely collection and dissemination are pillars of epidemiological surveillance. Delaying notification compromises the health system response."},
+          "next": "n2",
+          "points": 14
+        },
+        {
+          "id": "b",
+          "text": {"es": "Esperar a confirmar laboratorialmente todos los casos antes de notificar, para evitar falsas alarmas.", "en": "Wait for laboratory confirmation of all cases before notifying, to avoid false alarms."},
+          "correct": false,
+          "feedback": {"es": "Incorrecto. La notificación se hace con casos probables, no solo confirmados. Esperar confirmación laboratorial retrasa la respuesta y aumenta el riesgo de expansión del brote.", "en": "Incorrect. Notification is made with probable cases, not just confirmed ones. Waiting for lab confirmation delays the response and increases the risk of outbreak expansion."},
+          "next": "n1b",
+          "points": -3
+        },
+        {
+          "id": "c",
+          "text": {"es": "Coordinar con la municipalidad para fumigación del distrito antes de notificar al MINSA.", "en": "Coordinate with the municipality for district fumigation before notifying MINSA."},
+          "correct": false,
+          "feedback": {"es": "La fumigación es parte de la respuesta, pero debe activarse en paralelo a la notificación. Actuar sin notificar al ente rector viola el sistema de vigilancia y priva al CDC-MINSA de información para coordinar la respuesta regional.", "en": "Fumigation is part of the response, but must be activated in parallel with notification. Acting without notifying the governing body violates the surveillance system and deprives CDC-MINSA of information to coordinate the regional response."},
+          "next": "n1b",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n1b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El médico jefe reconsidera. La directiva sanitaria establece que el dengue es de notificación inmediata (dentro de las 24 horas de sospecha), no esperar confirmación. Además, la tendencia ascendente en el tablero de datos (de 12 casos en SE 1-2 a 214 en SE 7-8) confirma la urgencia.",
+        "en": "The head physician reconsiders. The sanitary directive establishes that dengue requires immediate notification (within 24 hours of suspicion), without waiting for confirmation. The upward trend in the data dashboard (from 12 cases in EW 1-2 to 214 in EW 7-8) confirms the urgency."
+      },
+      "prompt": {
+        "es": "¿A través de qué canal se realiza la notificación epidemiológica en el Perú?",
+        "en": "Through which channel is epidemiological notification made in Peru?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Sistema Nacional de Vigilancia Epidemiológica (NOTI-SP) del CDC-MINSA, con ficha de notificación inmediata.", "en": "National Epidemiological Surveillance System (NOTI-SP) of CDC-MINSA, with an immediate notification form."},
+          "correct": true,
+          "feedback": {"es": "Correcto. El NOTI-SP es el sistema oficial de notificación en el Perú. La ficha de notificación inmediata debe completarse con datos del paciente, clínica, y localización geográfica.", "en": "Correct. NOTI-SP is Peru's official notification system. The immediate notification form must be completed with patient data, clinical information, and geographic location."},
+          "next": "n2",
+          "points": 10
+        },
+        {
+          "id": "b",
+          "text": {"es": "Llamada telefónica directa a la Diresa Lima Este, sin completar ficha de notificación.", "en": "Direct phone call to Diresa Lima Este, without completing a notification form."},
+          "correct": false,
+          "feedback": {"es": "La llamada puede servir como alerta inicial, pero siempre debe ir acompañada de la ficha oficial en el NOTI-SP. Sin ella, los datos no quedan en el sistema de vigilancia nacional.", "en": "A call can serve as an initial alert, but must always be accompanied by the official form in NOTI-SP. Without it, data is not entered into the national surveillance system."},
+          "next": "n2",
+          "points": -2
+        }
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo ha notificado al CDC-MINSA. Ahora analiza los datos del tablero (ver Expediente): en la SE 7-8 se registraron 214 casos probables con 28 hospitalizados. El grupo etario más afectado es 15-29 años (41 casos confirmados). Te piden interpretar estos datos para orientar la respuesta.",
+        "en": "The team has notified CDC-MINSA. Now they analyze the dashboard data: in EW 7-8, 214 probable cases were recorded with 28 hospitalizations. The most affected age group is 15-29 years (41 confirmed cases). You are asked to interpret this data to guide the response."
+      },
+      "prompt": {
+        "es": "¿Qué conclusión epidemiológica se puede extraer de la tendencia observada en los datos?",
+        "en": "What epidemiological conclusion can be drawn from the observed trend in the data?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "El brote está en fase de crecimiento exponencial; la razón de hospitalización sugiere presencia de casos graves que requieren vigilancia centinela.", "en": "The outbreak is in exponential growth phase; the hospitalization ratio suggests severe cases requiring sentinel surveillance."},
+          "correct": true,
+          "feedback": {"es": "Correcto. Pasar de 12 a 214 casos en 8 semanas es un crecimiento exponencial típico de un brote vectorial. La tasa de hospitalización (13%) supera el umbral de alerta y obliga a activar vigilancia intensificada.", "en": "Correct. Going from 12 to 214 cases in 8 weeks is exponential growth typical of a vector-borne outbreak. The hospitalization rate (13%) exceeds the alert threshold and requires intensified surveillance."},
+          "next": "n3",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {"es": "El brote está bajo control porque el número de confirmados (137) es menor que el de probables (214).", "en": "The outbreak is under control because the number of confirmed cases (137) is lower than probable cases (214)."},
+          "correct": false,
+          "feedback": {"es": "La diferencia entre probables y confirmados refleja capacidad de diagnóstico, no control del brote. La tendencia ascendente semana a semana es el indicador crítico de que el brote sigue en expansión.", "en": "The difference between probable and confirmed cases reflects diagnostic capacity, not outbreak control. The week-by-week upward trend is the critical indicator that the outbreak is still expanding."},
+          "next": "n3",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "open_reflection",
+      "prompt": {
+        "es": "Con base en el caso y los datos del expediente, identifica al menos DOS oportunidades de mejora en el proceso de notificación de enfermedades transmisibles en este establecimiento de salud. Justifica cada una.",
+        "en": "Based on the case and the case file data, identify at least TWO improvement opportunities in the communicable disease notification process at this health facility. Justify each one."
+      },
+      "guidance": {
+        "es": "Considera: oportunidad de notificación (¿se notificó a tiempo?), completitud de la ficha, articulación con el CDC-MINSA, capacidad diagnóstica, y vinculación con acciones de control de vectores.",
+        "en": "Consider: timeliness of notification, completeness of the form, coordination with CDC-MINSA, diagnostic capacity, and linkage with vector control actions."
+      },
+      "next": "n4",
+      "points": 10
+    },
+    {
+      "id": "n4",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El CDC-MINSA activa la respuesta de emergencia. El equipo debe decidir cuál de las siguientes acciones tiene mayor impacto inmediato para cortar la cadena de transmisión del dengue en el AAHH.",
+        "en": "CDC-MINSA activates the emergency response. The team must decide which of the following actions has the greatest immediate impact to break the dengue transmission chain in the settlement."
+      },
+      "prompt": {
+        "es": "¿Cuál es la acción de control más efectiva para reducir la transmisión de dengue a corto plazo?",
+        "en": "Which control action is most effective for reducing dengue transmission in the short term?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Control larvario y eliminación de criaderos (agua estancada, recipientes) con participación comunitaria, combinado con fumigación espacial en zonas de mayor densidad vectorial.", "en": "Larval control and breeding site elimination (stagnant water, containers) with community participation, combined with spatial spraying in areas of highest vector density."},
+          "correct": true,
+          "feedback": {"es": "Correcto. El control del vector Aedes aegypti en sus fuentes (criaderos larvarios) es más efectivo y sostenible que la fumigación sola. La participación comunitaria aumenta la cobertura y la durabilidad de la intervención.", "en": "Correct. Controlling the Aedes aegypti vector at its sources (larval breeding sites) is more effective and sustainable than spraying alone. Community participation increases coverage and durability of the intervention."},
+          "next": "end_a",
+          "points": 14
+        },
+        {
+          "id": "b",
+          "text": {"es": "Cerrar el centro de salud para evitar el contagio entre pacientes y personal de salud.", "en": "Close the health center to prevent contagion between patients and health staff."},
+          "correct": false,
+          "feedback": {"es": "Incorrecto. El dengue no se transmite de persona a persona sino a través del mosquito Aedes aegypti. Cerrar el centro privaría a la comunidad de atención en un momento crítico del brote.", "en": "Incorrect. Dengue is not transmitted person-to-person but through the Aedes aegypti mosquito. Closing the center would deprive the community of care at a critical moment in the outbreak."},
+          "next": "end_b",
+          "points": -4
+        }
+      ]
+    },
+    {
+      "id": "end_a",
+      "type": "ending",
+      "label": {"es": "Final A — Respuesta epidemiológica completa", "en": "Ending A — Complete epidemiological response"},
+      "summary": {
+        "es": "Excelente gestión. Notificaste oportunamente, interpretaste los datos con enfoque epidemiológico, identificaste oportunidades de mejora en el sistema de vigilancia, y propusiste la intervención vectorial más efectiva. Este es el rol del médico en salud pública: articular vigilancia, análisis y respuesta.",
+        "en": "Excellent management. You notified promptly, interpreted data with an epidemiological approach, identified improvement opportunities in the surveillance system, and proposed the most effective vector control intervention. This is the physician's role in public health: articulating surveillance, analysis, and response."
+      }
+    },
+    {
+      "id": "end_b",
+      "type": "ending",
+      "label": {"es": "Final B — Respuesta incompleta", "en": "Ending B — Incomplete response"},
+      "summary": {
+        "es": "Notificaste correctamente, pero la acción de control propuesta no es coherente con la epidemiología del dengue. Recuerda que el dengue es de transmisión vectorial, no interpersonal. Reflexiona: ¿qué características de una enfermedad determinan las medidas de control más adecuadas?",
+        "en": "You notified correctly, but the proposed control action is inconsistent with dengue epidemiology. Remember that dengue is vector-borne, not interpersonal. Reflect: what disease characteristics determine the most appropriate control measures?"
+      }
+    }
+  ],
+  "rubric_ref": "rubric.json",
+  "debrief_ref": "debrief.json"
+}

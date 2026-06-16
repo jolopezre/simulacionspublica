@@ -1,0 +1,112 @@
+{
+  "title": {
+    "es": "Rúbrica de Autoevaluación — Vigilancia Epidemiológica: Brote de Dengue en San ",
+    "en": "Self-Assessment Rubric — Epidemiological Surveillance: Dengue Outbreak in S"
+  },
+  "scale": {
+    "es": "Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica",
+    "en": "Likert scale: 6 = Fully competent · 1 = Needs significant practice"
+  },
+  "outcomes": [
+    {
+      "id": "ro1",
+      "outcome": {
+        "es": "Define vigilancia en salud pública e identifica sus componentes",
+        "en": "Defines public health surveillance and identifies its components"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro2",
+      "outcome": {
+        "es": "Reconoce las enfermedades de notificación obligatoria en el Perú y el proceso de notificación al CDC/MINSA",
+        "en": "Recognizes mandatory notifiable diseases in Peru and the notification process to CDC/MINSA"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro3",
+      "outcome": {
+        "es": "Analiza datos epidemiológicos para identificar tendencias y riesgos en un brote",
+        "en": "Analyzes epidemiological data to identify trends and risks in an outbreak"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro4",
+      "outcome": {
+        "es": "Propone oportunidades de mejora en el proceso de notificación de enfermedades transmisibles",
+        "en": "Proposes improvement opportunities in the communicable disease notification process"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    }
+  ]
+}

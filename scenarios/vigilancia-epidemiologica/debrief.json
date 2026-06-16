@@ -1,0 +1,48 @@
+{
+  "defusing": {
+    "title": {
+      "es": "Defusing (Descarga emocional)",
+      "en": "Defusing"
+    },
+    "es": [
+      "¿Cómo te sentiste al tomar decisiones durante el brote de dengue?",
+      "¿Qué información del expediente te resultó más útil para orientarte?"
+    ],
+    "en": [
+      "Cómo te sentiste al tomar decisiones durante el brote de dengue?",
+      "Qué información del expediente te resultó más útil para orientarte?"
+    ]
+  },
+  "discovery": {
+    "title": {
+      "es": "Discovery (Descubrimiento)",
+      "en": "Discovery"
+    },
+    "es": [
+      "¿Qué pasos del proceso de notificación epidemiológica identificaste?",
+      "¿Por qué es importante no esperar la confirmación laboratorial para notificar?",
+      "¿Cómo se relacionan los datos del tablero con la magnitud del brote?",
+      "¿Qué brechas en el sistema de vigilancia identificaste en este caso?"
+    ],
+    "en": [
+      "¿Qué pasos del proceso de notificación epidemiológica identificaste?",
+      "¿Por qué es importante no esperar la confirmación laboratorial para notificar?",
+      "¿Cómo se relacionan los datos del tablero con la magnitud del brote?",
+      "¿Qué brechas en el sistema de vigilancia identificaste en este caso?"
+    ]
+  },
+  "deepening": {
+    "title": {
+      "es": "Deepening (Profundización)",
+      "en": "Deepening"
+    },
+    "es": [
+      "¿Cómo aplicarías lo aprendido cuando trabajes en un establecimiento de salud de primer nivel?",
+      "¿Qué rol tiene el médico en el fortalecimiento del sistema de vigilancia epidemiológica?"
+    ],
+    "en": [
+      "¿Cómo aplicarías lo aprendido cuando trabajes en un establecimiento de salud de primer nivel?",
+      "¿Qué rol tiene el médico en el fortalecimiento del sistema de vigilancia epidemiológica?"
+    ]
+  }
+}

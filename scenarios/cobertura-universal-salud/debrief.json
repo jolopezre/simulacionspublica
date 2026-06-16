@@ -1,0 +1,48 @@
+{
+  "defusing": {
+    "title": {
+      "es": "Defusing (Descarga emocional)",
+      "en": "Defusing"
+    },
+    "es": [
+      "¿Qué sentiste al conocer la situación de doña Rosa?",
+      "¿Qué aspectos del caso te resultaron más desafiantes para analizar?"
+    ],
+    "en": [
+      "Qué sentiste al conocer la situación de doña Rosa?",
+      "Qué aspectos del caso te resultaron más desafiantes para analizar?"
+    ]
+  },
+  "discovery": {
+    "title": {
+      "es": "Discovery (Descubrimiento)",
+      "en": "Discovery"
+    },
+    "es": [
+      "¿Cuál es la diferencia entre cobertura nominal y cobertura efectiva?",
+      "¿Qué barreras identificaste en el caso de doña Rosa?",
+      "¿Cómo se mide el gasto catastrófico en salud según la OMS?",
+      "¿Qué obligaciones establece la Ley 29344 para el sistema de salud peruano?"
+    ],
+    "en": [
+      "¿Cuál es la diferencia entre cobertura nominal y cobertura efectiva?",
+      "¿Qué barreras identificaste en el caso de doña Rosa?",
+      "¿Cómo se mide el gasto catastrófico en salud según la OMS?",
+      "¿Qué obligaciones establece la Ley 29344 para el sistema de salud peruano?"
+    ]
+  },
+  "deepening": {
+    "title": {
+      "es": "Deepening (Profundización)",
+      "en": "Deepening"
+    },
+    "es": [
+      "¿Cómo podrías identificar pacientes en riesgo de gasto catastrófico en tu práctica clínica?",
+      "¿Qué acciones intersectoriales son clave para avanzar hacia la Cobertura Universal de Salud en el Perú?"
+    ],
+    "en": [
+      "¿Cómo podrías identificar pacientes en riesgo de gasto catastrófico en tu práctica clínica?",
+      "¿Qué acciones intersectoriales son clave para avanzar hacia la Cobertura Universal de Salud en el Perú?"
+    ]
+  }
+}

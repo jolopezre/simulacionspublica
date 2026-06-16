@@ -1,0 +1,112 @@
+{
+  "title": {
+    "es": "Rúbrica de Autoevaluación — Historia Natural y Niveles de Prevención: Tubercul",
+    "en": "Self-Assessment Rubric — Natural History and Prevention Levels: Tuberculosi"
+  },
+  "scale": {
+    "es": "Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica",
+    "en": "Likert scale: 6 = Fully competent · 1 = Needs significant practice"
+  },
+  "outcomes": [
+    {
+      "id": "ro1",
+      "outcome": {
+        "es": "Describe las fases de la historia natural de la enfermedad aplicadas a una enfermedad transmisible",
+        "en": "Describes the phases of natural history of disease applied to a communicable disease"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro2",
+      "outcome": {
+        "es": "Clasifica las intervenciones preventivas según los niveles de Leavell y Clark",
+        "en": "Classifies preventive interventions according to Leavell and Clark levels"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro3",
+      "outcome": {
+        "es": "Relaciona la vigilancia epidemiológica con la detección precoz en el nivel de prevención secundaria",
+        "en": "Relates epidemiological surveillance to early detection in secondary prevention"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    },
+    {
+      "id": "ro4",
+      "outcome": {
+        "es": "Aplica el concepto de cadena epidemiológica para identificar eslabones de intervención",
+        "en": "Applies the epidemiological chain concept to identify intervention links"
+      },
+      "indicators": {
+        "es": "Ver rúbrica de evaluación del curso",
+        "en": "See course evaluation rubric"
+      },
+      "levels": {
+        "competente": {
+          "es": "Realiza de forma independiente lo descrito en el resultado de aprendizaje.",
+          "en": "Independently performs the described learning outcome."
+        },
+        "intermedio": {
+          "es": "Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With minimal support, performs the described learning outcome."
+        },
+        "novato": {
+          "es": "Con orientación realiza lo descrito en el resultado de aprendizaje.",
+          "en": "With prompting, performs the described learning outcome."
+        }
+      }
+    }
+  ]
+}

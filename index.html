@@ -109,15 +109,55 @@ const CATALOG = [
       en: "Community diagnosis · primary & secondary sources · health determinants · population-health lens"
     },
     lms_url: ""
+  },
+  {
+    id: "vigilancia-epidemiologica",
+    title: {es:"Vigilancia Epidemiológica: Brote de Dengue en SJL", en:"Epidemiological Surveillance: Dengue Outbreak in SJL"},
+    stage: "diagnostico",
+    duration_min: 20,
+    access: "public",
+    competencies: {
+      es: "Vigilancia en salud pública · enfermedades de notificación obligatoria · análisis de brotes · NOTI-SP",
+      en: "Public health surveillance · mandatory notifiable diseases · outbreak analysis · NOTI-SP"
+    },
+    lms_url: ""
+  },
+  {
+    id: "cobertura-universal-salud",
+    title: {es:"Cobertura Universal de Salud: Barreras de Acceso en Villa El Salvador", en:"Universal Health Coverage: Access Barriers in Villa El Salvador"},
+    stage: "diagnostico",
+    duration_min: 20,
+    access: "public",
+    competencies: {
+      es: "Acceso universal · cobertura universal de salud · gasto catastrófico · Ley 29344 · SIS",
+      en: "Universal access · universal health coverage · catastrophic expenditure · Law 29344 · SIS"
+    },
+    lms_url: ""
+  },
+  {
+    id: "determinantes-sociales",
+    title: {es:"Determinantes Sociales: Estrategias Sanitarias en Ate Vitarte", en:"Social Determinants: Sanitary Strategies in Ate Vitarte"},
+    stage: "promocion",
+    duration_min: 22,
+    access: "public",
+    competencies: {
+      es: "Determinantes sociales · modelo OMS · intervenciones upstream/downstream · Estrategias Sanitarias Nacionales",
+      en: "Social determinants · WHO model · upstream/downstream interventions · National Health Strategies"
+    },
+    lms_url: ""
+  },
+  {
+    id: "historia-natural-enfermedad",
+    title: {es:"Historia Natural y Prevención: Tuberculosis en El Agustino", en:"Natural History and Prevention: Tuberculosis in El Agustino"},
+    stage: "diagnostico",
+    duration_min: 22,
+    access: "public",
+    competencies: {
+      es: "Historia natural de la enfermedad · niveles de prevención Leavell y Clark · cadena epidemiológica · TBC",
+      en: "Natural history of disease · Leavell and Clark prevention levels · epidemiological chain · TB"
+    },
+    lms_url: ""
   }
-  // Ejemplo de escenario restringido (Etapa 2, pendiente de desarrollo):
-  // {
-  //   id: "promocion-las-palmeras",
-  //   title: {es:"Promoción de la Salud: Mesa de Trabajo Comunitaria", en:"Health Promotion: Community Working Session"},
-  //   stage: "promocion", duration_min: 25, access: "restricted",
-  //   competencies: {es:"...", en:"..."},
-  //   lms_url: "https://moodle.ucsur.edu.pe/course/view.php?id=XXXX"
-  // }
 ];
 
 const STAGE_LABEL = {
@@ -186,7 +226,7 @@ function render(){
     const actions = document.createElement("div"); actions.className="actions";
     if (item.access === "public"){
       const a = document.createElement("a");
-      a.className="btn btn-primary"; a.href=`scenarios/${item.id}/player.html`;
+      a.className="btn btn-primary"; a.href=`scenarios/${item.id}/player-standalone.html`;
       a.textContent = UI[LANG].open;
       actions.appendChild(a);
     } else {

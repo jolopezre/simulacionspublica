@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "REEMPLAZAR-id-unico-en-minusculas-y-guiones",
+    "title": {
+      "es": "Título del escenario en español",
+      "en": "Scenario title in English"
+    },
+    "stage": "diagnostico",
+    "course": "Salud Comunitaria y APS — UCSUR",
+    "competencies": [
+      "Resultado de aprendizaje 1 (copiar del sílabo o del marco CAN-Sim adaptado)",
+      "Resultado de aprendizaje 2",
+      "Resultado de aprendizaje 3"
+    ],
+    "duration_min": 20,
+    "access": "public",
+    "language_default": "es",
+    "credits": {
+      "es": "Adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública / APS, UCSUR.",
+      "en": "Adapted from the CAN-Sim framework (Companion Guide, 2022) for the Public Health / PHC course, UCSUR."
+    }
+  },
+
+  "_comentario_stage": "Valores válidos para 'stage': diagnostico | promocion | planificacion",
+  "_comentario_access": "Valores válidos para 'access': public | restricted (si restricted, agregar meta.lms_url)",
+
+  "dashboard_data": {
+    "tables": [
+      {
+        "title": {"es": "Título de la tabla", "en": "Table title"},
+        "columns": [
+          {"es": "Columna 1", "en": "Column 1"},
+          {"es": "Columna 2", "en": "Column 2"},
+          {"es": "Columna 3", "en": "Column 3"}
+        ],
+        "rows": [
+          ["Fila 1, valor A", "Fila 1, valor B", "Fila 1, valor C"],
+          ["Fila 2, valor A", "Fila 2, valor B", "Fila 2, valor C"]
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "title": {"es": "Título del gráfico", "en": "Chart title"},
+        "data": [
+          {"label": {"es": "Categoría 1", "en": "Category 1"}, "value": 0},
+          {"label": {"es": "Categoría 2", "en": "Category 2"}, "value": 0}
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "title": {"es": "Título del documento de referencia", "en": "Reference document title"},
+        "summary": {"es": "Resumen breve en español.", "en": "Short summary in English."},
+        "link": "https://can-sim.ca/phn/"
+      }
+    ]
+  },
+
+  "_comentario_nodes": "nodes forma un grafo dirigido. type puede ser: narrative_decision | open_reflection | ending. Cada 'next' debe apuntar a un id de nodo existente. Debe existir al menos un nodo de tipo 'ending'.",
+
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "narrative_decision",
+      "narrative": {"es": "Texto narrativo que describe la situación.", "en": "Narrative text describing the situation."},
+      "prompt": {"es": "¿Pregunta de decisión?", "en": "Decision question?"},
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Opción A", "en": "Option A"},
+          "correct": true,
+          "feedback": {"es": "Retroalimentación para la opción A.", "en": "Feedback for option A."},
+          "next": "end_a"
+        },
+        {
+          "id": "b",
+          "text": {"es": "Opción B", "en": "Option B"},
+          "correct": false,
+          "feedback": {"es": "Retroalimentación para la opción B.", "en": "Feedback for option B."},
+          "next": "end_b"
+        }
+      ]
+    },
+    {
+      "id": "n2_reflexion_ejemplo",
+      "type": "open_reflection",
+      "prompt": {"es": "Pregunta de reflexión abierta.", "en": "Open reflection question."},
+      "guidance": {"es": "Pistas o aspectos a considerar.", "en": "Hints or aspects to consider."},
+      "next": "end_a"
+    },
+    {
+      "id": "end_a",
+      "type": "ending",
+      "label": {"es": "Final A — Título del final", "en": "Ending A — Ending title"},
+      "summary": {"es": "Resumen del resultado obtenido.", "en": "Summary of the outcome reached."}
+    },
+    {
+      "id": "end_b",
+      "type": "ending",
+      "label": {"es": "Final B — Título del final alternativo", "en": "Ending B — Alternative ending title"},
+      "summary": {"es": "Resumen del resultado alternativo.", "en": "Summary of the alternative outcome."}
+    }
+  ],
+
+  "rubric_ref": "rubric.json",
+  "debrief_ref": "debrief.json"
+}

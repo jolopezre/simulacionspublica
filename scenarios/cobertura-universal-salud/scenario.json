@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "id": "cobertura-universal-salud",
+    "title": {
+      "es": "Cobertura Universal de Salud: Barreras de Acceso en Villa El Salvador",
+      "en": "Universal Health Coverage: Access Barriers in Villa El Salvador"
+    },
+    "stage": "diagnostico",
+    "course": "Salud Pública — UCSUR · Semana 2",
+    "competencies": [
+      "Distingue los conceptos de Acceso Universal de Salud (AUS) y Cobertura Universal de Salud (CUS) y sus dimensiones",
+      "Identifica las barreras de acceso a los servicios de salud en el contexto peruano (financieras, geográficas, culturales)",
+      "Analiza el gasto catastrófico en salud como indicador de protección financiera (ODS 3.8.2)",
+      "Propone estrategias coherentes con el marco del Aseguramiento Universal en Salud (Ley 29344) para reducir brechas de acceso"
+    ],
+    "duration_min": 20,
+    "access": "public",
+    "language_default": "es",
+    "max_score": 50,
+    "credits": {
+      "es": "Adaptado del sílabo de Salud Pública UCSUR (Semana 2) y del marco CAN-Sim (Companion Guide, 2022). Caso ficticio ambientado en Lima Metropolitana.",
+      "en": "Adapted from the UCSUR Public Health syllabus (Week 2) and the CAN-Sim framework. Fictional case set in Metropolitan Lima."
+    }
+  },
+  "dashboard_data": {
+    "tables": [
+      {
+        "title": {"es": "Indicadores de salud — Villa El Salvador (2025)", "en": "Health indicators — Villa El Salvador (2025)"},
+        "columns": [
+          {"es": "Indicador", "en": "Indicator"},
+          {"es": "Distrito", "en": "District"},
+          {"es": "Lima Metropolitana", "en": "Metropolitan Lima"}
+        ],
+        "rows": [
+          ["% hogares con SIS activo", "62%", "48%"],
+          ["% hogares con gasto catastrófico en salud", "28%", "14%"],
+          ["% gestantes con control prenatal ≥6 controles", "54%", "71%"],
+          ["Tiempo promedio al establecimiento más cercano (min)", "38", "22"],
+          ["% hogares que abandonaron atención por costo", "41%", "19%"]
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "title": {"es": "Razones de no acceso a atención de salud — Villa El Salvador (%)", "en": "Reasons for not accessing health care — Villa El Salvador (%)"},
+        "data": [
+          {"label": {"es": "Costo del servicio", "en": "Service cost"}, "value": 41},
+          {"label": {"es": "Distancia/transporte", "en": "Distance/transport"}, "value": 29},
+          {"label": {"es": "Tiempo de espera", "en": "Wait time"}, "value": 22},
+          {"label": {"es": "Barreras culturales", "en": "Cultural barriers"}, "value": 12},
+          {"label": {"es": "Falta de medicamentos", "en": "Lack of medicines"}, "value": 35}
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "title": {"es": "Ley N°29344 — Marco del Aseguramiento Universal en Salud", "en": "Law N°29344 — Universal Health Insurance Framework"},
+        "summary": {"es": "Garantiza el acceso equitativo a servicios médicos para todos los ciudadanos independientemente de su condición económica, a través del PEAS (Plan Esencial de Aseguramiento en Salud).", "en": "Guarantees equitable access to medical services for all citizens regardless of economic status, through the PEAS (Essential Health Insurance Plan)."},
+        "link": "https://www.gob.pe/institucion/minsa/normas-legales/245511-008-2010-sa"
+      },
+      {
+        "title": {"es": "Informe OMS 2023 — Seguimiento de la CUS", "en": "WHO 2023 Report — UHC Monitoring"},
+        "summary": {"es": "El mundo está lejos de lograr la Cobertura Universal de Salud para 2030. El índice global de CUS fue 68 sobre 100 en 2021, con estancamiento en los países de ingresos medios-bajos.", "en": "The world is far from achieving Universal Health Coverage by 2030. The global UHC index was 68 out of 100 in 2021, stagnating in lower-middle-income countries."},
+        "link": "https://www.who.int/publications/i/item/9789240080195"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Eres un/a estudiante de medicina en rotación de Salud Pública Comunitaria en Villa El Salvador. Durante una visita domiciliaria conoces a doña Rosa, 58 años, diagnosticada con diabetes tipo 2. Tiene [[SIS|Seguro Integral de Salud: seguro público gratuito para personas en situación de pobreza o pobreza extrema en el Perú, gestionado por el MINSA.]] activo, pero no ha ido al control mensual en 4 meses porque no tiene para el pasaje. El mes pasado compró insulina de su bolsillo gastando S/. 420 de un ingreso familiar de S/. 900.",
+        "en": "You are a medical student on a Community Public Health rotation in Villa El Salvador. During a home visit you meet Doña Rosa, 58 years old, diagnosed with type 2 diabetes. She has active [[SIS|Seguro Integral de Salud: free public insurance for people in poverty or extreme poverty in Peru, managed by MINSA.]] but has not attended monthly check-ups in 4 months because she cannot afford bus fare. Last month she bought insulin out of pocket spending S/. 420 from a family income of S/. 900."
+      },
+      "prompt": {
+        "es": "¿Cómo clasificarías la situación de doña Rosa según los indicadores de Cobertura Universal de Salud?",
+        "en": "How would you classify Doña Rosa's situation according to Universal Health Coverage indicators?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Presenta gasto catastrófico en salud (ODS 3.8.2), ya que el gasto en medicamentos supera el 40% del ingreso familiar disponible.", "en": "She presents catastrophic health expenditure (SDG 3.8.2), as medicine spending exceeds 40% of available household income."},
+          "correct": true,
+          "feedback": {"es": "Correcto. El gasto catastrófico se define cuando el gasto en salud supera entre el 10-40% del ingreso familiar (según el umbral usado). S/. 420 sobre S/. 900 = 46.7%, claramente catastrófico. Tener SIS no la protege si los medicamentos no están cubiertos o si no puede llegar al establecimiento.", "en": "Correct. Catastrophic expenditure is defined when health spending exceeds 10-40% of household income (depending on threshold). S/. 420 of S/. 900 = 46.7%, clearly catastrophic. Having SIS does not protect her if medicines are not covered or if she cannot reach the facility."},
+          "next": "n2",
+          "points": 14
+        },
+        {
+          "id": "b",
+          "text": {"es": "No tiene problema de acceso porque cuenta con SIS activo, que le cubre la atención.", "en": "She has no access problem because she has active SIS that covers her care."},
+          "correct": false,
+          "feedback": {"es": "Incorrecto. Tener afiliación al SIS (cobertura nominal) no equivale a acceso efectivo a los servicios. Las barreras financieras (pasaje), geográficas (distancia) y de disponibilidad (medicamentos no cubiertos) limitan el acceso real.", "en": "Incorrect. Having SIS affiliation (nominal coverage) does not equal effective access to services. Financial (transport), geographic (distance), and availability (uncovered medicines) barriers limit real access."},
+          "next": "n1b",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n1b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "La supervisora de campo aclara: la OMS distingue entre cobertura nominal (estar asegurado) y cobertura efectiva (recibir servicios de calidad cuando se necesitan sin dificultades financieras). El 28% de hogares en Villa El Salvador registra gasto catastrófico a pesar de que el 62% tiene SIS activo.",
+        "en": "The field supervisor clarifies: WHO distinguishes between nominal coverage (being insured) and effective coverage (receiving quality services when needed without financial difficulties). 28% of Villa El Salvador households report catastrophic expenditure despite 62% having active SIS."
+      },
+      "prompt": {
+        "es": "¿Qué dimensión de la CUS está más comprometida en el caso de doña Rosa?",
+        "en": "Which dimension of UHC is most compromised in Doña Rosa's case?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Protección financiera, porque el gasto de bolsillo en medicamentos la expone a empobrecimiento.", "en": "Financial protection, because out-of-pocket spending on medicines exposes her to impoverishment."},
+          "correct": true,
+          "feedback": {"es": "Exacto. La protección financiera es una de las tres dimensiones de la CUS (junto con cobertura poblacional y cobertura de servicios). La falta de cobertura real de medicamentos y las barreras de transporte generan gasto catastrófico.", "en": "Exactly. Financial protection is one of the three dimensions of UHC (along with population coverage and service coverage). Lack of real medicine coverage and transport barriers generate catastrophic expenditure."},
+          "next": "n2",
+          "points": 10
+        },
+        {
+          "id": "b",
+          "text": {"es": "Cobertura de servicios de salud, porque no acude al control mensual.", "en": "Health service coverage, because she does not attend monthly check-ups."},
+          "correct": false,
+          "feedback": {"es": "La baja utilización es una consecuencia, pero la causa raíz es la barrera financiera (no tiene para el pasaje, compra medicamentos de bolsillo). La dimensión más comprometida es la protección financiera.", "en": "Low utilization is a consequence, but the root cause is the financial barrier (cannot afford transport, buys medicines out of pocket). The most compromised dimension is financial protection."},
+          "next": "n2",
+          "points": -2
+        }
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo de Salud Pública Comunitaria debe proponer una intervención para mejorar el acceso efectivo de doña Rosa y personas en situación similar. Los datos del expediente muestran que el 41% no accede por costo del servicio y 35% por falta de medicamentos.",
+        "en": "The Community Public Health team must propose an intervention to improve effective access for Doña Rosa and people in similar situations. Case file data shows 41% do not access due to service cost and 35% due to lack of medicines."
+      },
+      "prompt": {
+        "es": "¿Cuál de las siguientes estrategias es más coherente con el marco del Aseguramiento Universal en Salud (Ley 29344) para abordar estas barreras?",
+        "en": "Which of the following strategies is most consistent with the Universal Health Insurance framework (Law 29344) to address these barriers?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Activar la visita domiciliaria periódica del equipo de salud para personas con enfermedades crónicas sin movilidad, y gestionar el acceso a medicamentos del PEAS en el propio domicilio.", "en": "Activate periodic home visits from the health team for people with chronic conditions without mobility, and manage access to PEAS medicines at home."},
+          "correct": true,
+          "feedback": {"es": "Correcto. Esta estrategia aborda las barreras geográfica y financiera, está dentro del PEAS, y es coherente con el modelo de atención centrado en las personas que promueve la Ley 29344 y la CUS.", "en": "Correct. This strategy addresses geographic and financial barriers, is within PEAS, and is consistent with the people-centered care model promoted by Law 29344 and UHC."},
+          "next": "n3",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {"es": "Derivar a doña Rosa a EsSalud, que tiene mejor infraestructura y más medicamentos disponibles.", "en": "Refer Doña Rosa to EsSalud, which has better infrastructure and more available medicines."},
+          "correct": false,
+          "feedback": {"es": "EsSalud requiere afiliación laboral formal. Doña Rosa probablemente no cumple ese requisito. Derivarla ahí sin verificar elegibilidad viola el principio de equidad del AUS. La solución debe estar dentro del subsistema al que pertenece.", "en": "EsSalud requires formal employment affiliation. Doña Rosa likely does not meet this requirement. Referring her there without verifying eligibility violates the equity principle of UHC. The solution must be within the subsystem she belongs to."},
+          "next": "n3",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "open_reflection",
+      "prompt": {
+        "es": "El caso de doña Rosa ilustra la diferencia entre cobertura nominal y cobertura efectiva. ¿Qué acciones concretas podría implementar un médico en un centro de salud de primer nivel para reducir el gasto catastrófico en salud de su población asignada? Menciona al menos dos acciones.",
+        "en": "Doña Rosa's case illustrates the difference between nominal and effective coverage. What concrete actions could a physician at a first-level health center implement to reduce catastrophic health expenditure in their assigned population? Mention at least two actions."
+      },
+      "guidance": {
+        "es": "Considera: visitas domiciliarias, gestión de medicamentos del PEAS, articulación con programas sociales (Qali Warma, Pensión 65, MIDIS), coordinación con trabajadora social, y registro en padrón nominal de personas vulnerables.",
+        "en": "Consider: home visits, PEAS medicine management, coordination with social programs, social worker coordination, and registration in the nominal register of vulnerable persons."
+      },
+      "next": "end_a",
+      "points": 10
+    },
+    {
+      "id": "end_a",
+      "type": "ending",
+      "label": {"es": "Final — Análisis integral de CUS completado", "en": "Ending — Comprehensive UHC analysis completed"},
+      "summary": {
+        "es": "Has analizado las dimensiones de la Cobertura Universal de Salud con un caso real: identificaste el gasto catastrófico, la brecha entre cobertura nominal y efectiva, y propusiste intervenciones coherentes con el marco legal peruano. Este es el análisis que debe guiar las decisiones en Salud Pública Comunitaria.",
+        "en": "You have analyzed the dimensions of Universal Health Coverage with a real case: identified catastrophic expenditure, the gap between nominal and effective coverage, and proposed interventions consistent with Peru's legal framework. This is the analysis that should guide Community Public Health decisions."
+      }
+    }
+  ],
+  "rubric_ref": "rubric.json",
+  "debrief_ref": "debrief.json"
+}

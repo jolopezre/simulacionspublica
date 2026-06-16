@@ -1,0 +1,48 @@
+{
+  "defusing": {
+    "title": {
+      "es": "Defusing (Descarga emocional)",
+      "en": "Defusing"
+    },
+    "es": [
+      "¿Cómo te sentiste al analizar la situación sociosanitaria del AAHH?",
+      "¿Qué te sorprendió más de los datos del expediente?"
+    ],
+    "en": [
+      "Cómo te sentiste al analizar la situación sociosanitaria del AAHH?",
+      "Qué te sorprendió más de los datos del expediente?"
+    ]
+  },
+  "discovery": {
+    "title": {
+      "es": "Discovery (Descubrimiento)",
+      "en": "Discovery"
+    },
+    "es": [
+      "¿Qué diferencia hay entre determinantes estructurales e intermedios?",
+      "¿Por qué las intervenciones solo downstream no son suficientes?",
+      "¿Cómo se vincula el empleo informal con la morbilidad observada?",
+      "¿Qué Estrategia Sanitaria Nacional es más relevante para este caso?"
+    ],
+    "en": [
+      "¿Qué diferencia hay entre determinantes estructurales e intermedios?",
+      "¿Por qué las intervenciones solo downstream no son suficientes?",
+      "¿Cómo se vincula el empleo informal con la morbilidad observada?",
+      "¿Qué Estrategia Sanitaria Nacional es más relevante para este caso?"
+    ]
+  },
+  "deepening": {
+    "title": {
+      "es": "Deepening (Profundización)",
+      "en": "Deepening"
+    },
+    "es": [
+      "¿Cómo aplicarías el análisis de determinantes sociales en tu práctica como médico de primer nivel?",
+      "¿Qué actores intersectoriales deberías involucrar para abordar las causas raíz de la desnutrición en una comunidad?"
+    ],
+    "en": [
+      "¿Cómo aplicarías el análisis de determinantes sociales en tu práctica como médico de primer nivel?",
+      "¿Qué actores intersectoriales deberías involucrar para abordar las causas raíz de la desnutrición en una comunidad?"
+    ]
+  }
+}

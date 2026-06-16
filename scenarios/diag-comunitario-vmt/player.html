@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador — Salud Pública UCSUR</title>
+<style>
+:root{
+  --bg:#f0ede6; --panel:#ffffff; --ink:#1f2a24; --muted:#6b7872;
+  --line:#dfe3de; --primary:#1f6f54; --primary-dark:#154a38;
+  --accent:#d97a3d; --accent-soft:#fbe9da;
+  --ok:#1f6f54; --bad:#b2452f;
+  --shadow:0 2px 12px rgba(31,42,36,0.08); --radius:10px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{background:var(--bg); color:var(--ink);
+  font-family:"Source Sans 3","Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased; min-height:100vh;}
+h1,h2,h3{font-family:"Spectral","Georgia",serif; font-weight:600;}
+
+/* ── HEADER ── */
+header{
+  background:var(--primary-dark); color:#fff;
+  padding:12px 20px; display:flex; align-items:center;
+  justify-content:space-between; gap:12px; flex-wrap:wrap;
+  position:sticky; top:0; z-index:30; box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.hdr-left h1{font-size:1.05rem; color:#fff; margin:0;}
+.hdr-left .stage-tag{font-size:.68rem; letter-spacing:1.4px;
+  text-transform:uppercase; color:var(--accent); display:block; margin-top:1px;}
+.hdr-center{flex:1; min-width:120px; max-width:280px;}
+.progress-bar{background:rgba(255,255,255,.18); border-radius:6px; height:7px; overflow:hidden;}
+.progress-bar>div{height:100%; background:var(--accent); transition:width .35s ease;}
+.progress-label{font-size:.68rem; color:rgba(255,255,255,.6); margin-top:3px;}
+.hdr-right{display:flex; align-items:center; gap:10px;}
+.score-badge{
+  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+  border-radius:20px; padding:4px 12px; font-size:.8rem; font-weight:700;
+  color:#fff; white-space:nowrap; min-width:80px; text-align:center;
+}
+.lang-toggle{display:flex; gap:3px; background:rgba(255,255,255,.1); border-radius:20px; padding:3px;}
+.lang-toggle button{border:none; background:transparent; color:#fff;
+  padding:4px 11px; border-radius:14px; cursor:pointer; font-size:.75rem; font-weight:700;}
+.lang-toggle button.active{background:var(--accent); color:#3a1c08;}
+
+/* ── EXPEDIENTE (top strip, collapsible) ── */
+#exp-strip{
+  background:var(--panel); border-bottom:2px solid var(--line);
+  box-shadow:0 2px 6px rgba(31,42,36,.05);
+}
+.exp-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 20px; cursor:pointer; user-select:none;
+}
+.exp-header h2{font-size:.88rem; color:var(--primary-dark); margin:0;}
+.exp-toggle-btn{
+  background:none; border:1px solid var(--line); border-radius:6px;
+  padding:3px 10px; font-size:.72rem; color:var(--muted); cursor:pointer;
+}
+.exp-toggle-btn:hover{border-color:var(--primary); color:var(--primary);}
+#exp-body{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px; padding:12px 20px 16px;
+  border-top:1px solid var(--line);
+}
+#exp-body.collapsed{display:none;}
+
+/* Expediente child sections */
+.exp-section h3{
+  font-size:.7rem; text-transform:uppercase; letter-spacing:.8px;
+  color:var(--muted); margin-bottom:6px; padding-bottom:4px;
+  border-bottom:1px solid var(--line);
+}
+.exp-table{width:100%; border-collapse:collapse; font-size:.76rem;}
+.exp-table th,.exp-table td{padding:4px 6px; border-bottom:1px solid var(--line); text-align:left;}
+.exp-table th{color:var(--muted); font-weight:600; font-size:.7rem;}
+.chart-row{display:flex; align-items:center; gap:6px; margin:5px 0; font-size:.74rem;}
+.chart-lbl{width:92px; flex-shrink:0; color:var(--muted); font-size:.72rem;}
+.chart-track{flex:1; background:var(--line); border-radius:4px; height:9px; overflow:hidden;}
+.chart-fill{height:100%; background:var(--accent); border-radius:4px; transition:width .4s ease;}
+.chart-val{width:32px; text-align:right; font-weight:700; font-size:.72rem;}
+.doc-pill{
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid var(--line); border-radius:6px;
+  padding:5px 9px; font-size:.74rem; margin:3px 3px 3px 0;
+  background:#fbfaf6;
+}
+.doc-pill a{color:var(--primary); text-decoration:none; font-weight:600;}
+.doc-pill a:hover{text-decoration:underline;}
+
+/* ── MAIN CONTENT ── */
+.main-wrap{
+  max-width:900px; margin:0 auto; padding:18px 20px 90px;
+}
+.main-card{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:var(--radius); box-shadow:var(--shadow); padding:22px 24px;
+}
+.narrative{
+  background:var(--accent-soft); border-left:4px solid var(--accent);
+  padding:13px 16px; border-radius:8px; font-size:.97rem; line-height:1.6;
+  margin-bottom:16px;
+}
+/* infobutton inline */
+.infobutton{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--primary-dark); color:#fff; border:none;
+  border-radius:50%; width:16px; height:16px; font-size:.58rem;
+  font-weight:900; cursor:pointer; vertical-align:middle;
+  margin:0 2px; position:relative; flex-shrink:0;
+  transition:.15s; font-family:sans-serif;
+}
+.infobutton:hover{background:var(--accent);}
+.infobutton-wrap{display:inline; position:relative;}
+.infobutton-tooltip{
+  display:none; position:absolute; top:calc(100% + 6px); left:50%;
+  transform:translateX(-50%); min-width:200px; max-width:300px;
+  background:#1f2a24; color:#fff; border-radius:8px;
+  padding:9px 12px; font-size:.78rem; line-height:1.45;
+  z-index:40; box-shadow:0 4px 16px rgba(0,0,0,.3);
+  white-space:normal; pointer-events:none;
+}
+.infobutton-wrap:hover .infobutton-tooltip,
+.infobutton:focus + .infobutton-tooltip{ display:block; }
+.infobutton-tooltip::before{
+  content:''; position:absolute; bottom:100%; left:50%; transform:translateX(-50%);
+  border:5px solid transparent; border-bottom-color:#1f2a24;
+}
+
+.node-prompt{font-weight:700; font-size:1.05rem; margin-bottom:14px; color:var(--primary-dark);}
+.options{display:flex; flex-direction:column; gap:10px;}
+.option-btn{
+  text-align:left; border:1px solid var(--line); background:#fff;
+  border-radius:9px; padding:13px 16px; cursor:pointer; font-size:.95rem;
+  line-height:1.45; color:var(--ink); transition:.15s; display:flex;
+  align-items:flex-start; gap:10px;
+}
+.option-btn:hover:not(:disabled){border-color:var(--primary); background:#f1f8f4;}
+.option-btn:focus-visible{outline:3px solid var(--primary); outline-offset:2px;}
+.option-btn:disabled{cursor:default; opacity:.9;}
+.option-btn.correct{border-color:var(--ok); background:#eaf6ef;}
+.option-btn.incorrect{border-color:var(--bad); background:#fbeae6;}
+.opt-letter{
+  font-weight:800; color:var(--muted); flex-shrink:0; width:20px;
+  padding-top:1px; font-size:.9rem;
+}
+.opt-points{
+  display:none; /* points hidden from learner before selection */
+}
+
+.feedback-panel{
+  margin-top:13px; padding:12px 16px; border-radius:8px;
+  font-size:.92rem; line-height:1.5; display:none;
+}
+.feedback-panel.show{display:block; animation:slidein .22s ease;}
+.feedback-panel.correct{background:#eaf6ef; border:1px solid var(--ok); color:#13402e;}
+.feedback-panel.incorrect{background:#fbeae6; border:1px solid var(--bad); color:#5e2317;}
+@keyframes slidein{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+
+.score-delta{
+  display:inline-block; font-weight:800; margin-right:5px;
+}
+.score-delta.plus{color:var(--ok);}
+.score-delta.minus{color:var(--bad);}
+
+.guidance{
+  font-size:.83rem; color:var(--muted); background:#f1f5f2;
+  border-radius:7px; padding:9px 12px; margin-bottom:11px; line-height:1.5;
+}
+textarea#reflection-text{
+  width:100%; min-height:110px; border:1px solid var(--line); border-radius:8px;
+  padding:10px 12px; font-size:.93rem; font-family:inherit; resize:vertical;
+  margin-top:4px;
+}
+
+/* ending */
+.ending-box{text-align:center; padding:24px 10px;}
+.ending-box .ending-label{
+  color:var(--primary); font-size:1.15rem; margin-bottom:8px;
+  font-family:"Spectral","Georgia",serif;
+}
+.ending-box .ending-summary{
+  font-size:.96rem; line-height:1.65; max-width:520px; margin:0 auto 18px;
+  color:var(--ink);
+}
+.final-score-display{
+  background:var(--primary-dark); color:#fff; display:inline-block;
+  border-radius:10px; padding:12px 28px; margin-bottom:16px;
+}
+.final-score-display .lbl{font-size:.75rem; opacity:.7; display:block; margin-bottom:3px;}
+.final-score-display .val{font-size:2rem; font-weight:800; font-family:"Spectral","Georgia",serif;}
+.final-score-display .max{font-size:.9rem; opacity:.6;}
+.ending-btns{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+
+/* ── FOOTER (navigation) ── */
+footer{
+  position:fixed; bottom:0; left:0; right:0;
+  background:rgba(246,244,238,.96); backdrop-filter:blur(6px);
+  border-top:1px solid var(--line); padding:10px 24px;
+  display:flex; justify-content:space-between; align-items:center;
+  gap:10px; z-index:30;
+}
+.btn{
+  border:none; border-radius:8px; padding:10px 20px;
+  font-size:.9rem; font-weight:700; cursor:pointer; transition:.15s;
+}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-secondary{background:transparent; border:1px solid var(--line); color:var(--ink);}
+.btn-secondary:hover{border-color:var(--primary); color:var(--primary);}
+.btn-accent{background:var(--accent); color:#fff;}
+.btn-accent:hover{background:#c06730;}
+.btn:disabled{opacity:.35; cursor:default;}
+
+/* ── RÚBRICA (hidden from learner — available in print summary only) ── */
+#rubric-strip{
+  display:none;
+}
+.rubric-strip-header{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:8px;
+}
+.rubric-strip-header h2{font-size:.82rem; color:var(--primary-dark); margin:0;}
+#rubric-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap:8px;
+}
+.rubric-cell{font-size:.72rem;}
+.rubric-cell label{display:block; color:var(--muted); margin-bottom:2px; line-height:1.3;}
+.rubric-cell-row{display:flex; align-items:center; gap:6px;}
+.rubric-cell-row input[type=range]{flex:1; height:4px; accent-color:var(--primary);}
+.rubric-cell-val{font-weight:800; font-size:.78rem; color:var(--primary); width:14px; text-align:center;}
+
+/* ── MODALS ── */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(20,30,25,.55);
+  display:none; align-items:center; justify-content:center; padding:20px; z-index:60;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+  background:#fff; border-radius:12px; max-width:700px; width:100%;
+  max-height:88vh; overflow-y:auto; padding:24px; position:relative;
+}
+.modal h2{margin:0 0 4px; color:var(--primary-dark);}
+.modal-close{
+  position:absolute; top:16px; right:16px; background:none; border:none;
+  font-size:1.2rem; cursor:pointer; color:var(--muted); line-height:1;
+}
+.modal-close:hover{color:var(--ink);}
+
+/* pathway map */
+.pathway-map{display:flex; gap:0; overflow-x:auto; padding:8px 0 4px;}
+.path-node{
+  display:flex; flex-direction:column; align-items:center;
+}
+.path-node-box{
+  border:2px solid var(--line); border-radius:8px; padding:8px 12px;
+  font-size:.72rem; text-align:center; min-width:110px; position:relative;
+  background:#fff;
+}
+.path-node-box.decision{border-color:var(--primary);}
+.path-node-box.reflection{border-color:var(--accent);}
+.path-node-box.ending-node{border-color:var(--bad); background:#fff7f5;}
+.path-node-box .path-id{font-weight:800; display:block; margin-bottom:2px; font-size:.68rem; color:var(--muted);}
+.path-node-box .path-type{font-size:.65rem; color:var(--muted);}
+.path-node-box .path-score{
+  position:absolute; top:-10px; right:-10px;
+  background:var(--ok); color:#fff; font-size:.62rem; font-weight:800;
+  border-radius:10px; padding:2px 6px;
+}
+.path-node-box .path-score.neg{background:var(--bad);}
+.path-arrow{
+  font-size:1.1rem; color:var(--muted); padding:0 4px; align-self:center;
+  line-height:1; padding-bottom:28px;
+}
+.path-choice{font-size:.66rem; color:var(--ink); margin-top:4px; text-align:center; max-width:110px; line-height:1.3;}
+
+/* debrief */
+.debrief-phase{margin-top:16px;}
+.debrief-phase h3{
+  color:var(--primary); font-size:.9rem; margin-bottom:8px;
+  padding-bottom:4px; border-bottom:1px solid var(--line);
+}
+.debrief-phase ul{padding-left:18px; font-size:.9rem; line-height:1.7;}
+
+/* credits */
+.credits{
+  font-size:.68rem; color:var(--muted); padding:6px 20px 10px;
+  text-align:center; line-height:1.5;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="hdr-left">
+    <h1 id="hdr-title">—</h1>
+    <span class="stage-tag" id="hdr-stage">—</span>
+  </div>
+  <div class="hdr-center">
+    <div class="progress-bar"><div id="progress-fill"></div></div>
+    <div class="progress-label" id="progress-label">0%</div>
+  </div>
+  <div class="hdr-right">
+    <div class="score-badge" id="score-badge">— / —</div>
+    <div class="lang-toggle">
+      <button id="lang-es" class="active" onclick="setLang('es')">ES</button>
+      <button id="lang-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ EXPEDIENTE (top, collapsible) ═══ -->
+<div id="exp-strip">
+  <div class="exp-header" onclick="toggleExp()">
+    <h2 id="exp-title">Expediente</h2>
+    <button class="exp-toggle-btn" id="exp-toggle-btn">▲ Ocultar</button>
+  </div>
+  <div id="exp-body"></div>
+</div>
+
+<!-- ═══ MAIN SIMULATION PANEL ═══ -->
+<div class="main-wrap">
+  <div class="main-card" id="main-stage">
+    <div class="narrative" id="node-narrative" style="display:none;"></div>
+    <p class="node-prompt" id="node-prompt" style="display:none;"></p>
+    <div class="guidance" id="node-guidance" style="display:none;"></div>
+    <div class="options" id="node-options" style="display:none;"></div>
+    <textarea id="reflection-text" style="display:none;" placeholder=""></textarea>
+    <div class="feedback-panel" id="feedback-panel"></div>
+    <div class="ending-box" id="ending-box" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ═══ RÚBRICA (bottom strip, compact) ═══ -->
+<div id="rubric-strip">
+  <div class="rubric-strip-header">
+    <h2 id="rubric-title">Autoevaluación</h2>
+  </div>
+  <div id="rubric-grid"></div>
+</div>
+
+<!-- ═══ FIXED FOOTER (navigation) ═══ -->
+<footer>
+  <button class="btn btn-secondary" id="btn-back" onclick="goBack()" disabled>⟵ <span id="btn-back-lbl">Atrás</span></button>
+  <div style="display:flex; gap:8px;">
+    <button class="btn btn-secondary" id="btn-pathway" onclick="openPathway()" style="display:none;">🗺 <span id="btn-pathway-lbl">Mi ruta</span></button>
+    <button class="btn btn-secondary" id="btn-debrief" onclick="openDebrief()" style="display:none;">💬 <span id="btn-debrief-lbl">Debrief</span></button>
+  </div>
+  <button class="btn btn-primary" id="btn-continue" onclick="continueFlow()" disabled><span id="btn-continue-lbl">Continuar</span> ⟶</button>
+</footer>
+
+<!-- ═══ MODAL: DEBRIEFING ═══ -->
+<div class="modal-overlay" id="debrief-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('debrief-modal')">✕</button>
+    <h2 id="debrief-heading">Debriefing — Modelo 3-D</h2>
+    <div id="debrief-body"></div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: PATHWAY MAP ═══ -->
+<div class="modal-overlay" id="pathway-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('pathway-modal')">✕</button>
+    <h2 id="pathway-heading">Tu ruta en este escenario</h2>
+    <p id="pathway-subtitle" style="font-size:.82rem;color:var(--muted);margin:4px 0 14px;"></p>
+    <div id="pathway-body" class="pathway-map"></div>
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="printSummary()">🖨 <span id="btn-print-lbl">Imprimir resumen</span></button>
+      <button class="btn btn-primary" onclick="closeModal('pathway-modal')" id="pathway-close-btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: INFOBUTTON CONTENT ═══ -->
+<div class="modal-overlay" id="info-modal">
+  <div class="modal" style="max-width:480px;">
+    <button class="modal-close" onclick="closeModal('info-modal')">✕</button>
+    <h2 id="info-modal-title" style="font-size:1rem;">ℹ</h2>
+    <p id="info-modal-body" style="font-size:.9rem;line-height:1.6;margin-top:10px;"></p>
+    <div style="margin-top:16px;text-align:right;">
+      <button class="btn btn-primary" onclick="closeModal('info-modal')" id="info-close-btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="credits" id="credits"></div>
+
+<script>
+/* ═══════════════════════════════════
+   ENGINE — Simulador UCSUR / CAN-Sim
+   Versión 2 — Score + Pathway + Infobuttons
+═══════════════════════════════════ */
+let LANG = "es";
+let scenario = null, rubric = null, debrief = null;
+let history = [];          // [{nodeId, optId, points}]
+let currentNodeId = null;
+let pendingSelection = null;
+let reflections = {};      // nodeId -> text
+let totalScore = 0;
+let expOpen = true;
+let rubricScores = {};
+
+const UI = {
+  es:{
+    exp:"Expediente", expHide:"▲ Ocultar", expShow:"▼ Mostrar",
+    rubricTitle:"Autoevaluación (Likert 1–6)",
+    back:"Atrás", continue:"Continuar", debriefBtn:"Debrief",
+    pathwayBtn:"Mi ruta", debriefHeading:"Debriefing — Modelo 3-D",
+    pathwayHeading:"Tu ruta en este escenario",
+    pathwaySubtitle:(s,m)=>`Puntaje total: ${s} / ${m}`,
+    correct:"✔ Correcto", incorrect:"✘ A revisar",
+    score:"Puntaje", scoreOf:"de",
+    empty:"Aún no hay decisiones.",
+    reflection:"Escribe tu análisis aquí...",
+    decisionsTaken:"Decisiones tomadas",
+    reflectionsTaken:"Reflexiones",
+    rubricScores:"Autoevaluación (Likert 1-6)",
+    printBtn:"Imprimir resumen", closeBtn:"Cerrar",
+    pathwayClose:"Cerrar",
+    nodeTypes:{narrative_decision:"Decisión",open_reflection:"Reflexión",ending:"Final"},
+  },
+  en:{
+    exp:"Case File", expHide:"▲ Hide", expShow:"▼ Show",
+    rubricTitle:"Self-Assessment (Likert 1–6)",
+    back:"Back", continue:"Continue", debriefBtn:"Debrief",
+    pathwayBtn:"My route", debriefHeading:"Debriefing — 3-D Model",
+    pathwayHeading:"Your route through this scenario",
+    pathwaySubtitle:(s,m)=>`Total score: ${s} / ${m}`,
+    correct:"✔ Correct", incorrect:"✘ Review",
+    score:"Score", scoreOf:"of",
+    empty:"No decisions yet.",
+    reflection:"Write your analysis here...",
+    decisionsTaken:"Decisions made",
+    reflectionsTaken:"Reflections",
+    rubricScores:"Self-assessment (Likert 1-6)",
+    printBtn:"Print summary", closeBtn:"Close",
+    pathwayClose:"Close",
+    nodeTypes:{narrative_decision:"Decision",open_reflection:"Reflection",ending:"Ending"},
+  }
+};
+
+function t(k){ return UI[LANG][k] || k; }
+function bi(f){ return f ? (f[LANG]||f.es||f.en||"") : ""; }
+
+/* ── DATA LOAD ── */
+async function loadData(){
+  const [s,r,d] = await Promise.all([
+    fetch("scenario.json").then(x=>x.json()),
+    fetch("rubric.json").then(x=>x.json()).catch(()=>null),
+    fetch("debrief.json").then(x=>x.json()).catch(()=>null)
+  ]);
+  scenario=s; rubric=r; debrief=d;
+  LANG = scenario.meta.language_default || "es";
+  setLang(LANG, true);
+  initSCORM();
+  renderExpediente();
+  renderRubricGrid();
+  currentNodeId = scenario.nodes[0].id;
+  history=[{nodeId:currentNodeId, optId:null, points:0}];
+  renderNode();
+  updateScore();
+  document.getElementById("credits").textContent = bi(scenario.meta.credits);
+}
+
+/* ── SCORM ── */
+let scormAPI=null;
+function findAPI(w){ let n=0; while(w&&n<10){if(w.API)return w.API; if(w.parent===w)break; w=w.parent; n++;} return null; }
+function initSCORM(){ try{scormAPI=findAPI(window); if(scormAPI)scormAPI.LMSInitialize("");}catch(e){scormAPI=null;} }
+function scorm(k,v){ try{if(scormAPI)scormAPI.LMSSetValue(k,String(v));}catch(e){} }
+window.addEventListener("beforeunload",()=>{ try{if(scormAPI)scormAPI.LMSFinish("");}catch(e){} });
+
+/* ── LANG SWITCH ── */
+function setLang(lang, silent){
+  LANG=lang;
+  document.getElementById("lang-es").classList.toggle("active",lang==="es");
+  document.getElementById("lang-en").classList.toggle("active",lang==="en");
+  document.documentElement.lang=lang;
+  if(!scenario)return;
+  document.getElementById("hdr-title").textContent=bi(scenario.meta.title);
+  const stageMap={
+    es:{diagnostico:"Etapa 1 · Diagnóstico Comunitario",promocion:"Etapa 2 · Promoción de la Salud",planificacion:"Etapa 3 · Planificación y Evaluación"},
+    en:{diagnostico:"Stage 1 · Community Diagnosis",promocion:"Stage 2 · Health Promotion",planificacion:"Stage 3 · Planning & Evaluation"}
+  };
+  document.getElementById("hdr-stage").textContent=(stageMap[lang]||{})[scenario.meta.stage]||scenario.meta.stage;
+  document.getElementById("exp-title").textContent=t("exp");
+  document.getElementById("exp-toggle-btn").textContent=expOpen?t("expHide"):t("expShow");
+  document.getElementById("rubric-title").textContent=t("rubricTitle");
+  document.getElementById("btn-back-lbl").textContent=t("back");
+  document.getElementById("btn-continue-lbl").textContent=t("continue");
+  document.getElementById("btn-debrief-lbl").textContent=t("debriefBtn");
+  document.getElementById("btn-pathway-lbl").textContent=t("pathwayBtn");
+  document.getElementById("debrief-heading").textContent=t("debriefHeading");
+  document.getElementById("pathway-heading").textContent=t("pathwayHeading");
+  document.getElementById("reflection-text").placeholder=t("reflection");
+  document.getElementById("btn-print-lbl").textContent=t("printBtn");
+  document.getElementById("pathway-close-btn").textContent=t("pathwayClose");
+  document.getElementById("info-close-btn").textContent=t("closeBtn");
+  updateScore();
+  if(!silent){ renderExpediente(); renderRubricGrid(); renderNode(); }
+}
+
+/* ── EXPEDIENTE toggle ── */
+function toggleExp(){
+  expOpen=!expOpen;
+  document.getElementById("exp-body").classList.toggle("collapsed",!expOpen);
+  document.getElementById("exp-toggle-btn").textContent=expOpen?t("expHide"):t("expShow");
+}
+
+/* ── EXPEDIENTE render (horizontal grid) ── */
+function renderExpediente(){
+  const el=document.getElementById("exp-body");
+  el.innerHTML="";
+  const dd=scenario.dashboard_data||{};
+
+  (dd.tables||[]).forEach(tbl=>{
+    const sec=document.createElement("div"); sec.className="exp-section";
+    const h=document.createElement("h3"); h.textContent=bi(tbl.title); sec.appendChild(h);
+    const table=document.createElement("table"); table.className="exp-table";
+    const thead=document.createElement("tr");
+    tbl.columns.forEach(c=>{ const th=document.createElement("th"); th.textContent=bi(c); thead.appendChild(th); });
+    table.appendChild(thead);
+    tbl.rows.forEach(row=>{ const tr=document.createElement("tr"); row.forEach(cell=>{ const td=document.createElement("td"); td.textContent=cell; tr.appendChild(td); }); table.appendChild(tr); });
+    sec.appendChild(table); el.appendChild(sec);
+  });
+
+  (dd.charts||[]).forEach(ch=>{
+    const sec=document.createElement("div"); sec.className="exp-section";
+    const h=document.createElement("h3"); h.textContent=bi(ch.title); sec.appendChild(h);
+    const max=Math.max(...ch.data.map(d=>d.value),1);
+    ch.data.forEach(d=>{
+      const row=document.createElement("div"); row.className="chart-row";
+      const lbl=document.createElement("div"); lbl.className="chart-lbl"; lbl.textContent=bi(d.label);
+      const track=document.createElement("div"); track.className="chart-track";
+      const fill=document.createElement("div"); fill.className="chart-fill"; fill.style.width=(d.value/max*100)+"%";
+      track.appendChild(fill);
+      const val=document.createElement("div"); val.className="chart-val"; val.textContent=d.value+"%";
+      row.appendChild(lbl); row.appendChild(track); row.appendChild(val);
+      sec.appendChild(row);
+    });
+    el.appendChild(sec);
+  });
+
+  if((dd.documents||[]).length){
+    const sec=document.createElement("div"); sec.className="exp-section";
+    const h=document.createElement("h3"); h.textContent=LANG==="es"?"Documentos de referencia":"Reference documents"; sec.appendChild(h);
+    dd.documents.forEach(doc=>{
+      const pill=document.createElement("div"); pill.className="doc-pill";
+      pill.innerHTML=`<span>📄</span>`;
+      const a=document.createElement("a"); a.href=doc.link||"#"; a.target="_blank"; a.rel="noopener";
+      a.title=bi(doc.summary); a.textContent=bi(doc.title);
+      pill.appendChild(a); sec.appendChild(pill);
+    });
+    el.appendChild(sec);
+  }
+}
+
+/* ── INFOBUTTON PARSER ── */
+/* Converts [[label|content]] in text into a span with a clickable ℹ button + tooltip */
+function parseInfonodes(text){
+  const frag=document.createDocumentFragment();
+  const re=/\[\[([^\|]+)\|([^\]]+)\]\]/g;
+  let last=0, m;
+  while((m=re.exec(text))!==null){
+    if(m.index>last) frag.appendChild(document.createTextNode(text.slice(last,m.index)));
+    const label=m[1], content=m[2];
+    // The label text
+    frag.appendChild(document.createTextNode(label));
+    // The infobutton
+    const btn=document.createElement("button");
+    btn.className="infobutton"; btn.textContent="ℹ"; btn.type="button";
+    btn.setAttribute("aria-label","Más información: "+label);
+    btn.onclick=(e)=>{
+      e.stopPropagation();
+      document.getElementById("info-modal-title").textContent=label;
+      document.getElementById("info-modal-body").textContent=content;
+      document.getElementById("info-modal").classList.add("show");
+    };
+    frag.appendChild(btn);
+    last=re.lastIndex;
+  }
+  if(last<text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+  return frag;
+}
+
+/* ── RUBRIC GRID (compact bottom strip) ── */
+function renderRubricGrid(){
+  const el=document.getElementById("rubric-grid"); el.innerHTML="";
+  if(!rubric)return;
+  rubric.outcomes.forEach(o=>{
+    if(rubricScores[o.id]===undefined) rubricScores[o.id]=3;
+    const cell=document.createElement("div"); cell.className="rubric-cell";
+    const lbl=document.createElement("label"); lbl.textContent=bi(o.outcome);
+    const row=document.createElement("div"); row.className="rubric-cell-row";
+    const inp=document.createElement("input"); inp.type="range"; inp.min=1; inp.max=6; inp.value=rubricScores[o.id];
+    const val=document.createElement("span"); val.className="rubric-cell-val"; val.textContent=rubricScores[o.id];
+    inp.oninput=()=>{ rubricScores[o.id]=inp.value; val.textContent=inp.value; scorm("cmi.suspend_data.rubric_"+o.id,inp.value); };
+    row.appendChild(inp); row.appendChild(val);
+    cell.appendChild(lbl); cell.appendChild(row); el.appendChild(cell);
+  });
+}
+
+/* ── SCORE ── */
+function updateScore(){
+  const max=scenario?.meta?.max_score||"?";
+  document.getElementById("score-badge").textContent=`${t("score")}: ${totalScore} / ${max}`;
+}
+
+/* ── NODE RENDERING ── */
+function getNode(id){ return scenario.nodes.find(n=>n.id===id); }
+
+function renderNode(){
+  const node=getNode(currentNodeId);
+  if(!node) return;
+
+  const narrativeEl=document.getElementById("node-narrative");
+  const promptEl=document.getElementById("node-prompt");
+  const guidanceEl=document.getElementById("node-guidance");
+  const optionsEl=document.getElementById("node-options");
+  const feedbackEl=document.getElementById("feedback-panel");
+  const reflectionEl=document.getElementById("reflection-text");
+  const endingEl=document.getElementById("ending-box");
+  const continueBtn=document.getElementById("btn-continue");
+  const debriefBtn=document.getElementById("btn-debrief");
+  const pathwayBtn=document.getElementById("btn-pathway");
+
+  // reset
+  narrativeEl.style.display="none"; narrativeEl.innerHTML="";
+  promptEl.style.display="none"; promptEl.textContent="";
+  guidanceEl.style.display="none";
+  optionsEl.innerHTML=""; optionsEl.style.display="none";
+  feedbackEl.className="feedback-panel"; feedbackEl.innerHTML="";
+  reflectionEl.style.display="none";
+  endingEl.style.display="none"; endingEl.innerHTML="";
+  continueBtn.style.display="inline-block"; continueBtn.disabled=true;
+  debriefBtn.style.display="none"; pathwayBtn.style.display="none";
+  pendingSelection=null;
+  updateProgress();
+
+  if(node.type==="narrative_decision"){
+    narrativeEl.style.display="block";
+    narrativeEl.appendChild(parseInfonodes(bi(node.narrative)));
+    promptEl.style.display="block"; promptEl.textContent=bi(node.prompt);
+    optionsEl.style.display="flex";
+    const labels=["A","B","C","D"];
+    node.options.forEach((opt,idx)=>{
+      const btn=document.createElement("button"); btn.className="option-btn";
+      const letter=document.createElement("span"); letter.className="opt-letter"; letter.textContent=labels[idx]+".";
+      const text=document.createElement("span"); text.textContent=bi(opt.text);
+      btn.appendChild(letter); btn.appendChild(text);
+      btn.onclick=()=>selectOption(node,opt,btn);
+      optionsEl.appendChild(btn);
+    });
+  }
+  else if(node.type==="open_reflection"){
+    promptEl.style.display="block"; promptEl.textContent=bi(node.prompt);
+    if(node.guidance){ guidanceEl.style.display="block"; guidanceEl.textContent=bi(node.guidance); }
+    reflectionEl.style.display="block";
+    reflectionEl.value=reflections[node.id]||"";
+    continueBtn.disabled=!reflectionEl.value.trim();
+    reflectionEl.oninput=()=>{ continueBtn.disabled=!reflectionEl.value.trim(); };
+  }
+  else if(node.type==="ending"){
+    continueBtn.style.display="none";
+    debriefBtn.style.display="inline-flex";
+    pathwayBtn.style.display="inline-flex";
+    endingEl.style.display="block";
+    const max=scenario.meta.max_score||"?";
+    endingEl.innerHTML=`
+      <h2 class="ending-label">${bi(node.label)}</h2>
+      <p class="ending-summary">${bi(node.summary)}</p>
+      <div class="final-score-display">
+        <span class="lbl">${t("score")}</span>
+        <span class="val">${totalScore}</span>
+        <span class="max"> / ${max}</span>
+      </div>
+    `;
+    const btnsDiv=document.createElement("div"); btnsDiv.className="ending-btns";
+    const pb=document.createElement("button"); pb.className="btn btn-secondary";
+    pb.innerHTML=`🗺 ${t("pathwayBtn")}`; pb.onclick=openPathway;
+    const db=document.createElement("button"); db.className="btn btn-accent";
+    db.innerHTML=`💬 ${t("debriefBtn")}`; db.onclick=openDebrief;
+    const sb=document.createElement("button"); sb.className="btn btn-secondary";
+    sb.innerHTML=`🖨 ${t("printBtn")}`; sb.onclick=printSummary;
+    btnsDiv.appendChild(pb); btnsDiv.appendChild(db); btnsDiv.appendChild(sb);
+    endingEl.appendChild(btnsDiv);
+    scorm("cmi.core.lesson_status","completed");
+    const avg=Object.values(rubricScores).reduce((a,b)=>a+Number(b),0)/Math.max(Object.values(rubricScores).length,1);
+    scorm("cmi.core.score.raw",Math.round(totalScore/(scenario.meta.max_score||1)*100));
+  }
+  document.getElementById("btn-back").disabled=history.length<=1;
+}
+
+function selectOption(node,opt,btnEl){
+  if(pendingSelection)return;
+  pendingSelection=opt;
+  document.querySelectorAll("#node-options .option-btn").forEach(b=>b.disabled=true);
+  btnEl.classList.add(opt.correct?"correct":"incorrect");
+
+  const pts=opt.points||0;
+  totalScore=Math.max(0,totalScore+pts);
+  updateScore();
+  scorm("cmi.interactions."+history.length+".id",node.id);
+  scorm("cmi.interactions."+history.length+".result",opt.correct?"correct":"incorrect");
+  scorm("cmi.core.score.raw",totalScore);
+
+  const feedbackEl=document.getElementById("feedback-panel");
+  feedbackEl.className="feedback-panel show "+(opt.correct?"correct":"incorrect");
+  const delta=document.createElement("span"); delta.className="score-delta "+(pts>=0?"plus":"minus");
+  delta.textContent=(pts>=0?"+":"")+pts+"pts ";
+  feedbackEl.appendChild(delta);
+  feedbackEl.appendChild(document.createTextNode((opt.correct?t("correct"):t("incorrect"))+" — "+bi(opt.feedback)));
+
+  // update history entry with choice
+  history[history.length-1].optId=opt.id;
+  history[history.length-1].points=pts;
+  history[history.length-1].optText=bi(opt.text);
+
+  document.getElementById("btn-continue").disabled=false;
+}
+
+function continueFlow(){
+  const node=getNode(currentNodeId);
+  let nextId=null;
+  if(node.type==="narrative_decision"){
+    if(!pendingSelection)return;
+    nextId=pendingSelection.next;
+  } else if(node.type==="open_reflection"){
+    const txt=document.getElementById("reflection-text").value.trim();
+    if(!txt)return;
+    reflections[node.id]=txt;
+    const pts=node.points||0;
+    totalScore=Math.max(0,totalScore+pts);
+    updateScore();
+    history[history.length-1].points=pts;
+    scorm("cmi.suspend_data.reflection_"+node.id,txt.slice(0,200));
+    nextId=node.next;
+  }
+  if(!nextId)return;
+  currentNodeId=nextId;
+  history.push({nodeId:currentNodeId,optId:null,points:0});
+  renderNode();
+}
+
+function goBack(){
+  if(history.length<=1)return;
+  // undo score of current node
+  const cur=history[history.length-1];
+  totalScore=Math.max(0,totalScore-cur.points);
+  history.pop();
+  currentNodeId=history[history.length-1].nodeId;
+  updateScore();
+  renderNode();
+}
+
+function updateProgress(){
+  const total=scenario.nodes.filter(n=>n.type!=="ending").length;
+  const visited=new Set(history.map(h=>h.nodeId)).size;
+  const pct=Math.min(100,Math.round(visited/Math.max(total,1)*100));
+  document.getElementById("progress-fill").style.width=pct+"%";
+  document.getElementById("progress-label").textContent=pct+"%";
+}
+
+/* ── PATHWAY MAP MODAL ── */
+function openPathway(){
+  const body=document.getElementById("pathway-body"); body.innerHTML="";
+  const max=scenario.meta.max_score||"?";
+  document.getElementById("pathway-heading").textContent=t("pathwayHeading");
+  document.getElementById("pathway-subtitle").textContent=t("pathwaySubtitle")(totalScore,max);
+
+  history.forEach((h,i)=>{
+    const node=getNode(h.nodeId); if(!node)return;
+    if(i>0){
+      const arrow=document.createElement("div"); arrow.className="path-arrow"; arrow.textContent="→";
+      body.appendChild(arrow);
+    }
+    const wrap=document.createElement("div"); wrap.className="path-node";
+    const box=document.createElement("div");
+    box.className="path-node-box "+(node.type==="narrative_decision"?"decision":node.type==="open_reflection"?"reflection":"ending-node");
+    const idEl=document.createElement("span"); idEl.className="path-id"; idEl.textContent=node.id;
+    const typeEl=document.createElement("span"); typeEl.className="path-type"; typeEl.textContent=(t("nodeTypes")||{})[node.type]||node.type;
+    box.appendChild(idEl); box.appendChild(typeEl);
+    if(h.points!==0){
+      const scoreBadge=document.createElement("span");
+      scoreBadge.className="path-score"+(h.points<0?" neg":"");
+      scoreBadge.textContent=(h.points>0?"+":"")+h.points;
+      box.appendChild(scoreBadge);
+    }
+    wrap.appendChild(box);
+    if(h.optText){
+      const choice=document.createElement("div"); choice.className="path-choice";
+      choice.textContent=h.optText; wrap.appendChild(choice);
+    }
+    body.appendChild(wrap);
+  });
+  document.getElementById("pathway-modal").classList.add("show");
+}
+
+/* ── DEBRIEF MODAL ── */
+function openDebrief(){
+  const body=document.getElementById("debrief-body"); body.innerHTML="";
+  if(!debrief){ body.innerHTML="<p>—</p>"; }
+  else{
+    ["defusing","discovery","deepening"].forEach(key=>{
+      const sec=debrief[key]; if(!sec)return;
+      const phase=document.createElement("div"); phase.className="debrief-phase";
+      const h=document.createElement("h3"); h.textContent=bi(sec.title)||key;
+      const ul=document.createElement("ul");
+      (sec[LANG]||sec.es||[]).forEach(q=>{ const li=document.createElement("li"); li.textContent=q; ul.appendChild(li); });
+      phase.appendChild(h); phase.appendChild(ul); body.appendChild(phase);
+    });
+  }
+  document.getElementById("debrief-modal").classList.add("show");
+}
+
+/* ── MODALS ── */
+function closeModal(id){ document.getElementById(id).classList.remove("show"); }
+
+/* ── PRINT SUMMARY ── */
+function printSummary(){
+  const w=window.open("","_blank");
+  let html=`<html><head><title>${bi(scenario.meta.title)}</title>
+  <style>body{font-family:sans-serif;padding:28px;line-height:1.5;max-width:700px;margin:0 auto;}
+  h1{color:#1f6f54;font-size:1.3rem;} h2{color:#154a38;margin-top:22px;font-size:1rem;}
+  li{margin-bottom:8px;} .score{background:#154a38;color:#fff;display:inline-block;padding:8px 20px;border-radius:8px;margin:8px 0;}
+  </style></head><body>`;
+  html+=`<h1>${bi(scenario.meta.title)}</h1>`;
+  html+=`<div class="score">${t("score")}: ${totalScore} / ${scenario.meta.max_score||"?"}</div>`;
+  html+=`<h2>${t("decisionsTaken")}</h2><ul>`;
+  history.forEach(h=>{
+    const node=getNode(h.nodeId); if(!node||node.type==="ending")return;
+    if(h.optText) html+=`<li><strong>${bi(node.prompt||node.narrative||{})}</strong><br>→ ${h.optText} (${(h.points>0?"+":"")+h.points}pts)</li>`;
+  });
+  html+=`</ul>`;
+  if(Object.keys(reflections).length){
+    html+=`<h2>${t("reflectionsTaken")}</h2><ul>`;
+    Object.entries(reflections).forEach(([k,v])=>{ html+=`<li>${v.replace(/</g,"&lt;")}</li>`; });
+    html+=`</ul>`;
+  }
+  if(rubric){
+    html+=`<h2>${t("rubricScores")}</h2><ul>`;
+    rubric.outcomes.forEach(o=>{ html+=`<li>${bi(o.outcome)}: <strong>${rubricScores[o.id]||3}/6</strong></li>`; });
+    html+=`</ul>`;
+  }
+  html+=`</body></html>`;
+  w.document.write(html); w.document.close(); w.print();
+}
+
+/* ── INIT ── */
+loadData().catch(err=>{
+  document.body.innerHTML=`<div style="padding:40px;font-family:sans-serif;">
+    <h2>Error al cargar el escenario</h2><p>${err}</p>
+    <p>Verifica que <code>scenario.json</code>, <code>rubric.json</code> y <code>debrief.json</code> existan en la misma carpeta.</p>
+  </div>`;
+});
+</script>
+</body>
+</html>
