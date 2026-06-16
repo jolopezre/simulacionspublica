@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor de Escenarios — Simulaciones Salud Pública UCSUR</title>
+<style>
+  :root{
+    --bg:#f6f4ee; --panel:#ffffff; --ink:#1f2a24; --muted:#6b7872;
+    --line:#dfe3de; --primary:#1f6f54; --primary-dark:#154a38;
+    --accent:#d97a3d; --accent-soft:#fbe9da; --ok:#1f6f54; --bad:#b2452f;
+    --shadow:0 2px 10px rgba(31,42,36,0.06); --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3","Segoe UI",sans-serif;}
+  h1,h2,h3{font-family:"Spectral","Georgia",serif; font-weight:600;}
+
+  header{background:var(--primary-dark); color:#fff; padding:16px 24px;}
+  header h1{margin:0; font-size:1.2rem;}
+  header p{margin:2px 0 0; font-size:.8rem; color:#cfe3da;}
+
+  .stepper{
+    display:flex; gap:6px; padding:14px 24px; background:#fff;
+    border-bottom:1px solid var(--line); flex-wrap:wrap; max-width:1100px; margin:0 auto;
+  }
+  .step-btn{
+    flex:1; min-width:120px; border:1px solid var(--line); background:#fafaf7;
+    border-radius:8px; padding:8px 10px; font-size:.78rem; font-weight:600;
+    text-align:center; cursor:pointer; color:var(--muted); transition:.15s;
+  }
+  .step-btn.active{border-color:var(--primary); background:var(--accent-soft); color:var(--primary-dark);}
+  .step-btn .num{
+    display:inline-block; width:18px; height:18px; border-radius:50%; background:var(--line);
+    color:#fff; font-size:.7rem; line-height:18px; margin-right:4px;
+  }
+  .step-btn.active .num{background:var(--primary);}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:20px 24px 60px;}
+  .panel{background:#fff; border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; margin-bottom:18px;}
+  .panel h2{margin:0 0 4px; font-size:1.15rem; color:var(--primary-dark);}
+  .panel .hint{font-size:.82rem; color:var(--muted); margin:0 0 16px;}
+
+  label{display:block; font-size:.82rem; font-weight:600; color:var(--ink); margin-bottom:4px;}
+  input[type=text], input[type=number], input[type=url], textarea, select{
+    width:100%; border:1px solid var(--line); border-radius:8px; padding:8px 10px;
+    font-size:.88rem; font-family:inherit; margin-bottom:12px; background:#fff;
+  }
+  textarea{resize:vertical; min-height:60px;}
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .row3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+  @media (max-width:760px){.row,.row3{grid-template-columns:1fr;}}
+  .field-group{
+    border:1px solid var(--line); border-radius:8px; padding:12px; margin-bottom:14px; background:#fbfaf6;
+  }
+  .field-group .lang-pair{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .field-group .lang-pair label{font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; color:var(--muted);}
+
+  .btn{border:none; border-radius:8px; padding:9px 16px; font-size:.85rem; font-weight:700; cursor:pointer; transition:.15s;}
+  .btn-primary{background:var(--primary); color:#fff;}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-secondary{background:transparent; border:1px solid var(--line); color:var(--ink);}
+  .btn-secondary:hover{border-color:var(--primary); color:var(--primary);}
+  .btn-danger{background:#fbeae6; border:1px solid var(--bad); color:var(--bad);}
+  .btn-danger:hover{background:#f7d8d0;}
+  .btn-sm{padding:5px 10px; font-size:.75rem;}
+
+  .item-card{border:1px solid var(--line); border-radius:8px; padding:12px; margin-bottom:10px; background:#fff;}
+  .item-card .item-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .item-card .item-head strong{font-size:.88rem;}
+
+  .nav-row{display:flex; justify-content:space-between; margin-top:8px;}
+
+  .chart-bar-row{display:flex; align-items:center; gap:6px; margin:4px 0; font-size:.75rem;}
+  .chart-bar-label{width:110px; flex-shrink:0; color:var(--muted);}
+  .chart-bar-track{flex:1; background:var(--line); border-radius:4px; height:10px; overflow:hidden;}
+  .chart-bar-fill{height:100%; background:var(--accent); border-radius:4px;}
+  .chart-bar-value{width:36px; text-align:right; font-weight:600; font-size:.75rem;}
+
+  .graph-preview{display:flex; gap:24px; overflow-x:auto; padding:14px 4px;}
+  .graph-col{display:flex; flex-direction:column; gap:14px; min-width:170px;}
+  .graph-node{
+    border:2px solid var(--line); border-radius:8px; padding:8px 10px; font-size:.75rem;
+    background:#fff; position:relative;
+  }
+  .graph-node.decision{border-color:var(--primary);}
+  .graph-node.reflection{border-color:var(--accent);}
+  .graph-node.ending{border-color:var(--bad); background:#fff7f5;}
+  .graph-node .gid{font-weight:700; display:block; margin-bottom:2px;}
+  .graph-node .arrows{font-size:.7rem; color:var(--muted); margin-top:4px;}
+  .graph-warning{
+    background:#fbeae6; border:1px solid var(--bad); color:#5e2317; border-radius:8px;
+    padding:8px 12px; font-size:.8rem; margin-bottom:10px;
+  }
+  .graph-ok{
+    background:#eaf6ef; border:1px solid var(--ok); color:#13402e; border-radius:8px;
+    padding:8px 12px; font-size:.8rem; margin-bottom:10px;
+  }
+
+  .rubric-level-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+  @media (max-width:760px){.rubric-level-grid{grid-template-columns:1fr;}}
+
+  iframe#preview-frame{
+    width:100%; height:640px; border:1px solid var(--line); border-radius:8px; background:#fff;
+  }
+  .export-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+  .file-import{font-size:.82rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Editor de Escenarios — Simulaciones Virtuales de Salud Pública (UCSUR)</h1>
+  <p>Wizard visual no-code · genera scenario.json, rubric.json y debrief.json compatibles con el reproductor del repositorio</p>
+</header>
+
+<div class="stepper" id="stepper"></div>
+
+<div class="wrap">
+  <div id="step-1" class="step-panel"></div>
+  <div id="step-2" class="step-panel"></div>
+  <div id="step-3" class="step-panel"></div>
+  <div id="step-4" class="step-panel"></div>
+  <div id="step-5" class="step-panel"></div>
+  <div id="step-6" class="step-panel"></div>
+</div>
+
+<script>
+/* ===================== STATE ===================== */
+let state = {
+  meta: {
+    id: "", title: {es:"", en:""}, stage: "diagnostico",
+    course: "Salud Comunitaria y APS — UCSUR", competencies: [],
+    duration_min: 20, access: "public", language_default: "es",
+    credits: {
+      es: "Adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública / APS, UCSUR.",
+      en: "Adapted from the CAN-Sim framework (Companion Guide, 2022) for the Public Health / PHC course, UCSUR."
+    },
+    lms_url: ""
+  },
+  dashboard_data: { tables: [], charts: [], documents: [] },
+  nodes: [],
+  rubric: {
+    title: {es:"Rúbrica de Autoevaluación", en:"Self-Assessment Rubric"},
+    scale: {es:"Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica", en:"Likert scale: 6 = Fully competent · 1 = Needs significant practice"},
+    outcomes: []
+  },
+  debrief: {
+    defusing: {title:{es:"Defusing (Descarga emocional)", en:"Defusing"}, es:[
+      "¿Cómo te sentiste durante el proceso de este escenario?",
+      "¿Qué te hubiera gustado conocer o entender mejor antes de iniciar la simulación?"
+    ], en:[
+      "How did you feel during this scenario's process?",
+      "What would you have liked to know or understand better before starting the simulation?"
+    ]},
+    discovery: {title:{es:"Discovery (Descubrimiento)", en:"Discovery"}, es:[
+      "¿Qué métodos/herramientas observaste durante el proceso?",
+      "¿Qué decisiones se tomaron y por qué?",
+      "¿Qué conocimientos o habilidades de salud pública necesitaste durante la simulación?",
+      "¿Cómo se relaciona lo que aprendiste con conocimientos previos del curso?"
+    ], en:[
+      "What methods/tools did you observe during the process?",
+      "What decisions were made, and why?",
+      "What public health knowledge or skills did you need during the simulation?",
+      "How does what you learned relate to previous course content?"
+    ]},
+    deepening: {title:{es:"Deepening (Profundización)", en:"Deepening"}, es:[
+      "¿Qué nuevo conocimiento obtuviste al participar en esta simulación?",
+      "¿Cómo podrías aplicar estas nuevas prácticas en una situación clínica/comunitaria real durante tu internado o prácticas en APS?"
+    ], en:[
+      "What new knowledge did you gain from this simulation?",
+      "How could you apply these new practices in a real clinical/community situation during your PHC clerkship?"
+    ]}
+  }
+};
+
+let currentStep = 1;
+const TOTAL_STEPS = 6;
+
+const STEP_LABELS = [
+  "1. Metadatos", "2. Expediente", "3. Mapa de decisiones",
+  "4. Rúbrica", "5. Debriefing", "6. Revisión y exportación"
+];
+
+/* ===================== STEPPER ===================== */
+function renderStepper(){
+  const el = document.getElementById("stepper");
+  el.innerHTML = "";
+  STEP_LABELS.forEach((label, i)=>{
+    const btn = document.createElement("div");
+    btn.className = "step-btn" + (currentStep===i+1 ? " active":"");
+    btn.innerHTML = `<span class="num">${i+1}</span>${label.replace(/^\d+\.\s*/,"")}`;
+    btn.onclick = ()=>{ goToStep(i+1); };
+    el.appendChild(btn);
+  });
+}
+function goToStep(n){
+  currentStep = n;
+  renderStepper();
+  document.querySelectorAll(".step-panel").forEach((p,i)=>{
+    p.style.display = (i+1===n) ? "block" : "none";
+  });
+  if (n===1) renderStep1();
+  if (n===2) renderStep2();
+  if (n===3) renderStep3();
+  if (n===4) renderStep4();
+  if (n===5) renderStep5();
+  if (n===6) renderStep6();
+}
+
+function navButtons(prevN, nextN){
+  const div = document.createElement("div");
+  div.className = "nav-row";
+  if (prevN){
+    const b = document.createElement("button");
+    b.className = "btn btn-secondary"; b.textContent = "⟵ Anterior";
+    b.onclick = ()=>goToStep(prevN);
+    div.appendChild(b);
+  } else { div.appendChild(document.createElement("span")); }
+  if (nextN){
+    const b = document.createElement("button");
+    b.className = "btn btn-primary"; b.textContent = "Siguiente ⟶";
+    b.onclick = ()=>goToStep(nextN);
+    div.appendChild(b);
+  }
+  return div;
+}
+
+/* ===================== STEP 1: METADATOS ===================== */
+function renderStep1(){
+  const el = document.getElementById("step-1");
+  el.innerHTML = "";
+  const panel = document.createElement("div"); panel.className="panel";
+  panel.innerHTML = `
+    <h2>Paso 1 · Metadatos del escenario</h2>
+    <p class="hint">Información general que aparecerá en el catálogo y en el encabezado del simulador.</p>
+    <label>ID único (minúsculas, guiones, sin espacios)</label>
+    <input type="text" id="m-id" placeholder="ej. promocion-las-palmeras">
+
+    <div class="field-group">
+      <div class="lang-pair">
+        <div><label>Título (Español)</label><input type="text" id="m-title-es"></div>
+        <div><label>Título (English)</label><input type="text" id="m-title-en"></div>
+      </div>
+    </div>
+
+    <div class="row3">
+      <div>
+        <label>Etapa</label>
+        <select id="m-stage">
+          <option value="diagnostico">Etapa 1 · Diagnóstico Comunitario</option>
+          <option value="promocion">Etapa 2 · Promoción de la Salud</option>
+          <option value="planificacion">Etapa 3 · Planificación y Evaluación</option>
+        </select>
+      </div>
+      <div>
+        <label>Duración estimada (minutos)</label>
+        <input type="number" id="m-duration" min="5" max="90">
+      </div>
+      <div>
+        <label>Acceso</label>
+        <select id="m-access">
+          <option value="public">Público (sin login)</option>
+          <option value="restricted">Restringido (Moodle)</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="lms-url-wrap" style="display:none;">
+      <label>URL del curso en Moodle (solo si acceso = restringido)</label>
+      <input type="url" id="m-lms-url" placeholder="https://moodle.ucsur.edu.pe/course/view.php?id=XXXX">
+    </div>
+
+    <label>Curso / eje del sílabo</label>
+    <input type="text" id="m-course">
+
+    <label>Idioma predeterminado</label>
+    <select id="m-lang">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+
+    <h3 style="font-size:.95rem; margin-top:18px;">Resultados de aprendizaje / competencias</h3>
+    <p class="hint">Uno por línea. Estos se usarán para pre-poblar la rúbrica en el Paso 4.</p>
+    <textarea id="m-competencies" rows="5" placeholder="Resultado de aprendizaje 1
+Resultado de aprendizaje 2
+Resultado de aprendizaje 3"></textarea>
+
+    <div class="field-group">
+      <div class="lang-pair">
+        <div><label>Créditos (Español)</label><textarea id="m-credits-es" rows="2"></textarea></div>
+        <div><label>Créditos (English)</label><textarea id="m-credits-en" rows="2"></textarea></div>
+      </div>
+    </div>
+  `;
+  el.appendChild(panel);
+  el.appendChild(navButtons(null, 2));
+
+  document.getElementById("m-id").value = state.meta.id;
+  document.getElementById("m-title-es").value = state.meta.title.es;
+  document.getElementById("m-title-en").value = state.meta.title.en;
+  document.getElementById("m-stage").value = state.meta.stage;
+  document.getElementById("m-duration").value = state.meta.duration_min;
+  document.getElementById("m-access").value = state.meta.access;
+  document.getElementById("m-lms-url").value = state.meta.lms_url || "";
+  document.getElementById("m-course").value = state.meta.course;
+  document.getElementById("m-lang").value = state.meta.language_default;
+  document.getElementById("m-competencies").value = state.meta.competencies.join("\n");
+  document.getElementById("m-credits-es").value = state.meta.credits.es;
+  document.getElementById("m-credits-en").value = state.meta.credits.en;
+  document.getElementById("lms-url-wrap").style.display = state.meta.access==="restricted" ? "block":"none";
+
+  document.getElementById("m-id").oninput = e=> state.meta.id = e.target.value.trim();
+  document.getElementById("m-title-es").oninput = e=> state.meta.title.es = e.target.value;
+  document.getElementById("m-title-en").oninput = e=> state.meta.title.en = e.target.value;
+  document.getElementById("m-stage").onchange = e=> state.meta.stage = e.target.value;
+  document.getElementById("m-duration").oninput = e=> state.meta.duration_min = Number(e.target.value)||0;
+  document.getElementById("m-access").onchange = e=>{
+    state.meta.access = e.target.value;
+    document.getElementById("lms-url-wrap").style.display = e.target.value==="restricted" ? "block":"none";
+  };
+  document.getElementById("m-lms-url").oninput = e=> state.meta.lms_url = e.target.value;
+  document.getElementById("m-course").oninput = e=> state.meta.course = e.target.value;
+  document.getElementById("m-lang").onchange = e=> state.meta.language_default = e.target.value;
+  document.getElementById("m-competencies").oninput = e=>{
+    state.meta.competencies = e.target.value.split("\n").map(s=>s.trim()).filter(Boolean);
+  };
+  document.getElementById("m-credits-es").oninput = e=> state.meta.credits.es = e.target.value;
+  document.getElementById("m-credits-en").oninput = e=> state.meta.credits.en = e.target.value;
+}
+
+/* ===================== STEP 2: EXPEDIENTE / DASHBOARD DATA ===================== */
+function renderStep2(){
+  const el = document.getElementById("step-2");
+  el.innerHTML = "";
+
+  const panelT = document.createElement("div"); panelT.className="panel";
+  panelT.innerHTML = `<h2>Paso 2 · Tablero de datos (Expediente)</h2>
+    <p class="hint">Tablas, gráficos y documentos de referencia que el estudiante verá en el panel izquierdo.</p>
+    <h3 style="font-size:.95rem;">Tablas</h3>`;
+  const tablesWrap = document.createElement("div"); tablesWrap.id="tables-wrap";
+  panelT.appendChild(tablesWrap);
+  const addTableBtn = document.createElement("button");
+  addTableBtn.className="btn btn-secondary btn-sm"; addTableBtn.textContent="+ Añadir tabla";
+  addTableBtn.onclick = ()=>{
+    state.dashboard_data.tables.push({title:{es:"",en:""}, columns:[{es:"",en:""},{es:"",en:""}], rows:[["",""]]});
+    renderStep2();
+  };
+  panelT.appendChild(addTableBtn);
+  el.appendChild(panelT);
+  renderTables(tablesWrap);
+
+  const panelC = document.createElement("div"); panelC.className="panel";
+  panelC.innerHTML = `<h3 style="font-size:.95rem; margin-top:0;">Gráficos de barras</h3>`;
+  const chartsWrap = document.createElement("div"); chartsWrap.id="charts-wrap";
+  panelC.appendChild(chartsWrap);
+  const addChartBtn = document.createElement("button");
+  addChartBtn.className="btn btn-secondary btn-sm"; addChartBtn.textContent="+ Añadir gráfico";
+  addChartBtn.onclick = ()=>{
+    state.dashboard_data.charts.push({type:"bar", title:{es:"",en:""}, data:[{label:{es:"",en:""}, value:0}]});
+    renderStep2();
+  };
+  panelC.appendChild(addChartBtn);
+  el.appendChild(panelC);
+  renderCharts(chartsWrap);
+
+  const panelD = document.createElement("div"); panelD.className="panel";
+  panelD.innerHTML = `<h3 style="font-size:.95rem; margin-top:0;">Documentos de referencia</h3>`;
+  const docsWrap = document.createElement("div"); docsWrap.id="docs-wrap";
+  panelD.appendChild(docsWrap);
+  const addDocBtn = document.createElement("button");
+  addDocBtn.className="btn btn-secondary btn-sm"; addDocBtn.textContent="+ Añadir documento";
+  addDocBtn.onclick = ()=>{
+    state.dashboard_data.documents.push({title:{es:"",en:""}, summary:{es:"",en:""}, link:""});
+    renderStep2();
+  };
+  panelD.appendChild(addDocBtn);
+  el.appendChild(panelD);
+  renderDocs(docsWrap);
+
+  el.appendChild(navButtons(1, 3));
+}
+
+function renderTables(wrap){
+  wrap.innerHTML = "";
+  state.dashboard_data.tables.forEach((tbl, ti)=>{
+    const card = document.createElement("div"); card.className="item-card";
+    const head = document.createElement("div"); head.className="item-head";
+    head.innerHTML = `<strong>Tabla ${ti+1}</strong>`;
+    const del = document.createElement("button"); del.className="btn btn-danger btn-sm"; del.textContent="Eliminar tabla";
+    del.onclick = ()=>{ state.dashboard_data.tables.splice(ti,1); renderStep2(); };
+    head.appendChild(del); card.appendChild(head);
+
+    const titleGroup = document.createElement("div"); titleGroup.className="field-group";
+    titleGroup.innerHTML = `<div class="lang-pair">
+      <div><label>Título tabla (ES)</label><input type="text" data-k="title-es"></div>
+      <div><label>Título tabla (EN)</label><input type="text" data-k="title-en"></div>
+    </div>`;
+    titleGroup.querySelector('[data-k="title-es"]').value = tbl.title.es;
+    titleGroup.querySelector('[data-k="title-en"]').value = tbl.title.en;
+    titleGroup.querySelector('[data-k="title-es"]').oninput = e=>tbl.title.es=e.target.value;
+    titleGroup.querySelector('[data-k="title-en"]').oninput = e=>tbl.title.en=e.target.value;
+    card.appendChild(titleGroup);
+
+    const colsLabel = document.createElement("label"); colsLabel.textContent = "Columnas (ES | EN), separadas por línea";
+    card.appendChild(colsLabel);
+    const colsArea = document.createElement("textarea"); colsArea.rows=Math.max(2,tbl.columns.length);
+    colsArea.value = tbl.columns.map(c=>`${c.es} | ${c.en}`).join("\n");
+    colsArea.oninput = e=>{
+      tbl.columns = e.target.value.split("\n").map(line=>{
+        const parts = line.split("|").map(s=>(s||"").trim());
+        return {es: parts[0]||"", en: parts[1]||parts[0]||""};
+      });
+    };
+    card.appendChild(colsArea);
+
+    const rowsLabel = document.createElement("label"); rowsLabel.textContent = "Filas (valores separados por |, una fila por línea)";
+    card.appendChild(rowsLabel);
+    const rowsArea = document.createElement("textarea"); rowsArea.rows=Math.max(2,tbl.rows.length);
+    rowsArea.value = tbl.rows.map(r=>r.join(" | ")).join("\n");
+    rowsArea.oninput = e=>{
+      tbl.rows = e.target.value.split("\n").filter(l=>l.trim()).map(line=> line.split("|").map(s=>s.trim()));
+    };
+    card.appendChild(rowsArea);
+
+    wrap.appendChild(card);
+  });
+}
+
+function renderCharts(wrap){
+  wrap.innerHTML = "";
+  state.dashboard_data.charts.forEach((ch, ci)=>{
+    const card = document.createElement("div"); card.className="item-card";
+    const head = document.createElement("div"); head.className="item-head";
+    head.innerHTML = `<strong>Gráfico ${ci+1} (barras)</strong>`;
+    const del = document.createElement("button"); del.className="btn btn-danger btn-sm"; del.textContent="Eliminar gráfico";
+    del.onclick = ()=>{ state.dashboard_data.charts.splice(ci,1); renderStep2(); };
+    head.appendChild(del); card.appendChild(head);
+
+    const titleGroup = document.createElement("div"); titleGroup.className="field-group";
+    titleGroup.innerHTML = `<div class="lang-pair">
+      <div><label>Título gráfico (ES)</label><input type="text" data-k="title-es"></div>
+      <div><label>Título gráfico (EN)</label><input type="text" data-k="title-en"></div>
+    </div>`;
+    titleGroup.querySelector('[data-k="title-es"]').value = ch.title.es;
+    titleGroup.querySelector('[data-k="title-en"]').value = ch.title.en;
+    titleGroup.querySelector('[data-k="title-es"]').oninput = e=>ch.title.es=e.target.value;
+    titleGroup.querySelector('[data-k="title-en"]').oninput = e=>ch.title.en=e.target.value;
+    card.appendChild(titleGroup);
+
+    const dataLabel = document.createElement("label");
+    dataLabel.textContent = "Series: Etiqueta(ES) | Etiqueta(EN) | Valor — una por línea";
+    card.appendChild(dataLabel);
+    const dataArea = document.createElement("textarea"); dataArea.rows = Math.max(2, ch.data.length);
+    dataArea.value = ch.data.map(d=>`${d.label.es} | ${d.label.en} | ${d.value}`).join("\n");
+    dataArea.oninput = e=>{
+      ch.data = e.target.value.split("\n").filter(l=>l.trim()).map(line=>{
+        const parts = line.split("|").map(s=>(s||"").trim());
+        return {label:{es:parts[0]||"", en:parts[1]||parts[0]||""}, value: Number(parts[2])||0};
+      });
+      renderChartPreview(preview, ch);
+    };
+    card.appendChild(dataArea);
+
+    const preview = document.createElement("div");
+    preview.style.marginTop = "8px";
+    card.appendChild(preview);
+    renderChartPreview(preview, ch);
+
+    wrap.appendChild(card);
+  });
+}
+
+function renderChartPreview(container, ch){
+  container.innerHTML = "";
+  const max = Math.max(...ch.data.map(d=>d.value), 1);
+  ch.data.forEach(d=>{
+    const row = document.createElement("div"); row.className="chart-bar-row";
+    const label = document.createElement("div"); label.className="chart-bar-label"; label.textContent = d.label.es || d.label.en;
+    const track = document.createElement("div"); track.className="chart-bar-track";
+    const fill = document.createElement("div"); fill.className="chart-bar-fill"; fill.style.width=(d.value/max*100)+"%";
+    track.appendChild(fill);
+    const val = document.createElement("div"); val.className="chart-bar-value"; val.textContent = d.value+"%";
+    row.appendChild(label); row.appendChild(track); row.appendChild(val);
+    container.appendChild(row);
+  });
+}
+
+function renderDocs(wrap){
+  wrap.innerHTML = "";
+  state.dashboard_data.documents.forEach((doc, di)=>{
+    const card = document.createElement("div"); card.className="item-card";
+    const head = document.createElement("div"); head.className="item-head";
+    head.innerHTML = `<strong>Documento ${di+1}</strong>`;
+    const del = document.createElement("button"); del.className="btn btn-danger btn-sm"; del.textContent="Eliminar";
+    del.onclick = ()=>{ state.dashboard_data.documents.splice(di,1); renderStep2(); };
+    head.appendChild(del); card.appendChild(head);
+
+    const group = document.createElement("div"); group.className="field-group";
+    group.innerHTML = `<div class="lang-pair">
+      <div><label>Título (ES)</label><input type="text" data-k="title-es"></div>
+      <div><label>Título (EN)</label><input type="text" data-k="title-en"></div>
+    </div>
+    <div class="lang-pair" style="margin-top:10px;">
+      <div><label>Resumen (ES)</label><textarea rows="2" data-k="sum-es"></textarea></div>
+      <div><label>Resumen (EN)</label><textarea rows="2" data-k="sum-en"></textarea></div>
+    </div>`;
+    group.querySelector('[data-k="title-es"]').value = doc.title.es;
+    group.querySelector('[data-k="title-en"]').value = doc.title.en;
+    group.querySelector('[data-k="sum-es"]').value = doc.summary.es;
+    group.querySelector('[data-k="sum-en"]').value = doc.summary.en;
+    group.querySelector('[data-k="title-es"]').oninput = e=>doc.title.es=e.target.value;
+    group.querySelector('[data-k="title-en"]').oninput = e=>doc.title.en=e.target.value;
+    group.querySelector('[data-k="sum-es"]').oninput = e=>doc.summary.es=e.target.value;
+    group.querySelector('[data-k="sum-en"]').oninput = e=>doc.summary.en=e.target.value;
+    card.appendChild(group);
+
+    const linkLabel = document.createElement("label"); linkLabel.textContent = "Enlace (URL)";
+    const linkInput = document.createElement("input"); linkInput.type="url"; linkInput.value = doc.link || "";
+    linkInput.oninput = e=> doc.link = e.target.value;
+    card.appendChild(linkLabel); card.appendChild(linkInput);
+
+    wrap.appendChild(card);
+  });
+}
+
+/* ===================== STEP 3: MAPA DE DECISIONES (GRAFO) ===================== */
+function renderStep3(){
+  const el = document.getElementById("step-3");
+  el.innerHTML = "";
+  const panel = document.createElement("div"); panel.className="panel";
+  panel.innerHTML = `<h2>Paso 3 · Mapa de decisiones</h2>
+    <p class="hint">Cada nodo representa una pantalla del simulador. Usa el campo "Siguiente" para enlazar nodos y crear ramas/finales múltiples.</p>`;
+
+  const validationDiv = document.createElement("div"); validationDiv.id="graph-validation";
+  panel.appendChild(validationDiv);
+
+  const graphPreview = document.createElement("div"); graphPreview.id="graph-preview";
+  panel.appendChild(graphPreview);
+
+  const addRow = document.createElement("div"); addRow.style.display="flex"; addRow.style.gap="8px"; addRow.style.marginTop="10px"; addRow.style.flexWrap="wrap";
+  ["narrative_decision","open_reflection","ending"].forEach(type=>{
+    const btn = document.createElement("button");
+    btn.className="btn btn-secondary btn-sm";
+    btn.textContent = "+ " + ({narrative_decision:"Narrativa + Decisión", open_reflection:"Reflexión abierta", ending:"Final (ending)"})[type];
+    btn.onclick = ()=>{ addNode(type); };
+    addRow.appendChild(btn);
+  });
+  panel.appendChild(addRow);
+
+  const nodesWrap = document.createElement("div"); nodesWrap.id="nodes-wrap"; nodesWrap.style.marginTop="14px";
+  panel.appendChild(nodesWrap);
+
+  el.appendChild(panel);
+  el.appendChild(navButtons(2, 4));
+
+  renderGraphValidation(validationDiv);
+  renderGraphPreview(graphPreview);
+  renderNodes(nodesWrap);
+}
+
+function nextNodeIdSuffix(){
+  let i = state.nodes.length + 1;
+  while (state.nodes.some(n=>n.id === "n"+i)) i++;
+  return "n"+i;
+}
+
+function addNode(type){
+  const id = nextNodeIdSuffix();
+  let node;
+  if (type === "narrative_decision"){
+    node = {id, type, narrative:{es:"",en:""}, prompt:{es:"",en:""}, options:[
+      {id:"a", text:{es:"",en:""}, correct:true, feedback:{es:"",en:""}, next:""},
+      {id:"b", text:{es:"",en:""}, correct:false, feedback:{es:"",en:""}, next:""}
+    ]};
+  } else if (type === "open_reflection"){
+    node = {id, type, prompt:{es:"",en:""}, guidance:{es:"",en:""}, next:""};
+  } else {
+    node = {id: "end_"+String.fromCharCode(97+state.nodes.filter(n=>n.type==="ending").length), type, label:{es:"",en:""}, summary:{es:"",en:""}};
+  }
+  state.nodes.push(node);
+  renderStep3();
+}
+
+function allNodeIdsAndEnd(){
+  return state.nodes.map(n=>n.id).concat(["end"]);
+}
+
+function renderGraphValidation(container){
+  container.innerHTML = "";
+  const issues = [];
+  const ids = state.nodes.map(n=>n.id);
+  // duplicate ids
+  const dupes = ids.filter((id,i)=>ids.indexOf(id)!==i);
+  if (dupes.length) issues.push("IDs de nodo duplicados: " + [...new Set(dupes)].join(", "));
+
+  // dangling next references
+  state.nodes.forEach(n=>{
+    if (n.type === "narrative_decision"){
+      n.options.forEach(opt=>{
+        if (opt.next && !allNodeIdsAndEnd().includes(opt.next)){
+          issues.push(`Nodo "${n.id}", opción "${opt.id}" apunta a un nodo inexistente: "${opt.next}"`);
+        }
+        if (!opt.next){
+          issues.push(`Nodo "${n.id}", opción "${opt.id}" no tiene un nodo "Siguiente" definido.`);
+        }
+      });
+    }
+    if (n.type === "open_reflection"){
+      if (n.next && !allNodeIdsAndEnd().includes(n.next)){
+        issues.push(`Nodo "${n.id}" apunta a un nodo inexistente: "${n.next}"`);
+      }
+      if (!n.next){
+        issues.push(`Nodo "${n.id}" no tiene un nodo "Siguiente" definido.`);
+      }
+    }
+  });
+
+  // at least one ending
+  const endings = state.nodes.filter(n=>n.type==="ending");
+  if (endings.length === 0) issues.push("No hay ningún nodo de tipo 'Final (ending)'. Debe existir al menos uno.");
+
+  if (state.nodes.length === 0){
+    issues.length = 0;
+    issues.push("Aún no hay nodos. Añade al menos un nodo de 'Narrativa + Decisión' y uno de 'Final'.");
+  }
+
+  if (issues.length){
+    const div = document.createElement("div"); div.className="graph-warning";
+    div.innerHTML = "<strong>⚠ Revisar antes de exportar:</strong><ul style='margin:6px 0 0 18px;'>" + issues.map(i=>`<li>${i}</li>`).join("") + "</ul>";
+    container.appendChild(div);
+  } else {
+    const div = document.createElement("div"); div.className="graph-ok";
+    div.textContent = "✔ El grafo de decisiones es válido: todas las rutas están conectadas y existe al menos un final.";
+    container.appendChild(div);
+  }
+}
+
+function renderGraphPreview(container){
+  container.innerHTML = "";
+  if (state.nodes.length === 0) return;
+  // compute depth from first node via BFS
+  const depth = {};
+  const startId = state.nodes[0].id;
+  depth[startId] = 0;
+  const queue = [startId];
+  while(queue.length){
+    const cur = queue.shift();
+    const node = state.nodes.find(n=>n.id===cur);
+    if (!node) continue;
+    let nexts = [];
+    if (node.type==="narrative_decision") nexts = node.options.map(o=>o.next).filter(Boolean);
+    if (node.type==="open_reflection") nexts = node.next ? [node.next] : [];
+    nexts.forEach(nx=>{
+      if (nx !== "end" && depth[nx]===undefined){
+        depth[nx] = depth[cur]+1;
+        queue.push(nx);
+      }
+    });
+  }
+  // group by depth
+  const maxDepth = Math.max(0, ...state.nodes.map(n=> depth[n.id]===undefined ? 0 : depth[n.id]));
+  const cols = [];
+  for (let d=0; d<=maxDepth; d++) cols.push([]);
+  state.nodes.forEach(n=>{
+    const d = depth[n.id]===undefined ? 0 : depth[n.id];
+    cols[d].push(n);
+  });
+
+  const wrap = document.createElement("div"); wrap.className="graph-preview";
+  cols.forEach(colNodes=>{
+    const col = document.createElement("div"); col.className="graph-col";
+    colNodes.forEach(n=>{
+      const box = document.createElement("div");
+      box.className = "graph-node " + (n.type==="narrative_decision"?"decision":n.type==="open_reflection"?"reflection":"ending");
+      let arrows = "";
+      if (n.type==="narrative_decision"){
+        arrows = n.options.map(o=>`${o.id}→${o.next||"?"}`).join(", ");
+      } else if (n.type==="open_reflection"){
+        arrows = `→${n.next||"?"}`;
+      } else {
+        arrows = "(final)";
+      }
+      box.innerHTML = `<span class="gid">${n.id}</span>${(n.type==="narrative_decision"?"Decisión":n.type==="open_reflection"?"Reflexión":"Final")}<div class="arrows">${arrows}</div>`;
+      col.appendChild(box);
+    });
+    wrap.appendChild(col);
+  });
+  container.appendChild(wrap);
+}
+
+function renderNodes(wrap){
+  wrap.innerHTML = "";
+  state.nodes.forEach((node, ni)=>{
+    const card = document.createElement("div"); card.className="item-card";
+    const head = document.createElement("div"); head.className="item-head";
+    const typeLabel = {narrative_decision:"Narrativa + Decisión", open_reflection:"Reflexión abierta", ending:"Final (ending)"}[node.type];
+    head.innerHTML = `<strong>${node.id} — ${typeLabel}</strong>`;
+    const btnGroup = document.createElement("div"); btnGroup.style.display="flex"; btnGroup.style.gap="6px";
+
+    const dup = document.createElement("button"); dup.className="btn btn-secondary btn-sm"; dup.textContent="Duplicar";
+    dup.onclick = ()=>{
+      const copy = JSON.parse(JSON.stringify(node));
+      copy.id = nextNodeIdSuffix();
+      if (copy.type==="ending") copy.id = "end_"+String.fromCharCode(97+state.nodes.filter(n=>n.type==="ending").length);
+      state.nodes.splice(ni+1,0,copy);
+      renderStep3();
+    };
+    const del = document.createElement("button"); del.className="btn btn-danger btn-sm"; del.textContent="Eliminar";
+    del.onclick = ()=>{ state.nodes.splice(ni,1); renderStep3(); };
+    btnGroup.appendChild(dup); btnGroup.appendChild(del);
+    head.appendChild(btnGroup);
+    card.appendChild(head);
+
+    // ID field (editable, with care for references)
+    const idLabel = document.createElement("label"); idLabel.textContent = "ID del nodo";
+    const idInput = document.createElement("input"); idInput.type="text"; idInput.value = node.id;
+    idInput.onchange = e=>{
+      const newId = e.target.value.trim();
+      if (!newId || newId===node.id) { e.target.value = node.id; return; }
+      if (state.nodes.some(n=>n.id===newId)){ alert("Ya existe un nodo con ese ID."); e.target.value = node.id; return; }
+      const oldId = node.id;
+      node.id = newId;
+      // update references
+      state.nodes.forEach(n=>{
+        if (n.type==="narrative_decision") n.options.forEach(o=>{ if(o.next===oldId) o.next=newId; });
+        if (n.type==="open_reflection" && n.next===oldId) n.next = newId;
+      });
+      renderStep3();
+    };
+    card.appendChild(idLabel); card.appendChild(idInput);
+
+    if (node.type === "narrative_decision"){
+      const ng = document.createElement("div"); ng.className="field-group";
+      ng.innerHTML = `<div class="lang-pair">
+        <div><label>Narrativa (ES)</label><textarea rows="3" data-k="narr-es"></textarea></div>
+        <div><label>Narrativa (EN)</label><textarea rows="3" data-k="narr-en"></textarea></div>
+      </div>
+      <div class="lang-pair" style="margin-top:10px;">
+        <div><label>Pregunta (ES)</label><textarea rows="2" data-k="prompt-es"></textarea></div>
+        <div><label>Pregunta (EN)</label><textarea rows="2" data-k="prompt-en"></textarea></div>
+      </div>`;
+      ng.querySelector('[data-k="narr-es"]').value = node.narrative.es;
+      ng.querySelector('[data-k="narr-en"]').value = node.narrative.en;
+      ng.querySelector('[data-k="prompt-es"]').value = node.prompt.es;
+      ng.querySelector('[data-k="prompt-en"]').value = node.prompt.en;
+      ng.querySelector('[data-k="narr-es"]').oninput = e=>node.narrative.es=e.target.value;
+      ng.querySelector('[data-k="narr-en"]').oninput = e=>node.narrative.en=e.target.value;
+      ng.querySelector('[data-k="prompt-es"]').oninput = e=>node.prompt.es=e.target.value;
+      ng.querySelector('[data-k="prompt-en"]').oninput = e=>node.prompt.en=e.target.value;
+      card.appendChild(ng);
+
+      const optsTitle = document.createElement("h3"); optsTitle.style.fontSize=".88rem"; optsTitle.textContent="Opciones";
+      card.appendChild(optsTitle);
+
+      node.options.forEach((opt, oi)=>{
+        const optCard = document.createElement("div");
+        optCard.style.border="1px dashed var(--line)"; optCard.style.borderRadius="8px"; optCard.style.padding="10px"; optCard.style.marginBottom="8px";
+        const optHead = document.createElement("div"); optHead.style.display="flex"; optHead.style.justifyContent="space-between"; optHead.style.alignItems="center";
+        optHead.innerHTML = `<strong style="font-size:.8rem;">Opción ${opt.id.toUpperCase()}</strong>`;
+        if (node.options.length > 2){
+          const delOpt = document.createElement("button"); delOpt.className="btn btn-danger btn-sm"; delOpt.textContent="Eliminar opción";
+          delOpt.onclick = ()=>{ node.options.splice(oi,1); renderStep3(); };
+          optHead.appendChild(delOpt);
+        }
+        optCard.appendChild(optHead);
+
+        const optBody = document.createElement("div"); optBody.className="field-group"; optBody.style.marginTop="6px";
+        optBody.innerHTML = `<div class="lang-pair">
+          <div><label>Texto opción (ES)</label><input type="text" data-k="text-es"></div>
+          <div><label>Texto opción (EN)</label><input type="text" data-k="text-en"></div>
+        </div>
+        <div class="lang-pair" style="margin-top:8px;">
+          <div><label>Retroalimentación (ES)</label><textarea rows="2" data-k="fb-es"></textarea></div>
+          <div><label>Retroalimentación (EN)</label><textarea rows="2" data-k="fb-en"></textarea></div>
+        </div>
+        <div class="row" style="margin-top:8px;">
+          <div>
+            <label>¿Es la opción correcta?</label>
+            <select data-k="correct"><option value="true">Sí</option><option value="false">No</option></select>
+          </div>
+          <div>
+            <label>Siguiente nodo</label>
+            <select data-k="next"></select>
+          </div>
+        </div>`;
+        optBody.querySelector('[data-k="text-es"]').value = opt.text.es;
+        optBody.querySelector('[data-k="text-en"]').value = opt.text.en;
+        optBody.querySelector('[data-k="fb-es"]').value = opt.feedback.es;
+        optBody.querySelector('[data-k="fb-en"]').value = opt.feedback.en;
+        optBody.querySelector('[data-k="correct"]').value = String(opt.correct);
+        optBody.querySelector('[data-k="text-es"]').oninput = e=>opt.text.es=e.target.value;
+        optBody.querySelector('[data-k="text-en"]').oninput = e=>opt.text.en=e.target.value;
+        optBody.querySelector('[data-k="fb-es"]').oninput = e=>opt.feedback.es=e.target.value;
+        optBody.querySelector('[data-k="fb-en"]').oninput = e=>opt.feedback.en=e.target.value;
+        optBody.querySelector('[data-k="correct"]').onchange = e=>opt.correct = e.target.value==="true";
+
+        const nextSel = optBody.querySelector('[data-k="next"]');
+        const opts = ["(seleccionar)"].concat(allNodeIdsAndEnd().filter(id=>id!==node.id));
+        opts.forEach(idv=>{
+          const o = document.createElement("option");
+          o.value = idv==="(seleccionar)" ? "" : idv;
+          o.textContent = idv;
+          if (opt.next === o.value) o.selected = true;
+          nextSel.appendChild(o);
+        });
+        nextSel.onchange = e=>{ opt.next = e.target.value; renderGraphValidation(document.getElementById("graph-validation")); renderGraphPreview(document.getElementById("graph-preview")); };
+
+        optCard.appendChild(optBody);
+        card.appendChild(optCard);
+      });
+
+      if (node.options.length < 4){
+        const addOpt = document.createElement("button");
+        addOpt.className="btn btn-secondary btn-sm"; addOpt.textContent="+ Añadir opción";
+        addOpt.onclick = ()=>{
+          const letters = ["a","b","c","d"];
+          const used = node.options.map(o=>o.id);
+          const newLetter = letters.find(l=>!used.includes(l));
+          node.options.push({id:newLetter, text:{es:"",en:""}, correct:false, feedback:{es:"",en:""}, next:""});
+          renderStep3();
+        };
+        card.appendChild(addOpt);
+      }
+    }
+
+    else if (node.type === "open_reflection"){
+      const ng = document.createElement("div"); ng.className="field-group";
+      ng.innerHTML = `<div class="lang-pair">
+        <div><label>Pregunta de reflexión (ES)</label><textarea rows="2" data-k="prompt-es"></textarea></div>
+        <div><label>Pregunta de reflexión (EN)</label><textarea rows="2" data-k="prompt-en"></textarea></div>
+      </div>
+      <div class="lang-pair" style="margin-top:8px;">
+        <div><label>Guía/pistas (ES)</label><textarea rows="2" data-k="guide-es"></textarea></div>
+        <div><label>Guía/pistas (EN)</label><textarea rows="2" data-k="guide-en"></textarea></div>
+      </div>`;
+      ng.querySelector('[data-k="prompt-es"]').value = node.prompt.es;
+      ng.querySelector('[data-k="prompt-en"]').value = node.prompt.en;
+      ng.querySelector('[data-k="guide-es"]').value = (node.guidance||{}).es || "";
+      ng.querySelector('[data-k="guide-en"]').value = (node.guidance||{}).en || "";
+      ng.querySelector('[data-k="prompt-es"]').oninput = e=>node.prompt.es=e.target.value;
+      ng.querySelector('[data-k="prompt-en"]').oninput = e=>node.prompt.en=e.target.value;
+      ng.querySelector('[data-k="guide-es"]').oninput = e=>{ node.guidance = node.guidance||{es:"",en:""}; node.guidance.es=e.target.value; };
+      ng.querySelector('[data-k="guide-en"]').oninput = e=>{ node.guidance = node.guidance||{es:"",en:""}; node.guidance.en=e.target.value; };
+      card.appendChild(ng);
+
+      const nextLabel = document.createElement("label"); nextLabel.textContent="Siguiente nodo";
+      const nextSel = document.createElement("select");
+      const opts = ["(seleccionar)"].concat(allNodeIdsAndEnd().filter(id=>id!==node.id));
+      opts.forEach(idv=>{
+        const o = document.createElement("option");
+        o.value = idv==="(seleccionar)" ? "" : idv;
+        o.textContent = idv;
+        if (node.next === o.value) o.selected = true;
+        nextSel.appendChild(o);
+      });
+      nextSel.onchange = e=>{ node.next = e.target.value; renderGraphValidation(document.getElementById("graph-validation")); renderGraphPreview(document.getElementById("graph-preview")); };
+      card.appendChild(nextLabel); card.appendChild(nextSel);
+    }
+
+    else if (node.type === "ending"){
+      const ng = document.createElement("div"); ng.className="field-group";
+      ng.innerHTML = `<div class="lang-pair">
+        <div><label>Etiqueta del final (ES)</label><input type="text" data-k="label-es"></div>
+        <div><label>Etiqueta del final (EN)</label><input type="text" data-k="label-en"></div>
+      </div>
+      <div class="lang-pair" style="margin-top:8px;">
+        <div><label>Resumen (ES)</label><textarea rows="3" data-k="sum-es"></textarea></div>
+        <div><label>Resumen (EN)</label><textarea rows="3" data-k="sum-en"></textarea></div>
+      </div>`;
+      ng.querySelector('[data-k="label-es"]').value = node.label.es;
+      ng.querySelector('[data-k="label-en"]').value = node.label.en;
+      ng.querySelector('[data-k="sum-es"]').value = node.summary.es;
+      ng.querySelector('[data-k="sum-en"]').value = node.summary.en;
+      ng.querySelector('[data-k="label-es"]').oninput = e=>node.label.es=e.target.value;
+      ng.querySelector('[data-k="label-en"]').oninput = e=>node.label.en=e.target.value;
+      ng.querySelector('[data-k="sum-es"]').oninput = e=>node.summary.es=e.target.value;
+      ng.querySelector('[data-k="sum-en"]').oninput = e=>node.summary.en=e.target.value;
+      card.appendChild(ng);
+    }
+
+    wrap.appendChild(card);
+  });
+}
+
+/* ===================== STEP 4: RUBRICA ===================== */
+function renderStep4(){
+  const el = document.getElementById("step-4");
+  el.innerHTML = "";
+  const panel = document.createElement("div"); panel.className="panel";
+  panel.innerHTML = `<h2>Paso 4 · Rúbrica de autoevaluación</h2>
+    <p class="hint">Escala Likert 1–6 (CAN-Sim). Una fila por resultado de aprendizaje (pre-poblada desde el Paso 1; puedes editar o añadir más).</p>`;
+
+  const syncBtn = document.createElement("button");
+  syncBtn.className="btn btn-secondary btn-sm"; syncBtn.style.marginBottom="10px";
+  syncBtn.textContent = "Sincronizar filas con resultados de aprendizaje (Paso 1)";
+  syncBtn.onclick = ()=>{
+    state.meta.competencies.forEach((comp, i)=>{
+      const id = "ro"+(i+1);
+      if (!state.rubric.outcomes.find(o=>o.id===id)){
+        state.rubric.outcomes.push({
+          id, outcome:{es:comp, en:comp},
+          indicators:{es:"", en:""},
+          levels:{
+            competente:{es:"Realiza de forma independiente lo descrito en el resultado de aprendizaje.", en:"Independently performs what is described in the learning outcome."},
+            intermedio:{es:"Con apoyo mínimo realiza lo descrito en el resultado de aprendizaje.", en:"With minimal support, performs what is described in the learning outcome."},
+            novato:{es:"Con orientación realiza lo descrito en el resultado de aprendizaje.", en:"With prompting, performs what is described in the learning outcome."}
+          }
+        });
+      }
+    });
+    renderStep4();
+  };
+  panel.appendChild(syncBtn);
+
+  const wrap = document.createElement("div"); wrap.id="rubric-wrap";
+  panel.appendChild(wrap);
+
+  const addBtn = document.createElement("button");
+  addBtn.className="btn btn-secondary btn-sm"; addBtn.textContent="+ Añadir resultado de aprendizaje";
+  addBtn.onclick = ()=>{
+    const id = "ro"+(state.rubric.outcomes.length+1);
+    state.rubric.outcomes.push({
+      id, outcome:{es:"",en:""}, indicators:{es:"",en:""},
+      levels:{competente:{es:"",en:""}, intermedio:{es:"",en:""}, novato:{es:"",en:""}}
+    });
+    renderStep4();
+  };
+  panel.appendChild(addBtn);
+
+  el.appendChild(panel);
+  el.appendChild(navButtons(3, 5));
+
+  renderRubricOutcomes(wrap);
+}
+
+function renderRubricOutcomes(wrap){
+  wrap.innerHTML = "";
+  state.rubric.outcomes.forEach((o, oi)=>{
+    const card = document.createElement("div"); card.className="item-card";
+    const head = document.createElement("div"); head.className="item-head";
+    head.innerHTML = `<strong>${o.id}</strong>`;
+    const del = document.createElement("button"); del.className="btn btn-danger btn-sm"; del.textContent="Eliminar";
+    del.onclick = ()=>{ state.rubric.outcomes.splice(oi,1); renderStep4(); };
+    head.appendChild(del); card.appendChild(head);
+
+    const og = document.createElement("div"); og.className="field-group";
+    og.innerHTML = `<div class="lang-pair">
+      <div><label>Resultado de aprendizaje (ES)</label><textarea rows="2" data-k="out-es"></textarea></div>
+      <div><label>Resultado de aprendizaje (EN)</label><textarea rows="2" data-k="out-en"></textarea></div>
+    </div>
+    <div class="lang-pair" style="margin-top:8px;">
+      <div><label>Indicadores (ES, separados por ·)</label><textarea rows="2" data-k="ind-es"></textarea></div>
+      <div><label>Indicadores (EN, separados por ·)</label><textarea rows="2" data-k="ind-en"></textarea></div>
+    </div>`;
+    og.querySelector('[data-k="out-es"]').value = o.outcome.es;
+    og.querySelector('[data-k="out-en"]').value = o.outcome.en;
+    og.querySelector('[data-k="ind-es"]').value = o.indicators.es;
+    og.querySelector('[data-k="ind-en"]').value = o.indicators.en;
+    og.querySelector('[data-k="out-es"]').oninput = e=>o.outcome.es=e.target.value;
+    og.querySelector('[data-k="out-en"]').oninput = e=>o.outcome.en=e.target.value;
+    og.querySelector('[data-k="ind-es"]').oninput = e=>o.indicators.es=e.target.value;
+    og.querySelector('[data-k="ind-en"]').oninput = e=>o.indicators.en=e.target.value;
+    card.appendChild(og);
+
+    const levelsTitle = document.createElement("h3"); levelsTitle.style.fontSize=".88rem"; levelsTitle.textContent="Descriptores por nivel (Likert 1-6)";
+    card.appendChild(levelsTitle);
+
+    const grid = document.createElement("div"); grid.className="rubric-level-grid";
+    [["competente","Competente (5-6)"],["intermedio","Intermedio (3-4)"],["novato","Novato (1-2)"]].forEach(([key,label])=>{
+      const cell = document.createElement("div"); cell.className="field-group";
+      cell.innerHTML = `<label style="text-transform:none; font-size:.8rem;">${label}</label>
+        <label style="font-size:.7rem; text-transform:uppercase; color:var(--muted);">ES</label>
+        <textarea rows="2" data-k="${key}-es"></textarea>
+        <label style="font-size:.7rem; text-transform:uppercase; color:var(--muted);">EN</label>
+        <textarea rows="2" data-k="${key}-en"></textarea>`;
+      cell.querySelector(`[data-k="${key}-es"]`).value = o.levels[key].es;
+      cell.querySelector(`[data-k="${key}-en"]`).value = o.levels[key].en;
+      cell.querySelector(`[data-k="${key}-es"]`).oninput = e=>o.levels[key].es=e.target.value;
+      cell.querySelector(`[data-k="${key}-en"]`).oninput = e=>o.levels[key].en=e.target.value;
+      grid.appendChild(cell);
+    });
+    card.appendChild(grid);
+
+    wrap.appendChild(card);
+  });
+  if (state.rubric.outcomes.length===0){
+    const p = document.createElement("p"); p.className="hint";
+    p.textContent = "Sin resultados de aprendizaje aún. Usa 'Sincronizar' para generarlos desde el Paso 1, o añade uno manualmente.";
+    wrap.appendChild(p);
+  }
+}
+
+/* ===================== STEP 5: DEBRIEFING ===================== */
+function renderStep5(){
+  const el = document.getElementById("step-5");
+  el.innerHTML = "";
+  const panel = document.createElement("div"); panel.className="panel";
+  panel.innerHTML = `<h2>Paso 5 · Preguntas de debriefing (Modelo 3-D)</h2>
+    <p class="hint">Defusing (descarga emocional), Discovery (descubrimiento) y Deepening (profundización) — pre-pobladas con ejemplos editables. Una pregunta por línea.</p>`;
+
+  [["defusing","Defusing — Descarga emocional"],["discovery","Discovery — Descubrimiento"],["deepening","Deepening — Profundización"]].forEach(([key,label])=>{
+    const card = document.createElement("div"); card.className="item-card";
+    card.innerHTML = `<div class="item-head"><strong>${label}</strong></div>
+      <div class="lang-pair" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div><label>Preguntas (ES) — una por línea</label><textarea rows="5" data-k="${key}-es"></textarea></div>
+        <div><label>Preguntas (EN) — una por línea</label><textarea rows="5" data-k="${key}-en"></textarea></div>
+      </div>`;
+    card.querySelector(`[data-k="${key}-es"]`).value = state.debrief[key].es.join("\n");
+    card.querySelector(`[data-k="${key}-en"]`).value = state.debrief[key].en.join("\n");
+    card.querySelector(`[data-k="${key}-es"]`).oninput = e=>{ state.debrief[key].es = e.target.value.split("\n").map(s=>s.trim()).filter(Boolean); };
+    card.querySelector(`[data-k="${key}-en"]`).oninput = e=>{ state.debrief[key].en = e.target.value.split("\n").map(s=>s.trim()).filter(Boolean); };
+    panel.appendChild(card);
+  });
+
+  el.appendChild(panel);
+  el.appendChild(navButtons(4, 6));
+}
+
+/* ===================== STEP 6: REVISION Y EXPORTACION ===================== */
+function buildScenarioJSON(){
+  return {
+    meta: state.meta,
+    dashboard_data: state.dashboard_data,
+    nodes: state.nodes,
+    rubric_ref: "rubric.json",
+    debrief_ref: "debrief.json"
+  };
+}
+function buildRubricJSON(){
+  return {
+    title: state.rubric.title,
+    scale: state.rubric.scale,
+    outcomes: state.rubric.outcomes
+  };
+}
+function buildDebriefJSON(){
+  return {
+    defusing: state.debrief.defusing,
+    discovery: state.debrief.discovery,
+    deepening: state.debrief.deepening
+  };
+}
+
+function renderStep6(){
+  const el = document.getElementById("step-6");
+  el.innerHTML = "";
+  const panel = document.createElement("div"); panel.className="panel";
+  panel.innerHTML = `<h2>Paso 6 · Revisión y exportación</h2>
+    <p class="hint">Vista previa del simulador con los datos actuales. Exporta los 3 archivos JSON, o importa un escenario existente para seguir editándolo.</p>`;
+
+  const validationDiv = document.createElement("div");
+  renderGraphValidation(validationDiv);
+  panel.appendChild(validationDiv);
+
+  const previewBtn = document.createElement("button");
+  previewBtn.className="btn btn-primary"; previewBtn.textContent="🔄 Generar / actualizar vista previa";
+  previewBtn.style.marginBottom="10px";
+  previewBtn.onclick = renderPreview;
+  panel.appendChild(previewBtn);
+
+  const iframe = document.createElement("iframe");
+  iframe.id = "preview-frame";
+  panel.appendChild(iframe);
+
+  const exportTitle = document.createElement("h3"); exportTitle.style.fontSize=".95rem"; exportTitle.style.marginTop="18px";
+  exportTitle.textContent = "Exportar";
+  panel.appendChild(exportTitle);
+
+  const exportActions = document.createElement("div"); exportActions.className="export-actions";
+  const dl1 = makeDownloadButton("scenario.json", ()=>JSON.stringify(buildScenarioJSON(), null, 2));
+  const dl2 = makeDownloadButton("rubric.json", ()=>JSON.stringify(buildRubricJSON(), null, 2));
+  const dl3 = makeDownloadButton("debrief.json", ()=>JSON.stringify(buildDebriefJSON(), null, 2));
+  exportActions.appendChild(dl1); exportActions.appendChild(dl2); exportActions.appendChild(dl3);
+  panel.appendChild(exportActions);
+
+  const importTitle = document.createElement("h3"); importTitle.style.fontSize=".95rem"; importTitle.style.marginTop="18px";
+  importTitle.textContent = "Importar escenario existente";
+  panel.appendChild(importTitle);
+  const importHint = document.createElement("p"); importHint.className="hint";
+  importHint.textContent = "Selecciona un scenario.json (y opcionalmente rubric.json / debrief.json) para continuar editándolo.";
+  panel.appendChild(importHint);
+
+  const importRow = document.createElement("div"); importRow.className="export-actions file-import";
+  importRow.innerHTML = `
+    <div><label>scenario.json</label><input type="file" id="import-scenario" accept=".json"></div>
+    <div><label>rubric.json</label><input type="file" id="import-rubric" accept=".json"></div>
+    <div><label>debrief.json</label><input type="file" id="import-debrief" accept=".json"></div>
+  `;
+  panel.appendChild(importRow);
+
+  document.getElementById("import-scenario") || (()=>{})();
+  el.appendChild(panel);
+  el.appendChild(navButtons(5, null));
+
+  setTimeout(()=>{
+    document.getElementById("import-scenario").addEventListener("change", e=>handleImport(e,"scenario"));
+    document.getElementById("import-rubric").addEventListener("change", e=>handleImport(e,"rubric"));
+    document.getElementById("import-debrief").addEventListener("change", e=>handleImport(e,"debrief"));
+  },0);
+}
+
+function makeDownloadButton(filename, getContent){
+  const btn = document.createElement("button");
+  btn.className="btn btn-secondary"; btn.textContent="⬇ Descargar " + filename;
+  btn.onclick = ()=>{
+    const blob = new Blob([getContent()], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href=url; a.download=filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+  return btn;
+}
+
+function handleImport(e, kind){
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const data = JSON.parse(reader.result);
+      if (kind==="scenario"){
+        state.meta = data.meta || state.meta;
+        state.dashboard_data = data.dashboard_data || state.dashboard_data;
+        state.nodes = data.nodes || state.nodes;
+      } else if (kind==="rubric"){
+        state.rubric = data;
+      } else if (kind==="debrief"){
+        state.debrief = data;
+      }
+      alert((kind==="scenario"?"scenario.json":kind==="rubric"?"rubric.json":"debrief.json") + " importado correctamente.");
+      goToStep(1);
+    }catch(err){
+      alert("Error al importar: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* Render preview by building a standalone player HTML in the iframe via srcdoc */
+function renderPreview(){
+  const iframe = document.getElementById("preview-frame");
+  const scenario = buildScenarioJSON();
+  const rubric = buildRubricJSON();
+  const debrief = buildDebriefJSON();
+  const playerSrc = buildPlayerHTML(scenario, rubric, debrief);
+  iframe.srcdoc = playerSrc;
+}
+
+/* Minimal embedded player for preview purposes (mirrors player-standalone.html core logic) */
+function buildPlayerHTML(scenario, rubric, debrief){
+  return `<!DOCTYPE html><html lang="${scenario.meta.language_default||'es'}"><head><meta charset="UTF-8">
+  <style>
+    body{font-family:"Source Sans 3",sans-serif; margin:0; background:#f6f4ee; color:#1f2a24;}
+    header{background:#154a38; color:#fff; padding:10px 16px;}
+    header h1{margin:0; font-size:1rem; font-family:Georgia,serif;}
+    .layout{display:grid; grid-template-columns:1fr 1.6fr; gap:10px; padding:10px;}
+    .panel{background:#fff; border:1px solid #dfe3de; border-radius:8px; padding:10px; font-size:.82rem;}
+    table{width:100%; border-collapse:collapse; font-size:.74rem;}
+    th,td{text-align:left; padding:4px; border-bottom:1px solid #dfe3de;}
+    .narrative{background:#fbe9da; border-left:4px solid #d97a3d; padding:8px; border-radius:6px; margin-bottom:8px;}
+    .opt{display:block; width:100%; text-align:left; border:1px solid #dfe3de; border-radius:6px; padding:8px; margin-bottom:6px; background:#fff; cursor:pointer; font-size:.82rem;}
+    .opt.correct{background:#eaf6ef; border-color:#1f6f54;}
+    .opt.incorrect{background:#fbeae6; border-color:#b2452f;}
+    .fb{margin-top:8px; padding:8px; border-radius:6px; font-size:.8rem; display:none;}
+    .fb.correct{background:#eaf6ef; border:1px solid #1f6f54; display:block;}
+    .fb.incorrect{background:#fbeae6; border:1px solid #b2452f; display:block;}
+    .chart-row{display:flex; align-items:center; gap:6px; font-size:.7rem; margin:3px 0;}
+    .chart-label{width:90px;} .chart-track{flex:1; background:#dfe3de; border-radius:3px; height:8px;}
+    .chart-fill{height:100%; background:#d97a3d; border-radius:3px;}
+    textarea{width:100%; min-height:70px; font-family:inherit; font-size:.82rem;}
+    .ending{text-align:center; padding:20px;}
+    button.nav{background:#1f6f54; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-weight:700; cursor:pointer; margin-top:8px;}
+    button.nav:disabled{opacity:.4;}
+  </style></head><body>
+  <header><h1 id="t"></h1></header>
+  <div class="layout">
+    <div class="panel" id="exp"></div>
+    <div class="panel" id="main"></div>
+  </div>
+  <script>
+    const scenario = ${JSON.stringify(scenario)};
+    const LANG = scenario.meta.language_default || "es";
+    function bi(f){ return f ? (f[LANG]||f.es||f.en||"") : ""; }
+    document.getElementById("t").textContent = bi(scenario.meta.title) || "(sin título)";
+    const exp = document.getElementById("exp");
+    (scenario.dashboard_data.tables||[]).forEach(tbl=>{
+      const h = document.createElement("h3"); h.style.fontSize=".8rem"; h.textContent = bi(tbl.title); exp.appendChild(h);
+      const table = document.createElement("table");
+      const thead = document.createElement("tr");
+      tbl.columns.forEach(c=>{ const th=document.createElement("th"); th.textContent=bi(c); thead.appendChild(th); });
+      table.appendChild(thead);
+      tbl.rows.forEach(row=>{ const tr=document.createElement("tr"); row.forEach(cell=>{ const td=document.createElement("td"); td.textContent=cell; tr.appendChild(td); }); table.appendChild(tr); });
+      exp.appendChild(table);
+    });
+    (scenario.dashboard_data.charts||[]).forEach(ch=>{
+      const h = document.createElement("h3"); h.style.fontSize=".8rem"; h.textContent = bi(ch.title); exp.appendChild(h);
+      const max = Math.max(...ch.data.map(d=>d.value),1);
+      ch.data.forEach(d=>{
+        const row=document.createElement("div"); row.className="chart-row";
+        const lbl=document.createElement("div"); lbl.className="chart-label"; lbl.textContent=bi(d.label);
+        const track=document.createElement("div"); track.className="chart-track";
+        const fill=document.createElement("div"); fill.className="chart-fill"; fill.style.width=(d.value/max*100)+"%";
+        track.appendChild(fill);
+        const val=document.createElement("div"); val.textContent=d.value+"%";
+        row.appendChild(lbl); row.appendChild(track); row.appendChild(val);
+        exp.appendChild(row);
+      });
+    });
+    (scenario.dashboard_data.documents||[]).forEach(doc=>{
+      const div=document.createElement("div"); div.style.border="1px solid #dfe3de"; div.style.borderRadius="6px"; div.style.padding="6px"; div.style.margin="6px 0"; div.style.fontSize=".74rem";
+      div.innerHTML = "<strong>"+bi(doc.title)+"</strong><br>"+bi(doc.summary);
+      exp.appendChild(div);
+    });
+
+    let currentId = scenario.nodes.length ? scenario.nodes[0].id : null;
+    function getNode(id){ return scenario.nodes.find(n=>n.id===id); }
+    function renderNode(){
+      const main = document.getElementById("main");
+      main.innerHTML = "";
+      if (!currentId){ main.textContent = "(sin nodos)"; return; }
+      const node = getNode(currentId);
+      if (!node){ main.textContent = "(nodo no encontrado: "+currentId+")"; return; }
+      if (node.type === "narrative_decision"){
+        const narr = document.createElement("div"); narr.className="narrative"; narr.textContent = bi(node.narrative); main.appendChild(narr);
+        const p = document.createElement("p"); p.style.fontWeight="700"; p.textContent = bi(node.prompt); main.appendChild(p);
+        const fb = document.createElement("div"); fb.className="fb";
+        node.options.forEach((opt,idx)=>{
+          const b = document.createElement("button"); b.className="opt";
+          b.textContent = String.fromCharCode(65+idx)+". "+bi(opt.text);
+          b.onclick = ()=>{
+            document.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+            b.classList.add(opt.correct?"correct":"incorrect");
+            fb.className = "fb "+(opt.correct?"correct":"incorrect");
+            fb.textContent = (opt.correct?"✔ ":"✘ ")+bi(opt.feedback);
+            const nextBtn = document.getElementById("nextbtn");
+            if (nextBtn){ nextBtn.disabled = false; nextBtn.onclick = ()=>{ currentId = opt.next==="end"?null:opt.next; renderNode(); }; }
+          };
+          main.appendChild(b);
+        });
+        main.appendChild(fb);
+        const nb = document.createElement("button"); nb.className="nav"; nb.id="nextbtn"; nb.textContent="Continuar →"; nb.disabled=true;
+        main.appendChild(nb);
+      }
+      else if (node.type === "open_reflection"){
+        const p = document.createElement("p"); p.style.fontWeight="700"; p.textContent = bi(node.prompt); main.appendChild(p);
+        if (node.guidance){ const g = document.createElement("p"); g.style.fontSize=".78rem"; g.style.color="#6b7872"; g.textContent = bi(node.guidance); main.appendChild(g); }
+        const ta = document.createElement("textarea"); main.appendChild(ta);
+        const nb = document.createElement("button"); nb.className="nav"; nb.textContent="Continuar →";
+        nb.onclick = ()=>{ currentId = node.next==="end"?null:node.next; renderNode(); };
+        main.appendChild(nb);
+      }
+      else if (node.type === "ending"){
+        const div = document.createElement("div"); div.className="ending";
+        div.innerHTML = "<h2 style='color:#1f6f54;'>"+bi(node.label)+"</h2><p>"+bi(node.summary)+"</p>";
+        main.appendChild(div);
+      }
+    }
+    renderNode();
+  <\/script>
+  </body></html>`;
+}
+
+/* ===================== INIT ===================== */
+goToStep(1);
+</script>
+</body>
+</html>

@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador — Salud Pública UCSUR</title>
+<style>
+  :root{
+    --bg:#f6f4ee;
+    --panel:#ffffff;
+    --ink:#1f2a24;
+    --muted:#6b7872;
+    --line:#dfe3de;
+    --primary:#1f6f54;
+    --primary-dark:#154a38;
+    --accent:#d97a3d;
+    --accent-soft:#fbe9da;
+    --ok:#1f6f54;
+    --bad:#b2452f;
+    --shadow:0 2px 10px rgba(31,42,36,0.06);
+    --radius:10px;
+    font-family:"Source Sans 3","Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Source Sans 3","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:"Spectral","Georgia",serif;
+    font-weight:600; letter-spacing:.2px;
+  }
+  /* ---------- HEADER ---------- */
+  header{
+    background:var(--primary-dark); color:#fff;
+    padding:14px 20px; display:flex; align-items:center;
+    justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+  header .title-block h1{margin:0; font-size:1.15rem; color:#fff;}
+  header .title-block .stage{
+    font-size:.75rem; text-transform:uppercase; letter-spacing:1.5px;
+    color:var(--accent); margin-top:2px; display:block;
+  }
+  .progress-wrap{flex:1; min-width:160px; max-width:320px; margin:0 16px;}
+  .progress-bar{
+    background:rgba(255,255,255,.18); border-radius:6px; height:8px; overflow:hidden;
+  }
+  .progress-bar > div{
+    height:100%; background:var(--accent); width:0%;
+    transition:width .3s ease;
+  }
+  .lang-toggle{
+    display:flex; gap:4px; background:rgba(255,255,255,.12);
+    border-radius:20px; padding:3px;
+  }
+  .lang-toggle button{
+    border:none; background:transparent; color:#fff; padding:5px 12px;
+    border-radius:16px; cursor:pointer; font-size:.8rem; font-weight:600;
+    transition:.15s;
+  }
+  .lang-toggle button.active{background:var(--accent); color:#3a1c08;}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns: 270px 1fr 250px;
+    gap:14px; padding:16px; align-items:start;
+    max-width:1280px; margin:0 auto;
+  }
+  @media (max-width: 980px){
+    .layout{grid-template-columns:1fr;}
+  }
+  .panel{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:14px;
+  }
+  .panel h2{font-size:.95rem; margin:0 0 10px; color:var(--primary-dark);}
+  .panel h3{font-size:.82rem; margin:14px 0 6px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px;}
+
+  /* ---------- LEFT: EXPEDIENTE ---------- */
+  #left-panel table{width:100%; border-collapse:collapse; font-size:.78rem; margin-top:4px;}
+  #left-panel th, #left-panel td{
+    text-align:left; padding:5px 6px; border-bottom:1px solid var(--line);
+  }
+  #left-panel th{color:var(--muted); font-weight:600;}
+  .chart-bar-row{display:flex; align-items:center; gap:6px; margin:6px 0; font-size:.75rem;}
+  .chart-bar-label{width:90px; flex-shrink:0; color:var(--muted);}
+  .chart-bar-track{flex:1; background:var(--line); border-radius:4px; height:10px; overflow:hidden;}
+  .chart-bar-fill{height:100%; background:var(--accent); border-radius:4px;}
+  .chart-bar-value{width:36px; text-align:right; font-weight:600; font-size:.75rem;}
+  .doc-card{
+    border:1px solid var(--line); border-radius:8px; padding:8px; margin-top:8px;
+    font-size:.78rem; background:#fbfaf6;
+  }
+  .doc-card a{color:var(--primary); text-decoration:none; font-weight:600;}
+  .doc-card a:hover{text-decoration:underline;}
+
+  /* ---------- MAIN STAGE ---------- */
+  #main-stage .narrative{
+    background:var(--accent-soft); border-left:4px solid var(--accent);
+    padding:12px 14px; border-radius:8px; font-size:.95rem; line-height:1.5;
+    margin-bottom:14px;
+  }
+  #main-stage .prompt{font-weight:700; margin:0 0 12px; font-size:1.02rem;}
+  .options{display:flex; flex-direction:column; gap:10px;}
+  .option-btn{
+    text-align:left; border:1px solid var(--line); background:#fff;
+    border-radius:8px; padding:12px 14px; cursor:pointer; font-size:.92rem;
+    transition:.15s; line-height:1.4; color:var(--ink);
+  }
+  .option-btn:hover:not(:disabled){border-color:var(--primary); background:#f1f8f4;}
+  .option-btn:focus-visible{outline:3px solid var(--primary); outline-offset:2px;}
+  .option-btn:disabled{cursor:default; opacity:.85;}
+  .option-btn.correct{border-color:var(--ok); background:#eaf6ef;}
+  .option-btn.incorrect{border-color:var(--bad); background:#fbeae6;}
+  .option-label{font-weight:700; margin-right:6px;}
+
+  .feedback-panel{
+    margin-top:12px; padding:12px 14px; border-radius:8px; font-size:.9rem;
+    line-height:1.5; display:none;
+  }
+  .feedback-panel.show{display:block; animation:slidein .25s ease;}
+  .feedback-panel.correct{background:#eaf6ef; border:1px solid var(--ok); color:#13402e;}
+  .feedback-panel.incorrect{background:#fbeae6; border:1px solid var(--bad); color:#5e2317;}
+  .feedback-icon{font-weight:800; margin-right:6px;}
+  @keyframes slidein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  textarea#reflection-text{
+    width:100%; min-height:120px; border:1px solid var(--line); border-radius:8px;
+    padding:10px; font-size:.92rem; font-family:inherit; resize:vertical;
+  }
+  .guidance{
+    font-size:.82rem; color:var(--muted); background:#f1f5f2; border-radius:6px;
+    padding:8px 10px; margin-bottom:10px;
+  }
+
+  .ending-box{text-align:center; padding:20px 10px;}
+  .ending-box .label{color:var(--primary); font-size:1.1rem; margin-bottom:6px;}
+  .ending-box .summary{font-size:.95rem; line-height:1.6; max-width:560px; margin:0 auto 16px;}
+
+  /* ---------- RIGHT: BITACORA ---------- */
+  #right-panel .log-item{
+    font-size:.78rem; border-bottom:1px solid var(--line); padding:6px 0;
+  }
+  #right-panel .log-item .q{color:var(--muted);}
+  #right-panel .log-item .a{font-weight:600;}
+  .rubric-row{margin-bottom:10px;}
+  .rubric-row label{display:block; font-size:.75rem; color:var(--muted); margin-bottom:3px;}
+  .rubric-row input[type=range]{width:100%;}
+  .rubric-val{font-size:.78rem; font-weight:700; color:var(--primary);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    display:flex; justify-content:space-between; gap:10px; padding:14px 20px 24px;
+    max-width:1280px; margin:0 auto; flex-wrap:wrap;
+  }
+  .btn{
+    border:none; border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:700;
+    cursor:pointer; transition:.15s;
+  }
+  .btn-primary{background:var(--primary); color:#fff;}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-secondary{background:transparent; border:1px solid var(--line); color:var(--ink);}
+  .btn-secondary:hover{border-color:var(--primary); color:var(--primary);}
+  .btn:disabled{opacity:.4; cursor:default;}
+
+  /* ---------- MODAL (debrief / summary) ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(20,30,25,.55);
+    display:none; align-items:center; justify-content:center; padding:20px; z-index:50;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal{
+    background:#fff; border-radius:12px; max-width:640px; width:100%;
+    max-height:85vh; overflow-y:auto; padding:24px;
+  }
+  .modal h2{margin-top:0; color:var(--primary-dark);}
+  .modal h3{margin-top:18px; color:var(--primary); font-size:.95rem;}
+  .modal ul{padding-left:20px; font-size:.9rem; line-height:1.6;}
+  .modal .close-row{text-align:right; margin-top:18px;}
+
+  .credits{font-size:.72rem; color:var(--muted); padding:0 20px 20px; max-width:1280px; margin:0 auto; line-height:1.5;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title-block">
+    <h1 id="hdr-title">—</h1>
+    <span class="stage" id="hdr-stage">—</span>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div id="progress-fill"></div></div>
+  </div>
+  <div class="lang-toggle">
+    <button id="lang-es" class="active" onclick="setLang('es')">ES</button>
+    <button id="lang-en" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- LEFT: EXPEDIENTE -->
+  <aside class="panel" id="left-panel">
+    <h2 id="exp-title">Expediente</h2>
+    <div id="exp-content"></div>
+  </aside>
+
+  <!-- MAIN STAGE -->
+  <main class="panel" id="main-stage">
+    <div class="narrative" id="node-narrative"></div>
+    <p class="prompt" id="node-prompt"></p>
+    <div class="guidance" id="node-guidance" style="display:none;"></div>
+    <div class="options" id="node-options"></div>
+    <textarea id="reflection-text" style="display:none;" placeholder=""></textarea>
+    <div class="feedback-panel" id="feedback-panel"></div>
+    <div class="ending-box" id="ending-box" style="display:none;"></div>
+  </main>
+
+  <!-- RIGHT: BITACORA -->
+  <aside class="panel" id="right-panel">
+    <h2 id="bit-title">Mi Bitácora</h2>
+    <h3 id="bit-decisions-title">Decisiones</h3>
+    <div id="log-decisions"><p style="font-size:.78rem;color:var(--muted);" id="log-empty">—</p></div>
+    <h3 id="bit-rubric-title">Autoevaluación</h3>
+    <div id="rubric-sliders"></div>
+  </aside>
+</div>
+
+<footer>
+  <button class="btn btn-secondary" id="btn-back" onclick="goBack()">⟵ Atrás</button>
+  <button class="btn btn-primary" id="btn-continue" onclick="continueFlow()" disabled>Continuar</button>
+  <button class="btn btn-secondary" id="btn-debrief" onclick="openDebrief()" style="display:none;">Ver Debrief</button>
+</footer>
+
+<!-- DEBRIEF MODAL -->
+<div class="modal-overlay" id="debrief-modal">
+  <div class="modal">
+    <h2 id="debrief-heading">Debriefing — Modelo 3-D</h2>
+    <div id="debrief-body"></div>
+    <div class="close-row">
+      <button class="btn btn-primary" onclick="closeDebrief()" id="debrief-close-btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="credits" id="credits"></div>
+
+<script>
+/* ====================== ENGINE ====================== */
+let LANG = "es";
+let scenario = null;
+let rubric = null;
+let debrief = null;
+let history = [];       // stack of node ids visited
+let currentNodeId = null;
+let pendingSelection = null; // {option, node} once chosen, before continue
+let decisionLog = [];   // {prompt, answer, correct}
+let reflections = {};   // nodeId -> text
+
+const UI = {
+  es: {
+    exp: "Expediente", bitacora:"Mi Bitácora", decisiones:"Decisiones",
+    autoeval:"Autoevaluación", back:"⟵ Atrás", continue:"Continuar",
+    next:"Siguiente", debriefBtn:"Ver Debrief", debriefHeading:"Debriefing — Modelo 3-D",
+    close:"Cerrar", correct:"✔ Correcto", incorrect:"✘ A revisar",
+    empty:"Aún no hay decisiones registradas.",
+    placeholderReflection:"Escribe tu análisis aquí...",
+    finalSummaryTitle:"Resumen final de tu bitácora",
+    decisionsTaken:"Decisiones tomadas",
+    reflectionsTaken:"Reflexiones escritas",
+    rubricScores:"Autoevaluación (Likert 1-6)"
+  },
+  en: {
+    exp: "Case File", bitacora:"My Logbook", decisiones:"Decisions",
+    autoeval:"Self-assessment", back:"⟵ Back", continue:"Continue",
+    next:"Next", debriefBtn:"View Debrief", debriefHeading:"Debriefing — 3-D Model",
+    close:"Close", correct:"✔ Correct", incorrect:"✘ Review",
+    empty:"No decisions logged yet.",
+    placeholderReflection:"Write your analysis here...",
+    finalSummaryTitle:"Final logbook summary",
+    decisionsTaken:"Decisions made",
+    reflectionsTaken:"Written reflections",
+    rubricScores:"Self-assessment (Likert 1-6)"
+  }
+};
+
+function t(key){ return UI[LANG][key]; }
+function bi(field){ return field ? (field[LANG] || field.es || field.en || "") : ""; }
+
+const __SCENARIO__ = {
+  "meta": {
+    "id": "diag-comunitario-vmt",
+    "title": {
+      "es": "Diagnóstico Comunitario: Seguridad Alimentaria en Villa María del Triunfo",
+      "en": "Community Diagnosis: Food Security in Villa María del Triunfo"
+    },
+    "stage": "diagnostico",
+    "course": "Salud Comunitaria y APS — UCSUR",
+    "competencies": [
+      "Identifica una herramienta/marco apropiado para el diagnóstico comunitario con enfoque de seguridad alimentaria",
+      "Recopila información de fuentes secundarias (INEI, ENDES, reportes municipales) para identificar tendencias epidemiológicas y determinantes de la salud",
+      "Recopila información de fuentes primarias (visita comunitaria, entrevistas a informantes clave, mesas de trabajo) para identificar percepciones comunitarias",
+      "Analiza la información recolectada para identificar fortalezas y necesidades comunitarias relacionadas con la inseguridad alimentaria",
+      "Comunica el proceso y resultados del diagnóstico a actores clave para orientar la priorización en APS"
+    ],
+    "duration_min": 25,
+    "access": "public",
+    "language_default": "es",
+    "credits": {
+      "es": "Adaptado del marco CAN-Sim (Developing Public Health Nursing Competencies through Virtual Simulation Games, Companion Guide, 2022) para el curso de Salud Pública / APS, UCSUR. Caso ficticio ambientado en Lima Metropolitana.",
+      "en": "Adapted from the CAN-Sim framework (Companion Guide, 2022) for the Public Health / PHC course at UCSUR. Fictional case set in Metropolitan Lima."
+    }
+  },
+  "dashboard_data": {
+    "tables": [
+      {
+        "title": {
+          "es": "Indicadores seleccionados — AAHH Las Palmeras (VMT)",
+          "en": "Selected indicators — Las Palmeras settlement (VMT)"
+        },
+        "columns": [
+          {"es": "Indicador", "en": "Indicator"},
+          {"es": "Valor local", "en": "Local value"},
+          {"es": "Referencia distrital", "en": "District reference"}
+        ],
+        "rows": [
+          ["% hogares con inseguridad alimentaria moderada/severa", "38%", "22%"],
+          ["Niños 6-35 meses con anemia", "46%", "29%"],
+          ["Hogares sin acceso a agua potable por red pública", "31%", "12%"],
+          ["Comedores populares activos", "3", "—"],
+          ["Programas de alimentación escolar en receso (vacaciones)", "2 de 2", "—"]
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "title": {
+          "es": "Inseguridad alimentaria por grupo etario (% de hogares)",
+          "en": "Food insecurity by age group (% of households)"
+        },
+        "data": [
+          {"label": {"es": "Niños <5 años", "en": "Children <5"}, "value": 46},
+          {"label": {"es": "Niños 5-11 años", "en": "Children 5-11"}, "value": 39},
+          {"label": {"es": "Adultos mayores", "en": "Older adults"}, "value": 35},
+          {"label": {"es": "Adultos", "en": "Adults"}, "value": 28}
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "title": {"es": "Reporte municipal de seguridad alimentaria (VMT, 2025)", "en": "Municipal Food Security Report (VMT, 2025)"},
+        "summary": {
+          "es": "Informe de la Mesa de Concertación de Lucha Contra la Pobreza local que documenta el cierre de comedores escolares durante el receso vacacional y el aumento de consultas por desnutrición infantil en el centro de salud.",
+          "en": "Local anti-poverty roundtable report documenting school dining-hall closures during summer recess and increased child malnutrition visits at the health center."
+        },
+        "link": "https://can-sim.ca/phn/"
+      },
+      {
+        "title": {"es": "Encuesta rápida de hogares (estudiantes UCSUR, 2026)", "en": "Rapid household survey (UCSUR students, 2026)"},
+        "summary": {
+          "es": "Levantamiento tipo 'windshield survey' realizado por estudiantes: observación de comercios de alimentos, huertos urbanos, accesibilidad de transporte y señalización de programas sociales.",
+          "en": "Windshield-survey-style fieldwork by students: food vendors, urban gardens, transport access, and visibility of social programs."
+        },
+        "link": "https://can-sim.ca/virtual-simulation-games-open-source/"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Eres una/un interno(a) de enfermería en el Centro de Salud Las Palmeras (VMT). Una periodista entrevista a una madre de familia que denuncia el cierre del comedor escolar durante las vacaciones de verano, dejando sin alimentación complementaria a decenas de niños del AAHH. El equipo de salud de APS se reúne para decidir cómo proceder.",
+        "en": "You are a nursing intern at the Las Palmeras Health Center (VMT). A reporter interviews a mother who denounces the closure of the school dining hall during summer break, leaving dozens of children without supplementary nutrition. The PHC team meets to decide how to proceed."
+      },
+      "prompt": {
+        "es": "¿Cuál debería ser el primer paso del equipo de APS frente a esta situación?",
+        "en": "What should be the PHC team's first step in response to this situation?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Realizar un diagnóstico comunitario sistemático usando un marco/herramienta validado.", "en": "Conduct a systematic community diagnosis using a validated framework/tool."},
+          "correct": true,
+          "feedback": {
+            "es": "Correcto. Antes de intervenir, el equipo necesita un diagnóstico estructurado que permita identificar magnitud, distribución y determinantes del problema, evitando soluciones improvisadas.",
+            "en": "Correct. Before intervening, the team needs a structured diagnosis to identify the problem's magnitude, distribution, and determinants, avoiding improvised solutions."
+          },
+          "next": "n2"
+        },
+        {
+          "id": "b",
+          "text": {"es": "Coordinar de inmediato la entrega de canastas de alimentos a las familias mencionadas en la entrevista.", "en": "Immediately coordinate food basket distribution to the families mentioned in the interview."},
+          "correct": false,
+          "feedback": {
+            "es": "Esta acción podría brindar alivio inmediato, pero actuar solo sobre lo reportado por un caso individual, sin diagnóstico previo, puede dejar fuera a otras familias afectadas y no aborda las causas estructurales.",
+            "en": "This may provide immediate relief, but acting only on one reported case without prior diagnosis may exclude other affected families and fails to address structural causes."
+          },
+          "next": "n1b"
+        },
+        {
+          "id": "c",
+          "text": {"es": "Esperar el informe oficial de la municipalidad antes de tomar cualquier acción.", "en": "Wait for the municipality's official report before taking any action."},
+          "correct": false,
+          "feedback": {
+            "es": "Esperar pasivamente retrasa la respuesta de APS. El equipo de salud puede iniciar su propio proceso de recolección de información mientras se complementa con fuentes secundarias como el reporte municipal.",
+            "en": "Passively waiting delays the PHC response. The health team can begin its own information-gathering process while incorporating secondary sources such as the municipal report."
+          },
+          "next": "n1b"
+        }
+      ]
+    },
+    {
+      "id": "n1b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo reconsidera. La enfermera coordinadora recuerda que, sin un diagnóstico previo, cualquier intervención corre el riesgo de no llegar a quienes más lo necesitan ni de identificar causas que se repitan en otras zonas del AAHH.",
+        "en": "The team reconsiders. The coordinating nurse notes that without a prior diagnosis, any intervention risks missing those most in need and failing to identify causes that may recur in other parts of the settlement."
+      },
+      "prompt": {
+        "es": "Con esta nueva información, ¿qué enfoque adoptará el equipo?",
+        "en": "With this new information, what approach will the team adopt?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Iniciar un diagnóstico comunitario con enfoque de seguridad alimentaria, combinando fuentes primarias y secundarias.", "en": "Begin a community diagnosis focused on food security, combining primary and secondary sources."},
+          "correct": true,
+          "feedback": {
+            "es": "Correcto. Esto permite priorizar de forma informada y sienta las bases para las siguientes etapas (promoción y planificación).",
+            "en": "Correct. This enables informed prioritization and sets the foundation for the next stages (promotion and planning)."
+          },
+          "next": "n2"
+        },
+        {
+          "id": "b",
+          "text": {"es": "Delegar el problema completo al área de Desarrollo Social de la municipalidad.", "en": "Delegate the entire issue to the municipality's Social Development office."},
+          "correct": false,
+          "feedback": {
+            "es": "La intersectorialidad es valiosa, pero APS tiene un rol propio en el diagnóstico y monitoreo de determinantes de salud; delegar todo el proceso excluye a la comunidad y al equipo de salud del análisis.",
+            "en": "Intersectoral work is valuable, but PHC has its own role in diagnosing and monitoring health determinants; delegating the whole process excludes the community and the health team from the analysis."
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo revisa el panel de datos disponible (ver 'Expediente' a la izquierda): indicadores locales de inseguridad alimentaria, anemia infantil, acceso a agua, y dos documentos de referencia (reporte municipal y encuesta rápida de estudiantes).",
+        "en": "The team reviews the available data panel ('File' on the left): local food insecurity indicators, child anemia, water access, and two reference documents (municipal report and rapid student survey)."
+      },
+      "prompt": {
+        "es": "Según los datos del expediente, ¿cuál es la fuente de información PRIMARIA más relevante para comprender la perspectiva comunitaria?",
+        "en": "Based on the case file, which is the most relevant PRIMARY information source for understanding the community's perspective?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "La encuesta rápida de hogares ('windshield survey') realizada por los propios estudiantes.", "en": "The rapid household ('windshield') survey conducted by the students themselves."},
+          "correct": true,
+          "feedback": {
+            "es": "Correcto. Esta es información primaria recolectada directamente por el equipo, que complementa los datos secundarios (reporte municipal, indicadores) con observación directa del territorio.",
+            "en": "Correct. This is primary information collected directly by the team, complementing secondary data (municipal report, indicators) with direct observation of the area."
+          },
+          "next": "n3"
+        },
+        {
+          "id": "b",
+          "text": {"es": "El reporte municipal de seguridad alimentaria.", "en": "The municipal food security report."},
+          "correct": false,
+          "feedback": {
+            "es": "El reporte municipal es una fuente secundaria valiosa (datos ya recolectados y analizados por otros), pero no constituye información primaria recolectada por el equipo de APS.",
+            "en": "The municipal report is a valuable secondary source (data already collected and analyzed by others), but it is not primary information collected by the PHC team."
+          },
+          "next": "n2b"
+        }
+      ]
+    },
+    {
+      "id": "n2b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "La docente facilitadora aclara la diferencia: las fuentes secundarias (reportes, bases de datos como INEI/ENDES) ya fueron procesadas por otros; las fuentes primarias se generan directamente con la comunidad (entrevistas, encuestas propias, observación de campo).",
+        "en": "The facilitating instructor clarifies the distinction: secondary sources (reports, databases such as INEI/ENDES) were already processed by others; primary sources are generated directly with the community (interviews, original surveys, field observation)."
+      },
+      "prompt": {
+        "es": "¿Qué actividad debería priorizar el equipo para fortalecer la recolección de información primaria?",
+        "en": "Which activity should the team prioritize to strengthen primary data collection?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Coordinar una entrevista con un informante clave (ej. dirigente del comedor popular) y una mesa de trabajo con socios comunitarios.", "en": "Coordinate a key-informant interview (e.g., a soup-kitchen leader) and a working session with community partners."},
+          "correct": true,
+          "feedback": {
+            "es": "Correcto. Las entrevistas a informantes clave y las mesas de trabajo permiten captar perspectivas comunitarias que no aparecen en los datos secundarios.",
+            "en": "Correct. Key-informant interviews and community working sessions capture perspectives that secondary data alone cannot reveal."
+          },
+          "next": "n3"
+        },
+        {
+          "id": "b",
+          "text": {"es": "Solicitar más bases de datos estadísticas a otras instituciones.", "en": "Request more statistical databases from other institutions."},
+          "correct": false,
+          "feedback": {
+            "es": "Esto seguiría reforzando las fuentes secundarias. Para completar el diagnóstico, el equipo necesita también el componente primario (perspectivas y observación comunitaria directa).",
+            "en": "This would continue to reinforce secondary sources. To complete the diagnosis, the team also needs the primary component (direct community perspectives and observation)."
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "open_reflection",
+      "prompt": {
+        "es": "Con base en los datos del expediente (tabla de indicadores y gráfico de inseguridad alimentaria por grupo etario), redacta un breve análisis (4-6 líneas): ¿qué determinantes de la salud podrían explicar las diferencias observadas entre grupos etarios, y qué fortalezas comunitarias identificas (ej. comedores populares activos, huertos urbanos)?",
+        "en": "Based on the case-file data (indicator table and food-insecurity-by-age-group chart), write a short analysis (4-6 lines): which health determinants might explain the differences observed between age groups, and what community strengths do you identify (e.g., active soup kitchens, urban gardens)?"
+      },
+      "guidance": {
+        "es": "Considere: determinantes sociales (ingresos, acceso a agua, vivienda), ciclo de vida (mayor vulnerabilidad en primera infancia y adultos mayores), y activos comunitarios existentes que podrían fortalecerse en la etapa de promoción.",
+        "en": "Consider: social determinants (income, water access, housing), life-cycle vulnerability (higher in early childhood and older adults), and existing community assets that could be strengthened in the promotion stage."
+      },
+      "next": "n4"
+    },
+    {
+      "id": "n4",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El equipo debe decidir cómo comunicar los hallazgos del diagnóstico a los actores clave (Mesa de Concertación, dirigentes vecinales, dirección del centro de salud) para iniciar la etapa de priorización.",
+        "en": "The team must decide how to communicate the diagnosis findings to key stakeholders (anti-poverty roundtable, community leaders, health-center management) to begin the prioritization stage."
+      },
+      "prompt": {
+        "es": "¿Cuál es la estrategia de comunicación más coherente con un enfoque de APS y trabajo en partenariado?",
+        "en": "Which communication strategy best aligns with a PHC approach and partnership-based work?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Presentar una síntesis del diagnóstico (datos + voces comunitarias) en una reunión conjunta con la Mesa de Concertación y dirigentes, para definir juntos las prioridades.", "en": "Present a synthesis of the diagnosis (data + community voices) in a joint meeting with the roundtable and leaders, to define priorities together."},
+          "correct": true,
+          "feedback": {
+            "es": "Excelente. Esto cumple con el resultado de aprendizaje de 'reportar el proceso y resultados a los actores clave para informar la priorización y planificación en partenariado con la comunidad', cerrando el ciclo de diagnóstico de forma participativa.",
+            "en": "Excellent. This fulfills the learning outcome of 'reporting the process and results to stakeholders to inform prioritization and planning in partnership with the community,' closing the diagnostic cycle participatively."
+          },
+          "next": "end_a"
+        },
+        {
+          "id": "b",
+          "text": {"es": "Enviar un informe técnico únicamente a la dirección del centro de salud, para que decida internamente las próximas acciones.", "en": "Send a technical report only to the health-center management, for them to decide next steps internally."},
+          "correct": false,
+          "feedback": {
+            "es": "Esto excluye a la comunidad y a los socios intersectoriales del proceso de priorización, contradiciendo el enfoque de partenariado que define a la APS.",
+            "en": "This excludes the community and intersectoral partners from the prioritization process, contradicting the partnership approach that defines PHC."
+          },
+          "next": "end_b"
+        }
+      ]
+    },
+    {
+      "id": "end_a",
+      "type": "ending",
+      "label": {"es": "Final A — Diagnóstico participativo completo", "en": "Ending A — Complete participatory diagnosis"},
+      "summary": {
+        "es": "El equipo de APS completó un ciclo de diagnóstico comunitario sólido: identificó un marco apropiado, integró fuentes primarias y secundarias, analizó determinantes y fortalezas, y comunicó los resultados de forma participativa. Este diagnóstico será la base para la Etapa 2 (Promoción de la salud) del caso 'Las Palmeras'.",
+        "en": "The PHC team completed a solid community-diagnosis cycle: identified an appropriate framework, integrated primary and secondary sources, analyzed determinants and strengths, and communicated results participatively. This diagnosis will be the foundation for Stage 2 (Health Promotion) of the 'Las Palmeras' case."
+      }
+    },
+    {
+      "id": "end_b",
+      "type": "ending",
+      "label": {"es": "Final B — Diagnóstico técnico, sin partenariado", "en": "Ending B — Technical diagnosis without partnership"},
+      "summary": {
+        "es": "El equipo realizó un diagnóstico técnicamente correcto, pero al no comunicar los hallazgos de forma participativa, se pierde la oportunidad de construir consenso comunitario para la priorización. Reflexiona: ¿qué pasos adicionales serían necesarios para retomar el enfoque de partenariado antes de avanzar a la Etapa 2?",
+        "en": "The team produced a technically sound diagnosis, but by not communicating findings participatively, the opportunity to build community consensus for prioritization is lost. Reflect: what additional steps would be needed to re-engage a partnership approach before moving to Stage 2?"
+      }
+    }
+  ],
+  "rubric_ref": "rubric.json",
+  "debrief_ref": "debrief.json"
+}
+;
+const __RUBRIC__ = {
+  "title": {
+    "es": "Rúbrica de Autoevaluación — Diagnóstico Comunitario (Las Palmeras, VMT)",
+    "en": "Self-Assessment Rubric — Community Diagnosis (Las Palmeras, VMT)"
+  },
+  "scale": {
+    "es": "Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica",
+    "en": "Likert scale: 6 = Fully competent · 1 = Needs significant practice"
+  },
+  "outcomes": [
+    {
+      "id": "ro1",
+      "outcome": {
+        "es": "Identifica una herramienta/marco apropiado para el diagnóstico comunitario con enfoque de seguridad alimentaria.",
+        "en": "Identifies an appropriate tool/framework for community diagnosis with a food-security focus."
+      },
+      "indicators": {
+        "es": "Identifica un marco basado en evidencia · Considera accesibilidad, pertinencia y practicidad · Aplica en múltiples contextos · Usa un enfoque de salud poblacional",
+        "en": "Identifies an evidence-based framework · Considers accessibility, relevance, practicality · Applies across settings · Uses a population-health lens"
+      },
+      "levels": {
+        "competente": {"es": "Identifica de forma independiente un marco apropiado para el diagnóstico de seguridad alimentaria.", "en": "Independently identifies an appropriate framework for the food-security diagnosis."},
+        "intermedio": {"es": "Con apoyo mínimo identifica un marco apropiado.", "en": "With minimal support, identifies an appropriate framework."},
+        "novato": {"es": "Con orientación identifica un marco apropiado.", "en": "With prompting, identifies an appropriate framework."}
+      }
+    },
+    {
+      "id": "ro2",
+      "outcome": {
+        "es": "Recopila información de fuentes secundarias para identificar tendencias epidemiológicas y determinantes de la salud.",
+        "en": "Gathers information from secondary sources to identify epidemiological trends and health determinants."
+      },
+      "indicators": {
+        "es": "Identifica fuentes estadísticas relevantes (INEI/ENDES) · Identifica reportes locales · Reconoce tendencias epidemiológicas · Integra determinantes de la salud",
+        "en": "Identifies relevant statistical sources (INEI/ENDES) · Identifies local reports · Recognizes epidemiological trends · Integrates health determinants"
+      },
+      "levels": {
+        "competente": {"es": "Identifica de forma independiente fuentes secundarias relevantes para la seguridad alimentaria.", "en": "Independently identifies relevant secondary sources for food security."},
+        "intermedio": {"es": "Con apoyo mínimo identifica fuentes secundarias relevantes.", "en": "With minimal support, identifies relevant secondary sources."},
+        "novato": {"es": "Con orientación identifica fuentes secundarias relevantes.", "en": "With prompting, identifies relevant secondary sources."}
+      }
+    },
+    {
+      "id": "ro3",
+      "outcome": {
+        "es": "Recopila información de fuentes primarias para identificar perspectivas comunitarias.",
+        "en": "Gathers information from primary sources to identify community perspectives."
+      },
+      "indicators": {
+        "es": "Identifica métodos de recolección primaria · Identifica informantes clave y actores comunitarios · Integra determinantes de la salud y enfoque poblacional",
+        "en": "Identifies primary data-collection methods · Identifies key informants and community actors · Integrates health determinants and population-health lens"
+      },
+      "levels": {
+        "competente": {"es": "Identifica de forma independiente información primaria relevante para conocer la perspectiva comunitaria.", "en": "Independently identifies relevant primary information for community perspectives."},
+        "intermedio": {"es": "Con apoyo mínimo identifica información primaria relevante.", "en": "With minimal support, identifies relevant primary information."},
+        "novato": {"es": "Con orientación identifica información primaria relevante.", "en": "With prompting, identifies relevant primary information."}
+      }
+    },
+    {
+      "id": "ro4",
+      "outcome": {
+        "es": "Analiza la información recolectada para identificar fortalezas y necesidades comunitarias relacionadas con la inseguridad alimentaria.",
+        "en": "Analyzes gathered information to identify community strengths and needs related to food insecurity."
+      },
+      "indicators": {
+        "es": "Integra información de fuentes secundarias y primarias · Determina fortalezas comunitarias · Determina necesidades comunitarias · Usa enfoque poblacional",
+        "en": "Integrates secondary and primary information · Determines community strengths · Determines community needs · Uses population-health lens"
+      },
+      "levels": {
+        "competente": {"es": "Analiza de forma independiente la información recolectada de múltiples fuentes relacionadas con la inseguridad alimentaria.", "en": "Independently analyzes information gathered from multiple sources related to food insecurity."},
+        "intermedio": {"es": "Con apoyo mínimo analiza la información recolectada.", "en": "With minimal support, analyzes gathered information."},
+        "novato": {"es": "Con orientación analiza la información recolectada.", "en": "With prompting, analyzes gathered information."}
+      }
+    },
+    {
+      "id": "ro5",
+      "outcome": {
+        "es": "Comunica el proceso y resultados del diagnóstico a actores clave para orientar la priorización en APS.",
+        "en": "Communicates the diagnosis process and results to stakeholders to inform PHC prioritization."
+      },
+      "indicators": {
+        "es": "Identifica socios comunitarios para la priorización · Se articula con estos socios · Reporta la síntesis del diagnóstico · Define prioridades en conjunto · Usa enfoque poblacional",
+        "en": "Identifies community partners for prioritization · Engages with these partners · Reports the diagnosis synthesis · Co-defines priorities · Uses population-health lens"
+      },
+      "levels": {
+        "competente": {"es": "Reporta de forma independiente el diagnóstico comunitario con socios comunitarios para definir prioridades.", "en": "Independently reports the community diagnosis with community partners to set priorities."},
+        "intermedio": {"es": "Con apoyo mínimo reporta el diagnóstico comunitario con socios comunitarios.", "en": "With minimal support, reports the community diagnosis with community partners."},
+        "novato": {"es": "Con orientación reporta el diagnóstico comunitario con socios comunitarios.", "en": "With prompting, reports the community diagnosis with community partners."}
+      }
+    }
+  ]
+}
+;
+const __DEBRIEF__ = {
+  "defusing": {
+    "title": {"es": "Defusing (Descarga emocional)", "en": "Defusing"},
+    "es": [
+      "¿Cómo te sentiste durante el proceso de diagnóstico comunitario?",
+      "¿Qué te hubiera gustado conocer o entender mejor antes de iniciar la simulación?"
+    ],
+    "en": [
+      "How did you feel during the community diagnosis process?",
+      "What would you have liked to know or understand better before starting the simulation?"
+    ]
+  },
+  "discovery": {
+    "title": {"es": "Discovery (Descubrimiento)", "en": "Discovery"},
+    "es": [
+      "¿Qué métodos de diagnóstico comunitario observaste durante el proceso?",
+      "¿Qué decisiones clínicas/comunitarias se tomaron y por qué?",
+      "¿Qué conocimientos o habilidades de salud pública necesitaste durante la simulación?",
+      "¿Cómo se relaciona lo que aprendiste con conocimientos previos del curso?"
+    ],
+    "en": [
+      "What community diagnosis methods did you observe during the process?",
+      "What clinical/community decisions were made, and why?",
+      "What public health knowledge or skills did you need during the simulation?",
+      "How does what you learned relate to previous course content?"
+    ]
+  },
+  "deepening": {
+    "title": {"es": "Deepening (Profundización)", "en": "Deepening"},
+    "es": [
+      "¿Qué nuevo conocimiento sobre diagnóstico comunitario obtuviste al participar en esta simulación?",
+      "¿Cómo podrías aplicar estas nuevas prácticas en una situación clínica/comunitaria real durante tu internado o prácticas en APS?"
+    ],
+    "en": [
+      "What new knowledge about community diagnosis did you gain from this simulation?",
+      "How could you apply these new practices in a real clinical/community situation during your PHC clerkship?"
+    ]
+  }
+}
+;
+
+async function loadData(){
+  scenario = __SCENARIO__; rubric = __RUBRIC__; debrief = __DEBRIEF__;
+  LANG = scenario.meta.language_default || "es";
+  setLang(LANG, true);
+  initSCORM();
+  renderExpediente();
+  renderRubricSliders();
+  currentNodeId = scenario.nodes[0].id;
+  history = [currentNodeId];
+  renderNode();
+  renderCredits();
+}
+
+/* ---------- SCORM (graceful no-op if absent) ---------- */
+let scormAPI = null;
+function findAPI(win){
+  let attempts = 0;
+  while (win && attempts < 10){
+    if (win.API) return win.API;
+    if (win.parent === win) break;
+    win = win.parent; attempts++;
+  }
+  return null;
+}
+function initSCORM(){
+  try{
+    scormAPI = findAPI(window);
+    if (scormAPI) scormAPI.LMSInitialize("");
+  }catch(e){ scormAPI = null; }
+}
+function scormSetValue(k,v){
+  try{ if(scormAPI) scormAPI.LMSSetValue(k, String(v)); }catch(e){}
+}
+window.addEventListener("beforeunload", ()=>{
+  try{ if(scormAPI) scormAPI.LMSFinish(""); }catch(e){}
+});
+
+/* ---------- HEADER / LANG ---------- */
+function setLang(lang, silent){
+  LANG = lang;
+  document.getElementById("lang-es").classList.toggle("active", lang==="es");
+  document.getElementById("lang-en").classList.toggle("active", lang==="en");
+  document.documentElement.lang = lang;
+  if (!scenario) return;
+  document.getElementById("hdr-title").textContent = bi(scenario.meta.title);
+  const stageMap = {
+    es:{diagnostico:"Etapa 1 · Diagnóstico Comunitario", promocion:"Etapa 2 · Promoción de la Salud", planificacion:"Etapa 3 · Planificación y Evaluación"},
+    en:{diagnostico:"Stage 1 · Community Diagnosis", promocion:"Stage 2 · Health Promotion", planificacion:"Stage 3 · Planning & Evaluation"}
+  };
+  document.getElementById("hdr-stage").textContent = (stageMap[lang] && stageMap[lang][scenario.meta.stage]) || scenario.meta.stage;
+  document.getElementById("exp-title").textContent = t("exp");
+  document.getElementById("bit-title").textContent = t("bitacora");
+  document.getElementById("bit-decisions-title").textContent = t("decisiones");
+  document.getElementById("bit-rubric-title").textContent = t("autoeval");
+  const logEmptyEl = document.getElementById("log-empty");
+  if (logEmptyEl) logEmptyEl.textContent = decisionLog.length ? "" : t("empty");
+  document.getElementById("btn-back").textContent = t("back");
+  document.getElementById("btn-debrief").textContent = t("debriefBtn");
+  document.getElementById("debrief-heading").textContent = t("debriefHeading");
+  document.getElementById("debrief-close-btn").textContent = t("close");
+  document.getElementById("reflection-text").placeholder = t("placeholderReflection");
+  if (!silent){
+    renderExpediente();
+    renderRubricSliders();
+    renderNode();
+    renderLog();
+  }
+}
+
+/* ---------- EXPEDIENTE (left panel / dashboard data) ---------- */
+function renderExpediente(){
+  const el = document.getElementById("exp-content");
+  el.innerHTML = "";
+  const dd = scenario.dashboard_data || {};
+
+  (dd.tables||[]).forEach(tbl=>{
+    const h = document.createElement("h3"); h.textContent = bi(tbl.title); el.appendChild(h);
+    const table = document.createElement("table");
+    const thead = document.createElement("tr");
+    tbl.columns.forEach(c=>{ const th=document.createElement("th"); th.textContent=bi(c); thead.appendChild(th); });
+    table.appendChild(thead);
+    tbl.rows.forEach(row=>{
+      const tr = document.createElement("tr");
+      row.forEach(cell=>{ const td=document.createElement("td"); td.textContent=cell; tr.appendChild(td); });
+      table.appendChild(tr);
+    });
+    el.appendChild(table);
+  });
+
+  (dd.charts||[]).forEach(ch=>{
+    const h = document.createElement("h3"); h.textContent = bi(ch.title); el.appendChild(h);
+    const max = Math.max(...ch.data.map(d=>d.value), 1);
+    ch.data.forEach(d=>{
+      const row = document.createElement("div"); row.className="chart-bar-row";
+      const label = document.createElement("div"); label.className="chart-bar-label"; label.textContent = bi(d.label);
+      const track = document.createElement("div"); track.className="chart-bar-track";
+      const fill = document.createElement("div"); fill.className="chart-bar-fill"; fill.style.width=(d.value/max*100)+"%";
+      track.appendChild(fill);
+      const val = document.createElement("div"); val.className="chart-bar-value"; val.textContent = d.value+"%";
+      row.appendChild(label); row.appendChild(track); row.appendChild(val);
+      el.appendChild(row);
+    });
+  });
+
+  (dd.documents||[]).forEach(doc=>{
+    const card = document.createElement("div"); card.className="doc-card";
+    const h = document.createElement("strong"); h.textContent = bi(doc.title);
+    const p = document.createElement("p"); p.style.margin="4px 0"; p.textContent = bi(doc.summary);
+    card.appendChild(h); card.appendChild(p);
+    if (doc.link){
+      const a = document.createElement("a"); a.href=doc.link; a.target="_blank"; a.rel="noopener";
+      a.textContent = LANG==="es" ? "Ver referencia ↗" : "View reference ↗";
+      card.appendChild(a);
+    }
+    el.appendChild(card);
+  });
+}
+
+/* ---------- RUBRIC SLIDERS (live self-assessment) ---------- */
+let rubricScores = {};
+function renderRubricSliders(){
+  const el = document.getElementById("rubric-sliders");
+  el.innerHTML = "";
+  if (!rubric) return;
+  rubric.outcomes.forEach(o=>{
+    if (rubricScores[o.id] === undefined) rubricScores[o.id] = 3;
+    const row = document.createElement("div"); row.className="rubric-row";
+    const label = document.createElement("label");
+    label.textContent = bi(o.outcome);
+    const input = document.createElement("input");
+    input.type="range"; input.min=1; input.max=6; input.value = rubricScores[o.id];
+    const val = document.createElement("span"); val.className="rubric-val"; val.textContent = rubricScores[o.id];
+    input.addEventListener("input", ()=>{ rubricScores[o.id]=input.value; val.textContent=input.value; scormSetValue("cmi.suspend_data.rubric_"+o.id, input.value); });
+    row.appendChild(label); row.appendChild(input); row.appendChild(val);
+    el.appendChild(row);
+  });
+}
+
+/* ---------- BITACORA LOG ---------- */
+function renderLog(){
+  const el = document.getElementById("log-decisions");
+  el.innerHTML = "";
+  if (decisionLog.length === 0){
+    const p = document.createElement("p");
+    p.style.fontSize=".78rem"; p.style.color="var(--muted)";
+    p.textContent = t("empty");
+    el.appendChild(p);
+    return;
+  }
+  decisionLog.forEach(item=>{
+    const div = document.createElement("div"); div.className="log-item";
+    const q = document.createElement("div"); q.className="q"; q.textContent = bi(item.prompt);
+    const a = document.createElement("div"); a.className="a";
+    a.textContent = (item.correct ? "✔ " : "• ") + bi(item.optionText);
+    div.appendChild(q); div.appendChild(a);
+    el.appendChild(div);
+  });
+}
+
+/* ---------- NODE RENDERING ---------- */
+function getNode(id){ return scenario.nodes.find(n=>n.id===id); }
+
+function renderNode(){
+  const node = getNode(currentNodeId);
+  const narrativeEl = document.getElementById("node-narrative");
+  const promptEl = document.getElementById("node-prompt");
+  const guidanceEl = document.getElementById("node-guidance");
+  const optionsEl = document.getElementById("node-options");
+  const feedbackEl = document.getElementById("feedback-panel");
+  const reflectionEl = document.getElementById("reflection-text");
+  const endingEl = document.getElementById("ending-box");
+  const continueBtn = document.getElementById("btn-continue");
+  const debriefBtn = document.getElementById("btn-debrief");
+
+  // reset
+  narrativeEl.style.display = "none";
+  promptEl.style.display = "none";
+  guidanceEl.style.display = "none";
+  optionsEl.innerHTML = ""; optionsEl.style.display="none";
+  feedbackEl.className = "feedback-panel"; feedbackEl.innerHTML=""; 
+  reflectionEl.style.display = "none";
+  endingEl.style.display = "none";
+  continueBtn.style.display = "inline-block";
+  continueBtn.disabled = true;
+  continueBtn.textContent = t("continue");
+  debriefBtn.style.display = "none";
+  pendingSelection = null;
+
+  updateProgress();
+
+  if (node.type === "narrative_decision"){
+    narrativeEl.style.display = "block";
+    narrativeEl.textContent = bi(node.narrative);
+    promptEl.style.display = "block";
+    promptEl.textContent = bi(node.prompt);
+    optionsEl.style.display = "flex";
+    const labels = ["A","B","C","D"];
+    node.options.forEach((opt, idx)=>{
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.innerHTML = `<span class="option-label">${labels[idx]}.</span> ${bi(opt.text)}`;
+      btn.onclick = ()=>selectOption(node, opt, btn);
+      optionsEl.appendChild(btn);
+    });
+  }
+  else if (node.type === "open_reflection"){
+    promptEl.style.display = "block";
+    promptEl.textContent = bi(node.prompt);
+    if (node.guidance){
+      guidanceEl.style.display = "block";
+      guidanceEl.textContent = bi(node.guidance);
+    }
+    reflectionEl.style.display = "block";
+    reflectionEl.value = reflections[node.id] || "";
+    continueBtn.disabled = !reflectionEl.value.trim();
+    reflectionEl.oninput = ()=>{ continueBtn.disabled = !reflectionEl.value.trim(); };
+  }
+  else if (node.type === "ending"){
+    continueBtn.style.display = "none";
+    debriefBtn.style.display = "inline-block";
+    endingEl.style.display = "block";
+    endingEl.innerHTML = `
+      <h2 class="label">${bi(node.label)}</h2>
+      <p class="summary">${bi(node.summary)}</p>
+    `;
+    showFinalSummaryButton(endingEl);
+    scormSetValue("cmi.core.lesson_status", "completed");
+    const avg = Object.values(rubricScores).reduce((a,b)=>a+Number(b),0) / Math.max(Object.values(rubricScores).length,1);
+    scormSetValue("cmi.core.score.raw", Math.round(avg/6*100));
+  }
+
+  document.getElementById("btn-back").disabled = history.length<=1;
+}
+
+function showFinalSummaryButton(container){
+  const btn = document.createElement("button");
+  btn.className = "btn btn-secondary";
+  btn.style.marginTop = "6px";
+  btn.textContent = LANG==="es" ? "🖨 Imprimir / Guardar resumen" : "🖨 Print / Save summary";
+  btn.onclick = printSummary;
+  container.appendChild(btn);
+}
+
+function printSummary(){
+  const w = window.open("", "_blank");
+  let html = `<html><head><title>${bi(scenario.meta.title)}</title>
+  <style>body{font-family:sans-serif;padding:24px;line-height:1.5;} h1{color:#1f6f54;} h2{margin-top:24px;color:#154a38;}</style>
+  </head><body>`;
+  html += `<h1>${bi(scenario.meta.title)}</h1>`;
+  html += `<h2>${t("decisionsTaken")}</h2><ul>`;
+  decisionLog.forEach(d=>{ html += `<li><strong>${bi(d.prompt)}</strong><br>${d.correct?"✔":"•"} ${bi(d.optionText)}<br><em>${bi(d.feedback)}</em></li>`; });
+  html += `</ul>`;
+  if (Object.keys(reflections).length){
+    html += `<h2>${t("reflectionsTaken")}</h2><ul>`;
+    Object.entries(reflections).forEach(([k,v])=>{ html += `<li>${v.replace(/</g,"&lt;")}</li>`; });
+    html += `</ul>`;
+  }
+  if (rubric){
+    html += `<h2>${t("rubricScores")}</h2><ul>`;
+    rubric.outcomes.forEach(o=>{ html += `<li>${bi(o.outcome)}: <strong>${rubricScores[o.id]}</strong></li>`; });
+    html += `</ul>`;
+  }
+  html += `</body></html>`;
+  w.document.write(html);
+  w.document.close();
+  w.print();
+}
+
+function selectOption(node, opt, btnEl){
+  if (pendingSelection) return; // already answered
+  pendingSelection = opt;
+  const allBtns = document.querySelectorAll("#node-options .option-btn");
+  allBtns.forEach(b=>b.disabled = true);
+  btnEl.classList.add(opt.correct ? "correct" : "incorrect");
+
+  const feedbackEl = document.getElementById("feedback-panel");
+  feedbackEl.className = "feedback-panel show " + (opt.correct ? "correct" : "incorrect");
+  feedbackEl.innerHTML = `<span class="feedback-icon">${opt.correct ? t("correct") : t("incorrect")}</span> ${bi(opt.feedback)}`;
+
+  decisionLog.push({prompt: node.prompt, optionText: opt.text, correct: opt.correct, feedback: opt.feedback});
+  renderLog();
+  scormSetValue("cmi.interactions."+decisionLog.length+".id", node.id);
+  scormSetValue("cmi.interactions."+decisionLog.length+".result", opt.correct ? "correct" : "incorrect");
+
+  document.getElementById("btn-continue").disabled = false;
+}
+
+function continueFlow(){
+  const node = getNode(currentNodeId);
+  let nextId = null;
+  if (node.type === "narrative_decision"){
+    if (!pendingSelection) return;
+    nextId = pendingSelection.next;
+  } else if (node.type === "open_reflection"){
+    const txt = document.getElementById("reflection-text").value.trim();
+    if (!txt) return;
+    reflections[node.id] = txt;
+    scormSetValue("cmi.suspend_data.reflection_"+node.id, txt.slice(0,200));
+    nextId = node.next;
+  }
+  if (!nextId) return;
+  currentNodeId = nextId;
+  history.push(currentNodeId);
+  renderNode();
+}
+
+function goBack(){
+  if (history.length<=1) return;
+  history.pop();
+  currentNodeId = history[history.length-1];
+  // remove last decision log entry if it corresponds to the node we're leaving forward from
+  renderNode();
+}
+
+function updateProgress(){
+  // approximate progress: count narrative_decision + open_reflection nodes total vs visited
+  const total = scenario.nodes.filter(n=>n.type!=="ending").length;
+  const visited = new Set(history).size;
+  const pct = Math.min(100, Math.round((visited/Math.max(total,1))*100));
+  document.getElementById("progress-fill").style.width = pct+"%";
+}
+
+/* ---------- DEBRIEF MODAL ---------- */
+function openDebrief(){
+  const body = document.getElementById("debrief-body");
+  body.innerHTML = "";
+  if (!debrief){ body.innerHTML = "<p>—</p>"; }
+  else{
+    ["defusing","discovery","deepening"].forEach(key=>{
+      const section = debrief[key];
+      if (!section) return;
+      const h = document.createElement("h3"); h.textContent = bi(section.title) || key;
+      const ul = document.createElement("ul");
+      (section[LANG]||section.es||[]).forEach(q=>{
+        const li = document.createElement("li"); li.textContent = q; ul.appendChild(li);
+      });
+      body.appendChild(h); body.appendChild(ul);
+    });
+  }
+  document.getElementById("debrief-modal").classList.add("show");
+}
+function closeDebrief(){
+  document.getElementById("debrief-modal").classList.remove("show");
+}
+
+/* ---------- CREDITS ---------- */
+function renderCredits(){
+  document.getElementById("credits").textContent = bi(scenario.meta.credits);
+}
+
+loadData().catch(err=>{
+  document.body.innerHTML = `<div style="padding:40px;font-family:sans-serif;">
+    <h2>Error al cargar el escenario</h2>
+    <p>${err}</p>
+    <p>Verifica que <code>scenario.json</code>, <code>rubric.json</code> y <code>debrief.json</code> existan en esta misma carpeta.</p>
+  </div>`;
+});
+</script>
+</body>
+</html>

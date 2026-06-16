@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repositorio de Simulaciones — Salud Pública UCSUR</title>
+<style>
+  :root{
+    --bg:#f6f4ee; --panel:#ffffff; --ink:#1f2a24; --muted:#6b7872;
+    --line:#dfe3de; --primary:#1f6f54; --primary-dark:#154a38;
+    --accent:#d97a3d; --accent-soft:#fbe9da; --radius:12px;
+    --shadow:0 2px 12px rgba(31,42,36,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3","Segoe UI",sans-serif;}
+  h1,h2,h3{font-family:"Spectral","Georgia",serif; font-weight:600;}
+  header{
+    background:var(--primary-dark); color:#fff; padding:36px 20px;
+    text-align:center;
+  }
+  header h1{margin:0 0 6px; font-size:1.8rem;}
+  header p{margin:0; color:#d8e6df; font-size:.95rem;}
+  .lang-toggle{margin-top:14px; display:inline-flex; gap:4px; background:rgba(255,255,255,.12); border-radius:20px; padding:3px;}
+  .lang-toggle button{border:none; background:transparent; color:#fff; padding:5px 14px; border-radius:16px; cursor:pointer; font-weight:600; font-size:.82rem;}
+  .lang-toggle button.active{background:var(--accent); color:#3a1c08;}
+
+  .filters{
+    max-width:1100px; margin:24px auto 0; padding:0 20px;
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+  }
+  .filters select, .filters input{
+    border:1px solid var(--line); border-radius:8px; padding:8px 12px;
+    font-size:.88rem; background:#fff;
+  }
+  .filters input{flex:1; min-width:160px;}
+
+  .grid{
+    max-width:1100px; margin:20px auto; padding:0 20px 60px;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px;
+  }
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:18px; display:flex; flex-direction:column; gap:8px;
+  }
+  .card .stage-tag{
+    font-size:.7rem; text-transform:uppercase; letter-spacing:1px; font-weight:700;
+    color:var(--primary); background:#eaf6ef; display:inline-block; padding:3px 8px;
+    border-radius:6px; align-self:flex-start;
+  }
+  .card h3{margin:4px 0 0; font-size:1.05rem; color:var(--primary-dark);}
+  .card .meta{font-size:.78rem; color:var(--muted);}
+  .card .actions{margin-top:auto; display:flex; gap:8px; padding-top:8px;}
+  .btn{
+    border:none; border-radius:8px; padding:9px 14px; font-size:.85rem; font-weight:700;
+    cursor:pointer; text-decoration:none; display:inline-block; text-align:center; flex:1;
+  }
+  .btn-primary{background:var(--primary); color:#fff;}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-locked{background:var(--accent-soft); color:#7a3c0f; cursor:not-allowed;}
+  .empty-state{text-align:center; color:var(--muted); padding:40px; font-size:.95rem;}
+
+  footer{
+    text-align:center; font-size:.75rem; color:var(--muted); padding:20px;
+    border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="hdr-title">Repositorio de Simulaciones Virtuales — Salud Pública UCSUR</h1>
+  <p id="hdr-sub">Casos interactivos de toma de decisiones en salud comunitaria y APS, basados en el marco CAN-Sim</p>
+  <div class="lang-toggle">
+    <button id="lang-es" class="active" onclick="setLang('es')">ES</button>
+    <button id="lang-en" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<div class="filters">
+  <input type="text" id="search" placeholder="Buscar por título o competencia...">
+  <select id="filter-stage">
+    <option value="">Todas las etapas</option>
+    <option value="diagnostico">Diagnóstico comunitario</option>
+    <option value="promocion">Promoción de la salud</option>
+    <option value="planificacion">Planificación y evaluación</option>
+  </select>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer id="footer-text">
+  Repositorio adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública / APS, UCSUR.
+</footer>
+
+<script>
+/* ====== CATALOG DATA ====== */
+/* Add one entry per scenario folder. Each entry's "id" must match the
+   folder name under /scenarios/. The repo-builder skill regenerates
+   this array by scanning scenario.json "meta" blocks. */
+const CATALOG = [
+  {
+    id: "diag-comunitario-vmt",
+    title: {es:"Diagnóstico Comunitario: Seguridad Alimentaria en VMT", en:"Community Diagnosis: Food Security in VMT"},
+    stage: "diagnostico",
+    duration_min: 25,
+    access: "public",
+    competencies: {
+      es: "Diagnóstico comunitario · fuentes primarias y secundarias · determinantes de la salud · enfoque poblacional",
+      en: "Community diagnosis · primary & secondary sources · health determinants · population-health lens"
+    },
+    lms_url: ""
+  }
+  // Ejemplo de escenario restringido (Etapa 2, pendiente de desarrollo):
+  // {
+  //   id: "promocion-las-palmeras",
+  //   title: {es:"Promoción de la Salud: Mesa de Trabajo Comunitaria", en:"Health Promotion: Community Working Session"},
+  //   stage: "promocion", duration_min: 25, access: "restricted",
+  //   competencies: {es:"...", en:"..."},
+  //   lms_url: "https://moodle.ucsur.edu.pe/course/view.php?id=XXXX"
+  // }
+];
+
+const STAGE_LABEL = {
+  diagnostico: {es:"Etapa 1 · Diagnóstico Comunitario", en:"Stage 1 · Community Diagnosis"},
+  promocion: {es:"Etapa 2 · Promoción de la Salud", en:"Stage 2 · Health Promotion"},
+  planificacion: {es:"Etapa 3 · Planificación y Evaluación", en:"Stage 3 · Planning & Evaluation"}
+};
+
+let LANG = "es";
+const UI = {
+  es:{open:"Abrir simulación", locked:"Disponible en el curso (Moodle)", min:"min", empty:"No se encontraron simulaciones con esos criterios."},
+  en:{open:"Open simulation", locked:"Available in course (Moodle)", min:"min", empty:"No simulations match these filters."}
+};
+
+function bi(f){ return f[LANG] || f.es || f.en || ""; }
+
+function setLang(lang){
+  LANG = lang;
+  document.getElementById("lang-es").classList.toggle("active", lang==="es");
+  document.getElementById("lang-en").classList.toggle("active", lang==="en");
+  const titles = {
+    es:["Repositorio de Simulaciones Virtuales — Salud Pública UCSUR","Casos interactivos de toma de decisiones en salud comunitaria y APS, basados en el marco CAN-Sim"],
+    en:["Virtual Simulation Repository — Public Health UCSUR","Interactive decision-making cases in community health and PHC, based on the CAN-Sim framework"]
+  };
+  document.getElementById("hdr-title").textContent = titles[lang][0];
+  document.getElementById("hdr-sub").textContent = titles[lang][1];
+  document.getElementById("search").placeholder = lang==="es" ? "Buscar por título o competencia..." : "Search by title or competency...";
+  const stageOpts = document.getElementById("filter-stage").options;
+  stageOpts[0].textContent = lang==="es" ? "Todas las etapas" : "All stages";
+  stageOpts[1].textContent = STAGE_LABEL.diagnostico[lang];
+  stageOpts[2].textContent = STAGE_LABEL.promocion[lang];
+  stageOpts[3].textContent = STAGE_LABEL.planificacion[lang];
+  document.getElementById("footer-text").textContent = lang==="es"
+    ? "Repositorio adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública / APS, UCSUR."
+    : "Repository adapted from the CAN-Sim framework (Companion Guide, 2022) for the Public Health / PHC course, UCSUR.";
+  render();
+}
+
+function render(){
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const stageFilter = document.getElementById("filter-stage").value;
+
+  const filtered = CATALOG.filter(item=>{
+    if (stageFilter && item.stage !== stageFilter) return false;
+    if (q){
+      const hay = (bi(item.title)+" "+bi(item.competencies)).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0){
+    grid.innerHTML = `<div class="empty-state">${UI[LANG].empty}</div>`;
+    return;
+  }
+
+  filtered.forEach(item=>{
+    const card = document.createElement("div"); card.className="card";
+    const tag = document.createElement("span"); tag.className="stage-tag";
+    tag.textContent = STAGE_LABEL[item.stage] ? STAGE_LABEL[item.stage][LANG] : item.stage;
+    const h3 = document.createElement("h3"); h3.textContent = bi(item.title);
+    const meta = document.createElement("div"); meta.className="meta";
+    meta.textContent = `${item.duration_min} ${UI[LANG].min} · ${bi(item.competencies)}`;
+    const actions = document.createElement("div"); actions.className="actions";
+    if (item.access === "public"){
+      const a = document.createElement("a");
+      a.className="btn btn-primary"; a.href=`scenarios/${item.id}/player.html`;
+      a.textContent = UI[LANG].open;
+      actions.appendChild(a);
+    } else {
+      const a = document.createElement("a");
+      a.className="btn btn-locked";
+      a.href = item.lms_url || "#";
+      a.textContent = UI[LANG].locked;
+      actions.appendChild(a);
+    }
+    card.appendChild(tag); card.appendChild(h3); card.appendChild(meta); card.appendChild(actions);
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById("search").addEventListener("input", render);
+document.getElementById("filter-stage").addEventListener("change", render);
+render();
+</script>
+</body>
+</html>

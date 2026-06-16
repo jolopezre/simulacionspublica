@@ -1,0 +1,29 @@
+{
+  "title": {
+    "es": "Rúbrica de Autoevaluación — [Nombre del escenario]",
+    "en": "Self-Assessment Rubric — [Scenario name]"
+  },
+  "scale": {
+    "es": "Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica",
+    "en": "Likert scale: 6 = Fully competent · 1 = Needs significant practice"
+  },
+  "_comentario": "Crear una entrada en 'outcomes' por cada resultado de aprendizaje listado en meta.competencies del scenario.json. Mantener los tres niveles descriptores (competente/intermedio/novato) en ambos idiomas.",
+  "outcomes": [
+    {
+      "id": "ro1",
+      "outcome": {
+        "es": "Texto del resultado de aprendizaje 1, igual al de meta.competencies[0].",
+        "en": "Learning outcome 1 text, matching meta.competencies[0]."
+      },
+      "indicators": {
+        "es": "Indicadores observables separados por · (ej. Identifica X · Aplica Y · Reconoce Z)",
+        "en": "Observable indicators separated by · (e.g. Identifies X · Applies Y · Recognizes Z)"
+      },
+      "levels": {
+        "competente": {"es": "Descriptor de desempeño competente (independiente).", "en": "Competent-level descriptor (independent)."},
+        "intermedio": {"es": "Descriptor de desempeño intermedio (con apoyo mínimo).", "en": "Intermediate-level descriptor (with minimal support)."},
+        "novato": {"es": "Descriptor de desempeño novato (con orientación).", "en": "Novice-level descriptor (with prompting)."}
+      }
+    }
+  ]
+}
