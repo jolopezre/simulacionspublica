@@ -826,8 +826,8 @@ function setLang(lang, silent){
   if(!scenario)return;
   document.getElementById("hdr-title").textContent=bi(scenario.meta.title);
   const stageMap={
-    es:{diagnostico:"Etapa 1 · Diagnóstico Comunitario",promocion:"Etapa 2 · Promoción de la Salud",planificacion:"Etapa 3 · Planificación y Evaluación"},
-    en:{diagnostico:"Stage 1 · Community Diagnosis",promocion:"Stage 2 · Health Promotion",planificacion:"Stage 3 · Planning & Evaluation"}
+    es:{diagnostico:"Etapa 1 · Diagnóstico Comunitario",promocion:"Etapa 2 · Promoción de la Salud",planificacion:"Etapa 3 · Planificación y Evaluación",gobernanza:"Etapa 4 · Preparación y Gobernanza en Salud Global"},
+    en:{diagnostico:"Stage 1 · Community Diagnosis",promocion:"Stage 2 · Health Promotion",planificacion:"Stage 3 · Planning & Evaluation",gobernanza:"Stage 4 · Preparedness & Global Health Governance"}
   };
   document.getElementById("hdr-stage").textContent=(stageMap[lang]||{})[scenario.meta.stage]||scenario.meta.stage;
   document.getElementById("exp-title").textContent=t("exp");

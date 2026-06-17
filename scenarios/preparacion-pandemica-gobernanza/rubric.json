@@ -1,0 +1,77 @@
+{
+  "title": {
+    "es": "Rúbrica de Autoevaluación — Preparación Pandémica y Gobernanza",
+    "en": "Self-Assessment Rubric — Pandemic Preparedness and Governance"
+  },
+  "scale": {
+    "es": "Escala Likert: 6 = Totalmente competente · 1 = Necesito mucha práctica",
+    "en": "Likert scale: 6 = Fully competent · 1 = Needs significant practice"
+  },
+  "outcomes": [
+    {
+      "id": "ro1",
+      "outcome": {
+        "es": "Identifica los determinantes de la interfase clima-ambiente-zoonosis en la emergencia de enfermedades infecciosas (EID)",
+        "en": "Identifies the determinants of the climate-environment-zoonotic interface in the emergence of infectious diseases (EID)"
+      },
+      "indicators": {"es": "Reconoce señales centinela animales · Vincula factores ambientales (deforestación, clima) con riesgo zoonótico · Usa un enfoque de salud única (One Health)", "en": "Recognizes animal sentinel signals · Links environmental factors (deforestation, climate) with zoonotic risk · Uses a One Health approach"},
+      "levels": {
+        "competente": {"es": "Identifica de forma independiente los determinantes de la interfase clima-ambiente-zoonosis.", "en": "Independently identifies the determinants of the climate-environment-zoonotic interface."},
+        "intermedio": {"es": "Con apoyo mínimo identifica estos determinantes.", "en": "With minimal support, identifies these determinants."},
+        "novato": {"es": "Con orientación identifica estos determinantes.", "en": "With prompting, identifies these determinants."}
+      }
+    },
+    {
+      "id": "ro2",
+      "outcome": {
+        "es": "Aplica el proceso de vigilancia y notificación ante un evento zoonótico con potencial de propagación transfronteriza",
+        "en": "Applies the surveillance and notification process for a zoonotic event with potential cross-border spread"
+      },
+      "indicators": {"es": "Notifica oportunamente según RSI 2005 · Reconoce el riesgo transfronterizo · Articula con CDC-MINSA y OMS", "en": "Notifies promptly per IHR 2005 · Recognizes cross-border risk · Coordinates with CDC-MINSA and WHO"},
+      "levels": {
+        "competente": {"es": "Aplica de forma independiente el proceso de vigilancia y notificación transfronteriza.", "en": "Independently applies the cross-border surveillance and notification process."},
+        "intermedio": {"es": "Con apoyo mínimo aplica este proceso.", "en": "With minimal support, applies this process."},
+        "novato": {"es": "Con orientación aplica este proceso.", "en": "With prompting, applies this process."}
+      }
+    },
+    {
+      "id": "ro3",
+      "outcome": {
+        "es": "Evalúa el rol de la tecnología (IA, diagnóstico rápido, vigilancia digital) en la respuesta a brotes emergentes",
+        "en": "Evaluates the role of technology (AI, rapid diagnostics, digital surveillance) in responding to emerging outbreaks"
+      },
+      "indicators": {"es": "Prioriza soluciones tecnológicas costo-efectivas · Considera el acceso en zonas remotas · Vincula tecnología con velocidad de respuesta", "en": "Prioritizes cost-effective technological solutions · Considers access in remote areas · Links technology with response speed"},
+      "levels": {
+        "competente": {"es": "Evalúa de forma independiente el rol de la tecnología en la respuesta a brotes.", "en": "Independently evaluates the role of technology in outbreak response."},
+        "intermedio": {"es": "Con apoyo mínimo evalúa este rol.", "en": "With minimal support, evaluates this role."},
+        "novato": {"es": "Con orientación evalúa este rol.", "en": "With prompting, evaluates this role."}
+      }
+    },
+    {
+      "id": "ro4",
+      "outcome": {
+        "es": "Analiza las tensiones entre gobernanza, cooperación regional y equidad en la toma de decisiones de preparación pandémica",
+        "en": "Analyzes tensions between governance, regional cooperation, and equity in pandemic preparedness decision-making"
+      },
+      "indicators": {"es": "Identifica tensiones de soberanía vs. cooperación · Considera equidad para poblaciones vulnerables · Propone mecanismos de confianza institucional", "en": "Identifies sovereignty vs. cooperation tensions · Considers equity for vulnerable populations · Proposes institutional trust mechanisms"},
+      "levels": {
+        "competente": {"es": "Analiza de forma independiente estas tensiones de gobernanza.", "en": "Independently analyzes these governance tensions."},
+        "intermedio": {"es": "Con apoyo mínimo analiza estas tensiones.", "en": "With minimal support, analyzes these tensions."},
+        "novato": {"es": "Con orientación analiza estas tensiones.", "en": "With prompting, analyzes these tensions."}
+      }
+    },
+    {
+      "id": "ro5",
+      "outcome": {
+        "es": "Construye una matriz de escenarios 2x2 para anticipar futuros posibles ante incertidumbres críticas de salud global",
+        "en": "Builds a 2x2 scenario matrix to anticipate possible futures given critical uncertainties in global health"
+      },
+      "indicators": {"es": "Identifica incertidumbres críticas · Distingue éxito puntual de resiliencia estructural · Aplica pensamiento prospectivo más allá del evento inmediato", "en": "Identifies critical uncertainties · Distinguishes one-time success from structural resilience · Applies foresight thinking beyond the immediate event"},
+      "levels": {
+        "competente": {"es": "Construye de forma independiente una matriz de escenarios 2x2 coherente.", "en": "Independently builds a coherent 2x2 scenario matrix."},
+        "intermedio": {"es": "Con apoyo mínimo construye esta matriz.", "en": "With minimal support, builds this matrix."},
+        "novato": {"es": "Con orientación construye esta matriz.", "en": "With prompting, builds this matrix."}
+      }
+    }
+  ]
+}

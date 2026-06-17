@@ -39,9 +39,38 @@ the typical UCSUR APS syllabus sequence:
 | 1. Diagnóstico comunitario | Game 1 – Community Assessment | Recolección y análisis de datos primarios/secundarios, determinantes de salud, enfoque poblacional |
 | 2. Priorización y promoción | Game 2 – Health Promotion | Selección de estrategias de promoción, participación comunitaria, enfoque de equidad |
 | 3. Planificación y evaluación | Game 3 – Program Planning & Evaluation | Modelo lógico, marco de planificación, indicadores de evaluación |
+| 4. Preparación y gobernanza en salud global | (extensión propia, no CAN-Sim) | Enfermedades infecciosas emergentes (EID), vigilancia transfronteriza, cooperación regional, cuyo marco de referencia es el ciclo de prospectiva estratégica (foresight) — ver `stage: "gobernanza"` |
 
 A single scenario may cover one stage in depth (recommended for the
 pilot) or all three as a multi-act simulation.
+
+### Stage 4 — Preparación y Gobernanza (extensión foresight/APEC)
+
+Esta etapa adapta el ciclo de prospectiva estratégica usado en talleres
+de foresight (ej. APEC Center for Technology Foresight) a un escenario
+de decisión jugable. Estructura narrativa híbrida recomendada:
+
+1. **Acto local** (nodos `narrative_decision`/`open_reflection`): un
+   caso clínico-comunitario concreto (brote zoonótico, evento centinela)
+   que el estudiante diagnostica y notifica, igual que en stage
+   `diagnostico`.
+2. **Acto de escalamiento** (nodos posteriores en el mismo grafo): el
+   caso se convierte en una decisión de gobernanza — el estudiante pasa
+   de rol clínico a rol de delegado/asesor en un comité de cooperación
+   regional, y debe decidir entre opciones que reflejan los tres pilares
+   de EID (Enfermedades Infecciosas Emergentes):
+   - **Clima-Ambiente-Zoonosis**: vigilancia de interfase
+     humano-animal-ambiente.
+   - **Tecnología-Vigilancia-Respuesta**: IA para pronóstico, diagnóstico
+     rápido, plataformas de vacunas, salud digital.
+   - **Gobernanza-Economía-Cooperación regional**: compartición de
+     datos, confianza institucional, equidad, estabilidad económica.
+3. **Matriz de escenarios 2×2** (opcional, como nodo `ending` múltiple):
+   en vez de un solo final, se pueden definir hasta 4 finales que
+   representen los cuadrantes de una matriz de incertidumbres críticas
+   (ej. eje X: alta/baja confianza institucional; eje Y: alta/baja
+   inversión en vigilancia tecnológica), replicando la metodología de
+   matriz de escenarios 2×2 usada en talleres de foresight.
 
 ## Dashboard layout (the "intuitive, dashboard-type" requirement)
 

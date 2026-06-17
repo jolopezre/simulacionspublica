@@ -83,6 +83,7 @@
     <option value="diagnostico">Diagnóstico comunitario</option>
     <option value="promocion">Promoción de la salud</option>
     <option value="planificacion">Planificación y evaluación</option>
+    <option value="gobernanza">Preparación y gobernanza global</option>
   </select>
 </div>
 
@@ -157,13 +158,26 @@ const CATALOG = [
       en: "Natural history of disease · Leavell and Clark prevention levels · epidemiological chain · TB"
     },
     lms_url: ""
+  },
+  {
+    id: "preparacion-pandemica-gobernanza",
+    title: {es:"Preparación Pandémica: Del Brote Local a la Gobernanza Regional", en:"Pandemic Preparedness: From Local Outbreak to Regional Governance"},
+    stage: "gobernanza",
+    duration_min: 28,
+    access: "public",
+    competencies: {
+      es: "Enfermedades infecciosas emergentes · interfase clima-zoonosis · cooperación regional · matriz de escenarios 2x2",
+      en: "Emerging infectious diseases · climate-zoonotic interface · regional cooperation · 2x2 scenario matrix"
+    },
+    lms_url: ""
   }
 ];
 
 const STAGE_LABEL = {
   diagnostico: {es:"Etapa 1 · Diagnóstico Comunitario", en:"Stage 1 · Community Diagnosis"},
   promocion: {es:"Etapa 2 · Promoción de la Salud", en:"Stage 2 · Health Promotion"},
-  planificacion: {es:"Etapa 3 · Planificación y Evaluación", en:"Stage 3 · Planning & Evaluation"}
+  planificacion: {es:"Etapa 3 · Planificación y Evaluación", en:"Stage 3 · Planning & Evaluation"},
+  gobernanza: {es:"Etapa 4 · Preparación y Gobernanza Global", en:"Stage 4 · Preparedness & Global Governance"}
 };
 
 let LANG = "es";
@@ -190,6 +204,7 @@ function setLang(lang){
   stageOpts[1].textContent = STAGE_LABEL.diagnostico[lang];
   stageOpts[2].textContent = STAGE_LABEL.promocion[lang];
   stageOpts[3].textContent = STAGE_LABEL.planificacion[lang];
+  stageOpts[4].textContent = STAGE_LABEL.gobernanza[lang];
   document.getElementById("footer-text").textContent = lang==="es"
     ? "Repositorio adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública / APS, UCSUR."
     : "Repository adapted from the CAN-Sim framework (Companion Guide, 2022) for the Public Health / PHC course, UCSUR.";

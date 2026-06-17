@@ -1,0 +1,224 @@
+{
+  "meta": {
+    "id": "preparacion-pandemica-gobernanza",
+    "title": {
+      "es": "Preparación Pandémica: Del Brote Local a la Gobernanza Regional",
+      "en": "Pandemic Preparedness: From Local Outbreak to Regional Governance"
+    },
+    "stage": "gobernanza",
+    "course": "Salud Pública — UCSUR · Preparación y Gobernanza en Salud Global",
+    "competencies": [
+      "Identifica los determinantes de la interfase clima-ambiente-zoonosis en la emergencia de enfermedades infecciosas (EID)",
+      "Aplica el proceso de vigilancia y notificación ante un evento zoonótico con potencial de propagación transfronteriza",
+      "Evalúa el rol de la tecnología (IA, diagnóstico rápido, vigilancia digital) en la respuesta a brotes emergentes",
+      "Analiza las tensiones entre gobernanza, cooperación regional y equidad en la toma de decisiones de preparación pandémica",
+      "Construye una matriz de escenarios 2x2 para anticipar futuros posibles ante incertidumbres críticas de salud global"
+    ],
+    "duration_min": 28,
+    "access": "public",
+    "language_default": "es",
+    "max_score": 50,
+    "credits": {
+      "es": "Inspirado en el Technical Briefing del APEC Foresight Workshop 'Resilient Futures for Emerging Infectious Diseases' (Dr. Titima Songkroh, APEC Center for Technology Foresight / NXPO, Bangkok, 10-11 sept. 2025) y adaptado al marco CAN-Sim (Companion Guide, 2022) para Salud Pública UCSUR. Caso ficticio ambientado en la Amazonía peruana.",
+      "en": "Inspired by the Technical Briefing of the APEC Foresight Workshop 'Resilient Futures for Emerging Infectious Diseases' (Dr. Titima Songkroh, APEC Center for Technology Foresight / NXPO, Bangkok, Sept 10-11, 2025) and adapted to the CAN-Sim framework. Fictional case set in the Peruvian Amazon."
+    }
+  },
+  "dashboard_data": {
+    "tables": [
+      {
+        "title": {"es": "Casos notificados — Síndrome febril hemorrágico, Madre de Dios", "en": "Notified cases — Hemorrhagic febrile syndrome, Madre de Dios"},
+        "columns": [
+          {"es": "Semana", "en": "Week"},
+          {"es": "Casos en humanos", "en": "Human cases"},
+          {"es": "Casos en primates centinela", "en": "Sentinel primate cases"},
+          {"es": "Comunidades afectadas", "en": "Affected communities"}
+        ],
+        "rows": [
+          ["SE 1", "3", "2", "1"],
+          ["SE 2", "11", "7", "3"],
+          ["SE 3", "29", "15", "6"],
+          ["SE 4", "58", "24", "9"]
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "title": {"es": "Los tres pilares de riesgo EID — nivel de alerta actual (0-100)", "en": "The three EID risk pillars — current alert level (0-100)"},
+        "data": [
+          {"label": {"es": "Clima-Ambiente-Zoonosis", "en": "Climate-Environment-Zoonotic"}, "value": 78},
+          {"label": {"es": "Tecnología-Vigilancia", "en": "Technology-Surveillance"}, "value": 45},
+          {"label": {"es": "Gobernanza-Cooperación", "en": "Governance-Cooperation"}, "value": 32}
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "title": {"es": "APEC Foresight Workshop: Futuros Resilientes para EID (2025)", "en": "APEC Foresight Workshop: Resilient Futures for EID (2025)"},
+        "summary": {"es": "Marco de tres pilares para enfermedades infecciosas emergentes: (1) interfase clima-ambiente-zoonosis, (2) tecnología-vigilancia-respuesta, (3) gobernanza-economía-cooperación regional. Usado para construir matrices de escenarios 2x2 ante incertidumbres críticas.", "en": "Three-pillar framework for emerging infectious diseases: (1) climate-environment-zoonotic interface, (2) technology-surveillance-response, (3) governance-economics-regional cooperation. Used to build 2x2 scenario matrices for critical uncertainties."},
+        "link": "https://www.nxpo.or.th/206"
+      },
+      {
+        "title": {"es": "Reglamento Sanitario Internacional (RSI 2005) — OMS", "en": "International Health Regulations (IHR 2005) — WHO"},
+        "summary": {"es": "Marco jurídico vinculante que obliga a los países a notificar a la OMS eventos de salud pública con potencial de propagación internacional, dentro de las 24 horas de evaluación.", "en": "Binding legal framework requiring countries to notify WHO of public health events with potential international spread, within 24 hours of assessment."},
+        "link": "https://www.who.int/health-topics/international-health-regulations"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Eres un/a estudiante de medicina en pasantía rural en una posta de salud de Madre de Dios, en plena Amazonía peruana. El médico jefe te muestra el reporte: en 4 semanas han pasado de 3 a 58 casos humanos de un síndrome febril hemorrágico, coincidiendo con un aumento de mortalidad en primates [[centinela|Especies centinela: animales (como monos aulladores) cuya mortalidad inusual sirve como señal temprana de circulación de patógenos zoonóticos antes de que lleguen a poblaciones humanas. Es una herramienta clave de la interfase clima-ambiente-zoonosis.]] de la zona. La deforestación y la migración de fauna por el cambio climático son sospechosas como factores de fondo.",
+        "en": "You are a medical student on a rural placement at a health post in Madre de Dios, in the Peruvian Amazon. The head physician shows you the report: in 4 weeks, cases have gone from 3 to 58 humans with a hemorrhagic febrile syndrome, coinciding with increased mortality in [[sentinel|Sentinel species: animals (such as howler monkeys) whose unusual mortality serves as an early signal of zoonotic pathogen circulation before reaching human populations. Key tool of the climate-environment-zoonotic interface.]] primates in the area. Deforestation and climate-driven wildlife migration are suspected background drivers."
+      },
+      "prompt": {
+        "es": "Según el pilar 'Clima-Ambiente-Zoonosis', ¿cuál es la acción prioritaria del equipo de salud local?",
+        "en": "According to the 'Climate-Environment-Zoonotic' pillar, what is the local health team's priority action?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Notificar de inmediato como evento de salud pública de posible relevancia internacional e iniciar vigilancia activa de la interfase humano-fauna-ambiente.", "en": "Immediately notify as a public health event of possible international relevance and initiate active surveillance of the human-wildlife-environment interface."},
+          "correct": true,
+          "feedback": {"es": "Correcto. La combinación de aumento exponencial en humanos + mortalidad inusual en fauna centinela + factor ambiental de fondo (deforestación) son señales clásicas de un evento EID que exige notificación temprana bajo el RSI 2005, no solo vigilancia clínica aislada.", "en": "Correct. Exponential increase in humans + unusual sentinel wildlife mortality + environmental background factor (deforestation) are classic EID event signals requiring early notification under IHR 2005, not isolated clinical surveillance alone."},
+          "next": "n2",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {"es": "Tratar los casos humanos sintomáticamente y esperar a ver si la tendencia se estabiliza la próxima semana.", "en": "Treat human cases symptomatically and wait to see if the trend stabilizes next week."},
+          "correct": false,
+          "feedback": {"es": "Esperar pasivamente ante un crecimiento de 3 a 58 casos en 4 semanas, con señal zoonótica confirmada, va en contra del principio de preparación pandémica: detectar y actuar temprano reduce drásticamente el costo de contención posterior.", "en": "Passively waiting amid growth from 3 to 58 cases in 4 weeks, with confirmed zoonotic signal, contradicts the pandemic preparedness principle: early detection and action drastically reduce later containment costs."},
+          "next": "n1b",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n1b",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "El médico jefe insiste: en eventos EID, el factor crítico es el tiempo. Cada semana de demora multiplica el número de comunidades expuestas (ya son 9 de las 12 comunidades del área). El Reglamento Sanitario Internacional exige evaluación de riesgo dentro de 48 horas de detectado el patrón.",
+        "en": "The head physician insists: in EID events, time is the critical factor. Each week of delay multiplies the number of exposed communities (already 9 of 12 in the area). The International Health Regulations require risk assessment within 48 hours of pattern detection."
+      },
+      "prompt": {
+        "es": "¿Qué nivel de respuesta corresponde activar ahora?",
+        "en": "What level of response should be activated now?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Notificación inmediata a la DIRESA y al CDC-MINSA, con evaluación conjunta de riesgo de propagación transfronteriza (frontera con Brasil y Bolivia a menos de 200 km).", "en": "Immediate notification to DIRESA and CDC-MINSA, with joint risk assessment of cross-border spread (border with Brazil and Bolivia less than 200 km away)."},
+          "correct": true,
+          "feedback": {"es": "Correcto. La proximidad fronteriza convierte este evento local en un asunto de cooperación regional. Notificar activa el flujo de información que más adelante será clave para la coordinación con los países vecinos.", "en": "Correct. Border proximity turns this local event into a regional cooperation matter. Notifying activates the information flow that will later be key for coordination with neighboring countries."},
+          "next": "n2",
+          "points": 10
+        },
+        {
+          "id": "b",
+          "text": {"es": "Manejar el evento solo a nivel local sin escalar, para no generar alarma en la población.", "en": "Manage the event only at the local level without escalating, to avoid alarming the population."},
+          "correct": false,
+          "feedback": {"es": "Ocultar o no escalar información durante un evento EID con riesgo transfronterizo erosiona la confianza institucional — exactamente el problema que el pilar de 'Gobernanza-Cooperación' busca prevenir.", "en": "Hiding or not escalating information during an EID event with cross-border risk erodes institutional trust — exactly the problem the 'Governance-Cooperation' pillar seeks to prevent."},
+          "next": "n2",
+          "points": -2
+        }
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Tres semanas después, el evento escaló: el Perú notificó a la OMS y a sus países vecinos. Has sido convocado/a como representante técnico/a de salud pública en una reunión virtual de cooperación regional (estilo APEC) para decidir qué herramientas tecnológicas priorizar en la respuesta. El tablero muestra que el pilar de Tecnología-Vigilancia tiene la alerta más baja (45/100) de los tres.",
+        "en": "Three weeks later, the event escalated: Peru notified WHO and its neighboring countries. You have been called as a technical public health representative to a virtual regional cooperation meeting (APEC-style) to decide which technological tools to prioritize in the response. The dashboard shows the Technology-Surveillance pillar has the lowest alert readiness (45/100) of the three."
+      },
+      "prompt": {
+        "es": "Desde el pilar 'Tecnología-Vigilancia-Respuesta', ¿cuál inversión tendría mayor impacto inmediato en este brote?",
+        "en": "From the 'Technology-Surveillance-Response' pillar, which investment would have the greatest immediate impact on this outbreak?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "Diagnóstico rápido descentralizado (point-of-care) en las comunidades amazónicas, combinado con un sistema de alerta temprana basado en datos de vigilancia centinela animal.", "en": "Decentralized rapid (point-of-care) diagnostics in Amazonian communities, combined with an early-warning system based on animal sentinel surveillance data."},
+          "correct": true,
+          "feedback": {"es": "Correcto. En zonas de difícil acceso, la velocidad diagnóstica y la vigilancia centinela animal-ambiental son más costo-efectivas que la infraestructura hospitalaria centralizada, que tarda en llegar a comunidades remotas.", "en": "Correct. In hard-to-reach areas, diagnostic speed and animal-environmental sentinel surveillance are more cost-effective than centralized hospital infrastructure, which takes time to reach remote communities."},
+          "next": "n3",
+          "points": 12
+        },
+        {
+          "id": "b",
+          "text": {"es": "Construir un nuevo hospital de alta complejidad en la capital regional antes de actuar sobre las comunidades afectadas.", "en": "Build a new high-complexity hospital in the regional capital before acting on affected communities."},
+          "correct": false,
+          "feedback": {"es": "Una inversión de infraestructura pesada tarda años en estar lista y no resuelve la urgencia de detección y contención en las comunidades remotas donde ocurre la transmisión activa.", "en": "Heavy infrastructure investment takes years to be ready and does not solve the urgency of detection and containment in remote communities where active transmission is occurring."},
+          "next": "n3",
+          "points": -3
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "open_reflection",
+      "prompt": {
+        "es": "Los datos del tablero muestran que el pilar 'Gobernanza-Cooperación' tiene la alerta más baja de confianza (32/100). Con base en el caso (evento transfronterizo, comunidades indígenas afectadas, necesidad de compartir datos entre Perú, Brasil y Bolivia), redacta un breve análisis (5-7 líneas): ¿qué tensiones entre soberanía nacional, equidad y cooperación regional podrían dificultar una respuesta conjunta? ¿Qué mecanismo propondrías para fortalecer la confianza institucional?",
+        "en": "Dashboard data shows the 'Governance-Cooperation' pillar has the lowest trust alert (32/100). Based on the case (cross-border event, affected indigenous communities, need to share data between Peru, Brazil, and Bolivia), write a brief analysis (5-7 lines): what tensions between national sovereignty, equity, and regional cooperation could hinder a joint response? What mechanism would you propose to strengthen institutional trust?"
+      },
+      "guidance": {
+        "es": "Considera: compartición de datos epidemiológicos entre países, equidad en el acceso a vacunas/insumos para comunidades indígenas remotas, mecanismos de cooperación existentes (OPS/OMS, RSI 2005), y el riesgo de estigmatización de comunidades fronterizas.",
+        "en": "Consider: epidemiological data sharing between countries, equity in vaccine/supply access for remote indigenous communities, existing cooperation mechanisms (PAHO/WHO, IHR 2005), and the risk of stigmatizing border communities."
+      },
+      "next": "n4",
+      "points": 12
+    },
+    {
+      "id": "n4",
+      "type": "narrative_decision",
+      "narrative": {
+        "es": "Para cerrar el taller de prospectiva, el comité te pide construir una matriz de escenarios 2x2 usando dos incertidumbres críticas: (eje X) nivel de confianza institucional entre países, y (eje Y) nivel de inversión en vigilancia tecnológica temprana. Te muestran cuatro futuros posibles.",
+        "en": "To close the foresight workshop, the committee asks you to build a 2x2 scenario matrix using two critical uncertainties: (X axis) level of institutional trust between countries, and (Y axis) level of investment in early technological surveillance. They show you four possible futures."
+      },
+      "prompt": {
+        "es": "Dado el caso de Madre de Dios (alta confianza lograda mediante notificación oportuna, pero baja inversión tecnológica inicial), ¿en qué cuadrante de la matriz 2x2 se ubicaría mejor el desenlace de este brote si NO se corrige la brecha tecnológica?",
+        "en": "Given the Madre de Dios case (high trust achieved through timely notification, but low initial technological investment), in which 2x2 matrix quadrant would this outbreak's outcome best fit if the technology gap is NOT corrected?"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": {"es": "'Cooperación frágil': alta confianza inicial pero respuesta lenta por falta de herramientas, que erosiona la confianza en el mediano plazo si se repiten brotes similares sin mejorar la vigilancia.", "en": "'Fragile cooperation': high initial trust but slow response due to lack of tools, eroding trust in the medium term if similar outbreaks recur without improved surveillance."},
+          "correct": true,
+          "feedback": {"es": "Correcto. Este es el riesgo central de la prospectiva estratégica: la confianza institucional sin inversión tecnológica sostenida es un escenario inestable. La matriz 2x2 sirve precisamente para anticipar que el éxito de hoy (notificación oportuna) no garantiza resiliencia futura sin inversión continua.", "en": "Correct. This is the central risk of strategic foresight: institutional trust without sustained technological investment is an unstable scenario. The 2x2 matrix serves precisely to anticipate that today's success (timely notification) does not guarantee future resilience without continued investment."},
+          "next": "end_a",
+          "points": 14
+        },
+        {
+          "id": "b",
+          "text": {"es": "'Futuro resiliente ideal': el problema está resuelto porque el brote actual fue controlado exitosamente.", "en": "'Ideal resilient future': the problem is solved because the current outbreak was successfully controlled."},
+          "correct": false,
+          "feedback": {"es": "Controlar un brote puntual no equivale a resiliencia estructural. La prospectiva estratégica exige mirar más allá del evento actual: sin corregir la brecha en el pilar tecnológico, el sistema seguirá vulnerable al próximo evento EID.", "en": "Controlling a single outbreak does not equal structural resilience. Strategic foresight requires looking beyond the current event: without correcting the technology pillar gap, the system remains vulnerable to the next EID event."},
+          "next": "end_b",
+          "points": -5
+        }
+      ]
+    },
+    {
+      "id": "end_a",
+      "type": "ending",
+      "label": {"es": "Final A — Pensamiento prospectivo aplicado con éxito", "en": "Ending A — Strategic foresight successfully applied"},
+      "summary": {
+        "es": "Aplicaste los tres pilares de preparación ante EID: detectaste y notificaste oportunamente el evento zoonótico (Clima-Ambiente-Zoonosis), priorizaste tecnología costo-efectiva para zonas remotas (Tecnología-Vigilancia), y identificaste las tensiones de gobernanza que amenazan la cooperación regional sostenida (Gobernanza-Cooperación). Más importante: usaste la matriz de escenarios 2x2 para anticipar que el éxito actual no garantiza resiliencia futura — el corazón del pensamiento prospectivo en salud global.",
+        "en": "You applied the three EID preparedness pillars: detected and timely notified the zoonotic event (Climate-Environment-Zoonotic), prioritized cost-effective technology for remote areas (Technology-Surveillance), and identified governance tensions threatening sustained regional cooperation (Governance-Cooperation). Most importantly: you used the 2x2 scenario matrix to anticipate that current success does not guarantee future resilience — the heart of strategic foresight thinking in global health."
+      }
+    },
+    {
+      "id": "end_b",
+      "type": "ending",
+      "label": {"es": "Final B — Análisis incompleto del riesgo futuro", "en": "Ending B — Incomplete future risk analysis"},
+      "summary": {
+        "es": "Gestionaste correctamente el brote inmediato, pero el ejercicio de prospectiva busca algo más: anticipar vulnerabilidades futuras incluso ante éxitos presentes. Reflexiona: ¿por qué un sistema de salud puede 'ganar la batalla' de un brote y aun así quedar expuesto al siguiente si no invierte en los tres pilares de forma sostenida?",
+        "en": "You managed the immediate outbreak correctly, but the foresight exercise seeks something more: anticipating future vulnerabilities even amid present successes. Reflect: why can a health system 'win the battle' of one outbreak and still remain exposed to the next if it does not sustainably invest in all three pillars?"
+      }
+    }
+  ],
+  "rubric_ref": "rubric.json",
+  "debrief_ref": "debrief.json"
+}

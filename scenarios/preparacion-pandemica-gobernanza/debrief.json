@@ -1,0 +1,39 @@
+{
+  "defusing": {
+    "title": {"es": "Defusing (Descarga emocional)", "en": "Defusing"},
+    "es": [
+      "¿Cómo te sentiste al pasar de un rol clínico local a un rol de decisión en un comité de cooperación regional?",
+      "¿Qué parte del caso te resultó más compleja: el componente clínico-zoonótico o el componente de gobernanza?"
+    ],
+    "en": [
+      "How did you feel moving from a local clinical role to a decision-making role in a regional cooperation committee?",
+      "Which part of the case felt more complex: the clinical-zoonotic component or the governance component?"
+    ]
+  },
+  "discovery": {
+    "title": {"es": "Discovery (Descubrimiento)", "en": "Discovery"},
+    "es": [
+      "¿Qué señales de la interfase clima-ambiente-zoonosis identificaste en el caso de Madre de Dios?",
+      "¿Por qué la proximidad fronteriza convierte un evento local en un asunto de cooperación regional?",
+      "¿Qué diferencia encontraste entre invertir en infraestructura hospitalaria vs. diagnóstico descentralizado en este contexto?",
+      "¿Qué tensiones entre soberanía nacional y cooperación regional identificaste en tu reflexión?"
+    ],
+    "en": [
+      "What signals of the climate-environment-zoonotic interface did you identify in the Madre de Dios case?",
+      "Why does border proximity turn a local event into a regional cooperation matter?",
+      "What difference did you find between investing in hospital infrastructure vs. decentralized diagnostics in this context?",
+      "What tensions between national sovereignty and regional cooperation did you identify in your reflection?"
+    ]
+  },
+  "deepening": {
+    "title": {"es": "Deepening (Profundización)", "en": "Deepening"},
+    "es": [
+      "¿Cómo aplicarías el marco de los tres pilares (Clima-Zoonosis, Tecnología-Vigilancia, Gobernanza-Cooperación) a otro evento de salud pública que conozcas?",
+      "¿Por qué la matriz de escenarios 2x2 es útil para anticipar futuros, en lugar de solo evaluar el éxito de la respuesta actual?"
+    ],
+    "en": [
+      "How would you apply the three-pillar framework (Climate-Zoonotic, Technology-Surveillance, Governance-Cooperation) to another public health event you know of?",
+      "Why is the 2x2 scenario matrix useful for anticipating futures, rather than just evaluating the success of the current response?"
+    ]
+  }
+}
