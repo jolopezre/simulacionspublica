@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repositorio de Simulaciones — Salud Pública UCSUR</title>
+<title>Repositorio de Simulaciones — Salud Pública </title>
 <style>
   :root{
     --bg:#f6f4ee; --panel:#ffffff; --ink:#1f2a24; --muted:#6b7872;
@@ -68,7 +68,7 @@
 <body>
 
 <header>
-  <h1 id="hdr-title">Repositorio de Simulaciones Virtuales — Salud Pública UCSUR</h1>
+  <h1 id="hdr-title">Repositorio de Simulaciones Virtuales — Salud Pública </h1>
   <p id="hdr-sub">Casos interactivos de toma de decisiones en salud comunitaria y APS, basados en el marco CAN-Sim</p>
   <div class="lang-toggle">
     <button id="lang-es" class="active" onclick="setLang('es')">ES</button>
@@ -90,7 +90,7 @@
 <div class="grid" id="grid"></div>
 
 <footer id="footer-text">
-  Repositorio adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública / APS, UCSUR.
+  Repositorio adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública .
 </footer>
 
 <script>
@@ -193,8 +193,8 @@ function setLang(lang){
   document.getElementById("lang-es").classList.toggle("active", lang==="es");
   document.getElementById("lang-en").classList.toggle("active", lang==="en");
   const titles = {
-    es:["Repositorio de Simulaciones Virtuales — Salud Pública UCSUR","Casos interactivos de toma de decisiones en salud comunitaria y APS, basados en el marco CAN-Sim"],
-    en:["Virtual Simulation Repository — Public Health UCSUR","Interactive decision-making cases in community health and PHC, based on the CAN-Sim framework"]
+    es:["Repositorio de Simulaciones Virtuales — Salud Pública","Casos interactivos de toma de decisiones en salud comunitaria y APS, basados en el marco CAN-Sim"],
+    en:["Virtual Simulation Repository — Public Health","Interactive decision-making cases in community health and PHC, based on the CAN-Sim framework"]
   };
   document.getElementById("hdr-title").textContent = titles[lang][0];
   document.getElementById("hdr-sub").textContent = titles[lang][1];
@@ -206,8 +206,8 @@ function setLang(lang){
   stageOpts[3].textContent = STAGE_LABEL.planificacion[lang];
   stageOpts[4].textContent = STAGE_LABEL.gobernanza[lang];
   document.getElementById("footer-text").textContent = lang==="es"
-    ? "Repositorio adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública / APS, UCSUR."
-    : "Repository adapted from the CAN-Sim framework (Companion Guide, 2022) for the Public Health / PHC course, UCSUR.";
+    ? "Repositorio adaptado del marco CAN-Sim (Companion Guide, 2022) para el curso de Salud Pública."
+    : "Repository adapted from the CAN-Sim framework (Companion Guide, 2022) for the Public Health / PHC course.";
   render();
 }
 
